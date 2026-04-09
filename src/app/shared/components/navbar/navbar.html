@@ -1,0 +1,82 @@
+<nav class="navbar" [class.active]="isOpen()">
+  <div class="navbar__container">
+    <!-- LEFT -->
+    <div class="navbar__left">
+      <a routerLink="/">
+        <img src="images/logo.png" alt="Logo" class="logo" />
+      </a>
+    </div>
+
+    <!-- CENTER (desktop) -->
+    <ul class="navbar__center">
+      <li><a routerLink="/" routerLinkActive="active">Inicio</a></li>
+      <li><a routerLink="/about" routerLinkActive="active">Sobre</a></li>
+      <li><a routerLink="/student" routerLinkActive="active">Estudiante</a></li>
+      <li><a routerLink="/teacher" routerLinkActive="active">Profesor</a></li>
+      <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contacto</a></li>
+
+      @if (!isLoggedIn()) {
+        <li>
+          <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
+        </li>
+      }
+    </ul>
+
+    <!-- RIGHT (desktop) -->
+    <div class="navbar__right desktop-only">
+      @if (!isLoggedIn()) {
+        <app-button variant="primary" routerLink="/login"> Iniciar sesión </app-button>
+      }
+
+      @if (isLoggedIn()) {
+        <button class="logout-btn" (click)="logout()">
+          <img src="/images/logout.png" alt="logout" />
+        </button>
+      }
+    </div>
+
+    <!-- HAMBURGER -->
+    <div class="navbar__toggle" (click)="toggleMenu()" [class.open]="isOpen()">
+      <div class="hamburger">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY MOBILE -->
+  <div class="navbar__overlay">
+    <!-- USER ICON -->
+    <img src="images/user.png" alt="User" class="overlay__user" />
+
+    <!-- MENU MOBILE -->
+    <ul class="navbar__menu">
+      <li><a routerLink="/" (click)="closeMenu()">Inicio</a></li>
+      <li><a routerLink="/about" (click)="closeMenu()">Sobre</a></li>
+      <li><a routerLink="/student" (click)="closeMenu()">Estudiante</a></li>
+      <li><a routerLink="/teacher" (click)="closeMenu()">Profesor</a></li>
+      <li><a routerLink="/blog" (click)="closeMenu()">Blog</a></li>
+      <li><a routerLink="/contact" (click)="closeMenu()">Contacto</a></li>
+
+      @if (!isLoggedIn()) {
+        <li><a routerLink="/login" (click)="closeMenu()">Iniciar sesión</a></li>
+        <li><a routerLink="/register" (click)="closeMenu()">Registrarse</a></li>
+      }
+
+      @if (isLoggedIn()) {
+        <li><a (click)="logout(); closeMenu()">Cerrar sesión</a></li>
+      }
+    </ul>
+
+    <!-- SOCIAL -->
+    <div class="navbar__social">
+      <img src="images/instagram.webp" alt="Instagram" />
+      <a href="https://www.youtube.com/@oksanagolubeva4690" target="_blank" rel="noopener">
+        <img src="images/youtube.webp" alt="YouTube" />
+      </a>
+    </div>
+
+    <img src="images/cookies.webp" alt="Cookies" class="overlay__cookies" />
+    <img src="images/mountain.png" alt="Mountain" class="overlay__mountain" />
+  </div>
+</nav>

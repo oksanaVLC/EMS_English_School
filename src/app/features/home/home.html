@@ -1,0 +1,199 @@
+<!-- ================= INTRO ================= -->
+<div class="section-decor">
+  <section class="about-section">
+    <div class="about-image">
+      <div class="gradient-frame">
+        <img src="images/portada.jpg" alt="Oksana" class="profile-img" />
+      </div>
+    </div>
+
+    <div class="about-text">
+      <p>
+        ¡Hola y bienvenid@s a la escuela online <br />
+
+        <strong class="gradient-text">English Maximizer School, </strong><br />
+        una nueva dimensión de aprender inglés sin salir de casa o viajando por todo el mundo!
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= NIVEL ================= -->
+  <section class="level-section">
+    <div class="level-circles">
+      <span class="circle"></span>
+      <span class="circle"></span>
+      <span class="circle"></span>
+    </div>
+
+    <p class="level-text">
+      ¿Quieres descubrir tu nivel de inglés según el Marco Europeo Común de Referencia para las
+      Lenguas (CEFR)?
+    </p>
+
+    <img src="images/levels.png" alt="Niveles CEFR" class="levels-img" />
+
+    <p class="level-info">Para hacer la prueba de nivel, hay que iniciar la sesión.</p>
+
+    <div class="pointer-wrapper">
+      <a [routerLink]="['/level-test']">
+        <app-button variant="primary">Prueba de nivel</app-button>
+      </a>
+
+      <img src="images/pointer.png" alt="" class="cursor-img" />
+    </div>
+  </section>
+</div>
+<!-- ================= HEADER ================= -->
+<div class="full-header">
+  <div class="header-content">
+    <h2>Conoce la escuela</h2>
+    <img src="images/cap.png" alt="" class="header-icon" />
+  </div>
+</div>
+
+<!-- ================= ABOUT VIDEO ================= -->
+<section class="about-section reverse">
+  <div class="about-text">
+    <p>
+      EMS es una plataforma educativa para el aprendizaje del inglés mediante recursos digitales,
+      aprendizaje autónomo y herramientas para estudiantes y profesores. Aquí encontrarás todo lo
+      que necesitas para subir tu nivel de inglés. Todo el material ha sido cuidadosamente elaborado
+      por profesionales.
+    </p>
+  </div>
+
+  <div class="about-video">
+    <div class="gradient-frame">
+      <img src="images/video.png" alt="Video preview" />
+    </div>
+  </div>
+</section>
+
+<!-- ================= HEADER ================= -->
+<div class="section-decor">
+  <div class="full-header">
+    <div class="header-content">
+      <h2>Preguntas frecuentes</h2>
+      <img src="images/questions.png" alt="" class="header-icon" />
+    </div>
+  </div>
+
+  <!-- ================= FAQ SECTION ================= -->
+  <section class="faq-section">
+    <div class="faq-item" [class.active]="activeIndex === 0">
+      <button class="faq-question" (click)="toggleFAQ(0)">
+        1. ¿Por qué usar English Maximizer School?
+      </button>
+
+      <div class="faq-answer">
+        <div>
+          <ul>
+            <li>Materiales didácticos gratuitos</li>
+            <li>Elaborados por profesionales</li>
+            <li>Calidad de recursos</li>
+            <li>Puedes preguntar tus dudas a través de comentarios y blog</li>
+            <li>Un sitio seguro y de confianza</li>
+            <li>Accesible para todos los niveles</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 1">
+      <button class="faq-question" (click)="toggleFAQ(1)">2. ¿Por dónde empiezo?</button>
+
+      <div class="faq-answer">
+        <div>
+          <p>
+            Puedes empezar por la
+            <a [routerLink]="['/level-test']" class="faq-link"> prueba de nivel </a>. Para
+            realizarla, solo tienes que iniciar la sesión. También puedes entrar en el apartado
+            Estudiante / Profesor y buscar la categoría que te interesa.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 2">
+      <button class="faq-question" (click)="toggleFAQ(2)">
+        3. ¿Cómo busco un tema que me interesa?
+      </button>
+
+      <div class="faq-answer">
+        <div>
+          <p>Entra en el apartado Estudiante y usa el filtro por nivel o por tema.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HEADER ================= -->
+  <div class="full-header">
+    <div class="header-content">
+      <h2>También te puede interesar</h2>
+    </div>
+  </div>
+</div>
+<!-- closing tag de lateral decoration section-docor-->
+
+<section class="iframe-grid">
+  <figure class="iframe-item" *ngFor="let video of videos" (click)="loadVideo(video)">
+    <ng-container *ngIf="!video.loaded; else player">
+      <picture>
+        <source [srcset]="video.thumb + '?avif'" type="image/avif" />
+
+        <source [srcset]="video.thumb + '?webp'" type="image/webp" />
+
+        <img class="youtube-facade" [src]="video.thumb" [alt]="video.title" loading="lazy" />
+      </picture>
+
+      <div class="play-button"></div>
+    </ng-container>
+
+    <ng-template #player>
+      <iframe [src]="video.embedUrl" title="YouTube video player" allowfullscreen> </iframe>
+    </ng-template>
+  </figure>
+</section>
+
+<!-- ================= HEADER ================= -->
+<div class="full-header">
+  <div class="header-content">
+    <h2>¿Qué dicen nuestros alumnos?</h2>
+  </div>
+</div>
+
+<section class="reviews-section section-decor">
+  <h2 class="reviews-title">Reseñas de nuestros alumnos</h2>
+
+  <div class="reviews-slider" #reviewsSlider>
+    <div class="reviews-track">
+      <div class="review-card" *ngFor="let review of reviews">
+        <div class="stars">{{ review.stars }}</div>
+
+        <p class="review-text">
+          {{ review.text }}
+        </p>
+
+        <div class="review-author">
+          <img [src]="review.image" alt="Alumno" />
+          <div>
+            <strong>{{ review.name }}</strong>
+            <span>{{ review.country }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HEADER ================= -->
+<div class="full-header">
+  <div class="header-content">
+    <h2>¿Necesitas inspiración?</h2>
+  </div>
+</div>
+
+<div class="lemons-container">
+  <img src="/images/lemons.png" alt="Lemons" />
+</div>

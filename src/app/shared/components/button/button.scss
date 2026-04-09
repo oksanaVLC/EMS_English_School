@@ -1,0 +1,46 @@
+.app-button {
+  padding: 0.5rem 1.2rem;
+  border-radius: 28px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+
+  transition: all 0.2s ease;
+
+  &.primary {
+    color: white;
+    background: linear-gradient(135deg, #26ee76, #01c2d1);
+  }
+
+  &.secondary {
+    color: #333;
+    background: #eaeaea;
+  }
+
+  &.outline {
+    background: transparent;
+    border: 2px solid #26ee76;
+    color: #26ee76;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.w-full {
+  width: 100%;
+}

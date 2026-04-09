@@ -1,0 +1,144 @@
+<div class="register-page">
+  <div class="register-card">
+    <!-- IZQUIERDA -->
+    <div class="register-left">
+      <form [formGroup]="form" (ngSubmit)="register()" class="form">
+        <h2 class="title">Crear cuenta</h2>
+        @if (successMessage()) {
+          <div class="success">
+            {{ successMessage() }}
+          </div>
+        }
+
+        @if (errorMessage()) {
+          <div class="error">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <p class="subtitle">
+          ¿Ya tienes cuenta?
+          <a class="link" [routerLink]="['/login']">Inicia sesión</a>
+        </p>
+
+        <!-- Name -->
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" formControlName="name" />
+
+          @if (form.get('name')?.touched && form.get('name')?.errors) {
+            <div class="error">
+              <span>Name is required</span>
+            </div>
+          }
+        </div>
+        <!-- Surname -->
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" formControlName="surname" />
+
+          @if (form.get('surname')?.touched && form.get('surname')?.errors) {
+            <div class="error">
+              <span>Surname is required</span>
+            </div>
+          }
+        </div>
+        <!-- Email -->
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" formControlName="email" />
+
+          @if (form.get('email')?.touched && form.get('email')?.errors) {
+            <div class="error">
+              @if (form.get('email')?.errors?.['required']) {
+                <span>Email is required</span>
+              }
+              @if (form.get('email')?.errors?.['email']) {
+                <span>Invalid email format</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Password -->
+        <div class="form-group password-group">
+          <label>Password</label>
+
+          <div class="password-wrapper">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+
+            <button
+              type="button"
+              class="toggle"
+              (click)="showPassword = !showPassword"
+              tabindex="-1"
+            >
+              <img
+                [src]="showPassword ? '/images/opened_eye.png' : '/images/closed_eye.png'"
+                alt="toggle password visibility"
+                draggable="false"
+              />
+            </button>
+          </div>
+
+          @if (form.get('password')?.touched && form.get('password')?.errors) {
+            <div class="error">
+              <span>Password must be at least 6 characters</span>
+            </div>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group password-group">
+          <label>Confirm Password</label>
+
+          <div class="password-wrapper">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+            />
+
+            <button
+              type="button"
+              class="toggle"
+              (click)="showConfirmPassword = !showConfirmPassword"
+              tabindex="-1"
+            >
+              <img
+                [src]="showConfirmPassword ? '/images/opened_eye.png' : '/images/closed_eye.png'"
+                alt="toggle password visibility"
+                draggable="false"
+              />
+            </button>
+          </div>
+
+          @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.errors) {
+            <div class="error">
+              <span>Confirmation required</span>
+            </div>
+          }
+        </div>
+
+        <!-- Submit -->
+        <div class="button-wrapper">
+          <app-button variant="primary" type="submit" class="w-full"> Crear cuenta </app-button>
+        </div>
+      </form>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="register-right">
+      <div class="features">
+        <div class="feature-card">PDF descargables</div>
+        <div class="feature-card">Filtros por nivel</div>
+        <div class="feature-card">Videos educativos</div>
+        <div class="feature-card">Recursos para profes</div>
+
+        <div class="students-card">
+          <div class="number">120</div>
+          <small>alumnos registrados</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<div class="login-page">
+  <div class="login-card">
+    <!-- IZQUIERDA -->
+    <div class="login-left">
+      <form [formGroup]="form" (ngSubmit)="login()" class="form">
+        <h2 class="title">Iniciar sesión</h2>
+        @if (successMessage()) {
+          <div class="success">
+            {{ successMessage() }}
+          </div>
+        }
+        @if (errorMessage()) {
+          <div class="error">
+            {{ errorMessage() }}
+          </div>
+        }
+        <p class="subtitle">
+          ¿No tienes cuenta?
+          <a class="link" [routerLink]="['/register']">Regístrate aquí.</a>
+        </p>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" formControlName="email" />
+
+          @if (form.get('email')?.touched && form.get('email')?.errors) {
+            <div class="error">
+              @if (form.get('email')?.errors?.['required']) {
+                <span>Email is required</span>
+              }
+              @if (form.get('email')?.errors?.['email']) {
+                <span>Invalid email format</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Password -->
+
+        <div class="form-group password-group">
+          <label>Password</label>
+
+          <div class="password-wrapper">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+
+            <button type="button" class="toggle" (click)="togglePassword($event)" tabindex="-1">
+              <img
+                [src]="showPassword ? '/images/opened_eye.png' : '/images/closed_eye.png'"
+                alt="toggle password visibility"
+                draggable="false"
+              />
+            </button>
+          </div>
+
+          @if (form.get('password')?.touched && form.get('password')?.errors) {
+            <div class="error">
+              <span>Password is required</span>
+            </div>
+          }
+        </div>
+
+        <!-- Remember + forgot -->
+        <div class="row">
+          <div class="row-top">
+            <label class="remember">
+              <input type="checkbox" />
+              Recordarme
+            </label>
+          </div>
+
+          <div class="row-bottom">
+            <span class="forgot">¿Olvidaste tu contraseña?</span>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="button-wrapper">
+          <app-button variant="primary" type="submit" class="w-full"> Iniciar sesión </app-button>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span>o</span>
+        </div>
+
+        <!-- Google -->
+        <button type="button" class="google-btn">
+          <img src="/images/google.png" alt="google" />
+          <span>Continuar con Google</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="login-right">
+      <div class="features">
+        <div class="feature-card">PDF descargables</div>
+        <div class="feature-card">Filtros por nivel</div>
+        <div class="feature-card">Videos educativos</div>
+        <div class="feature-card">Recursos para profes</div>
+
+        <div class="students-card">
+          <div class="number">120</div>
+          <small>alumnos registrados</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
