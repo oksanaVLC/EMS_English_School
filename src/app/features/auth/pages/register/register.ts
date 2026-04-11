@@ -51,26 +51,37 @@ export class Register {
         password,
       })
       .subscribe({
-        next: (res) => {
-          console.log('================ REGISTER SUCCESS ================');
-          console.log('FULL RESPONSE:', res);
-
-          console.log('TOKEN:', res.token);
-          console.log('USER:', res.user);
-          console.log('ROLE:', res.user?.role);
-
-          this.auth.saveAuth(res);
-
+        next: () => {
           this.successMessage.set('Te has registrado con éxito 🎉');
 
-          const role = res.user?.role ?? 'user';
+          // LOGIN AUTOMÁTICO (SANCTUM)
+          this.auth
+            .login({
+              email: rest.email,
+              password: password,
+            })
+            .subscribe({
+              next: () => {
+                // OBTENER USUARIO REAL (SOURCE OF TRUTH)
+                this.auth.getUser().subscribe((user) => {
+                  console.log('================ REGISTER SUCCESS ================');
+                  console.log('USER:', user);
+                  console.log('ROLE:', user?.role);
 
-          console.log('REDIRECTING TO ROLE:', role);
+                  const role = user?.role ?? 'user';
 
-          this.router.navigate([`/dashboard/${role}`]);
+                  console.log('REDIRECTING TO ROLE:', role);
 
-          console.log('ROLE:', role);
-          console.log('NAV:', `/dashboard/${role}`);
+                  this.router.navigate([`/dashboard/${role}`]);
+
+                  console.log('NAV:', `/dashboard/${role}`);
+                });
+              },
+              error: (err) => {
+                console.error('LOGIN ERROR:', err);
+                this.router.navigate(['/login']);
+              },
+            });
         },
         error: (err) => {
           console.error(err);

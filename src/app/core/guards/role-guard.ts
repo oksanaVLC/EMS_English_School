@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
 import { Auth } from '../services/auth';
 
 export const roleGuard = (roles: string[]): CanActivateFn => {
@@ -7,17 +8,24 @@ export const roleGuard = (roles: string[]): CanActivateFn => {
     const auth = inject(Auth);
     const router = inject(Router);
 
-    const isLogged = auth.isLoggedIn();
-    const role = auth.getRole();
+    return auth.getUser().pipe(
+      map((user) => {
+        const role = user?.role;
 
-    if (!isLogged) {
-      return router.createUrlTree(['/login']);
-    }
+        // NO USER
+        if (!user) {
+          return router.createUrlTree(['/login']);
+        }
 
-    if (!roles.includes(role!)) {
-      return router.createUrlTree(['/dashboard']);
-    }
+        // ROLE NO PERMITIDO
+        if (!roles.includes(role)) {
+          return router.createUrlTree(['/dashboard/user']);
+        }
 
-    return true;
+        return true;
+      }),
+
+      catchError(() => of(router.createUrlTree(['/login']))),
+    );
   };
 };

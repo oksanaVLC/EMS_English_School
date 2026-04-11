@@ -1,46 +1,49 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
-  private apiURL = 'http://127.0.0.1:8000/api';
+  private apiURL = environment.apiUrl + '/api';
 
   constructor(private http: HttpClient) {}
 
-  // ===== API =====
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.apiURL}/register`, data);
-  }
+  // =========================
+  // AUTH (SANCTUM)
+  // =========================
 
   login(data: any): Observable<any> {
-    return this.http.post(`${this.apiURL}/login`, data);
+    return this.http.post(`${this.apiURL}/login`, data, {
+      withCredentials: true,
+    });
   }
 
-  // ===== STORAGE =====
-  saveAuth(data: any) {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.apiURL}/register`, data, {
+      withCredentials: true,
+    });
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+  logout(): Observable<any> {
+    return this.http.post(
+      `${this.apiURL}/logout`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
   }
 
-  // ===== GETTERS =====
-  getUser() {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  }
+  // =========================
+  // USER AUTH STATE
+  // =========================
 
-  getRole(): string | null {
-    return this.getUser()?.role || null;
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+  getUser(): Observable<any> {
+    return this.http.get(`${this.apiURL}/user`, {
+      withCredentials: true,
+    });
   }
 }

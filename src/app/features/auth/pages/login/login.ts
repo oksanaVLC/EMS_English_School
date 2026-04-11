@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
 import { Button } from '../../../../shared/components/button/button';
 
 @Component({
@@ -17,13 +18,13 @@ export class Login {
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
-  // signals
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
 
   showPassword = false;
 
-  // form
+  private apiURL = environment.apiUrl + '/api';
+
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
@@ -38,34 +39,38 @@ export class Login {
     const { email, password } = this.form.value;
 
     this.http
-      .post<any>('http://127.0.0.1:8000/api/login', {
-        email,
-        password,
-      })
+      .post<any>(
+        `${this.apiURL}/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        },
+      )
       .subscribe({
-        next: (res) => {
+        next: () => {
           this.successMessage.set('Login correcto');
 
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
+          // pedir usuario al backend si necesitas role
+          this.http
+            .get<any>(`${this.apiURL}/user`, {
+              withCredentials: true,
+            })
+            .subscribe((user) => {
+              const role = user?.role ?? 'user';
 
-          console.log('USER:', res.user);
-          console.log('ROLE:', res.user?.role);
-
-          const role = res.user?.role ?? 'user';
-
-          console.log('REDIRECT ROLE:', role);
-
-          if (role === 'admin') {
-            this.router.navigate(['/dashboard/admin']);
-          } else if (role === 'teacher') {
-            this.router.navigate(['/dashboard/teacher']);
-          } else {
-            this.router.navigate(['/dashboard/user']);
-          }
+              if (role === 'admin') {
+                this.router.navigate(['/dashboard/admin']);
+              } else if (role === 'teacher') {
+                this.router.navigate(['/dashboard/teacher']);
+              } else {
+                this.router.navigate(['/dashboard/user']);
+              }
+            });
         },
-        error: (err) => {
-          console.error('LOGIN ERROR:', err);
+        error: () => {
           this.errorMessage.set('Credenciales incorrectas');
         },
       });
