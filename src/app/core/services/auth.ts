@@ -27,12 +27,11 @@ export class Auth {
   }
 
   logout(): Observable<any> {
-    return this.http.post(
-      `${this.apiURL}/logout`,
-      {},
-      {
-        withCredentials: true,
-      },
+    return this.http.post(`${this.apiURL}/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        localStorage.removeItem('token');
+        this.user.set(null);
+      }),
     );
   }
 
