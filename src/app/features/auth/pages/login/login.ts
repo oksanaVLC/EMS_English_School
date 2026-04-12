@@ -39,36 +39,25 @@ export class Login {
     const { email, password } = this.form.value;
 
     this.http
-      .post<any>(
-        `${this.apiURL}/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        },
-      )
+      .post<any>(`${this.apiURL}/login`, {
+        email,
+        password,
+      })
       .subscribe({
-        next: () => {
-          this.successMessage.set('Login correcto');
+        next: (res) => {
+          //  guardar token y usuario
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('user', JSON.stringify(res.user));
 
-          // pedir usuario al backend si necesitas role
-          this.http
-            .get<any>(`${this.apiURL}/user`, {
-              withCredentials: true,
-            })
-            .subscribe((user) => {
-              const role = user?.role ?? 'user';
+          const role = res.user.role;
 
-              if (role === 'admin') {
-                this.router.navigate(['/dashboard/admin']);
-              } else if (role === 'teacher') {
-                this.router.navigate(['/dashboard/teacher']);
-              } else {
-                this.router.navigate(['/dashboard/user']);
-              }
-            });
+          if (role === 'admin') {
+            this.router.navigate(['/dashboard/admin']);
+          } else if (role === 'teacher') {
+            this.router.navigate(['/dashboard/teacher']);
+          } else {
+            this.router.navigate(['/dashboard/user']);
+          }
         },
         error: () => {
           this.errorMessage.set('Credenciales incorrectas');

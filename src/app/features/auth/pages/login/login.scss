@@ -318,3 +318,8 @@ a {
   box-shadow: none;
   background: transparent;
 }
+
+.password-wrapper input:focus {
+  position: relative;
+  z-index: 1;
+}

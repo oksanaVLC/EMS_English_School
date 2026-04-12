@@ -37,9 +37,8 @@ export class Register {
     this.successMessage.set(null);
     this.errorMessage.set(null);
 
-    const { password, confirmPassword, ...rest } = this.form.value;
+    const { password, confirmPassword, name, surname, email } = this.form.value;
 
-    //  VALIDACIÓN PASSWORDS
     if (password !== confirmPassword) {
       this.errorMessage.set('Las contraseñas no coinciden');
       return;
@@ -47,44 +46,35 @@ export class Register {
 
     this.auth
       .register({
-        ...rest,
+        name,
+        surname,
+        email,
         password,
       })
       .subscribe({
         next: () => {
-          this.successMessage.set('Te has registrado con éxito 🎉');
-
-          // LOGIN AUTOMÁTICO (SANCTUM)
+          //  LOGIN AUTOMÁTICO
           this.auth
             .login({
-              email: rest.email,
-              password: password,
+              email,
+              password,
             })
             .subscribe({
-              next: () => {
-                // OBTENER USUARIO REAL (SOURCE OF TRUTH)
-                this.auth.getUser().subscribe((user) => {
-                  console.log('================ REGISTER SUCCESS ================');
-                  console.log('USER:', user);
-                  console.log('ROLE:', user?.role);
+              next: (res) => {
+                // guardar token + user
+                localStorage.setItem('token', res.token);
+                localStorage.setItem('user', JSON.stringify(res.user));
 
-                  const role = user?.role ?? 'user';
+                const role = res.user.role;
 
-                  console.log('REDIRECTING TO ROLE:', role);
-
-                  this.router.navigate([`/dashboard/${role}`]);
-
-                  console.log('NAV:', `/dashboard/${role}`);
-                });
+                this.router.navigate([`/dashboard/${role}`]);
               },
-              error: (err) => {
-                console.error('LOGIN ERROR:', err);
+              error: () => {
                 this.router.navigate(['/login']);
               },
             });
         },
         error: (err) => {
-          console.error(err);
           this.errorMessage.set(err?.error?.message || 'Error al registrar. Inténtalo de nuevo.');
         },
       });
