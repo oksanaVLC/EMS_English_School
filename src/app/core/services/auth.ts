@@ -46,4 +46,7 @@ export class Auth {
       withCredentials: true,
     });
   }
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
 }
