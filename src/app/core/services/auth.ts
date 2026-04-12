@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -9,11 +9,10 @@ import { environment } from '../../../environments/environment';
 export class Auth {
   private apiURL = environment.apiUrl + '/api';
 
-  constructor(private http: HttpClient) {}
+  //  estado global
+  user = signal<any | null>(null);
 
-  // =========================
-  // AUTH (SANCTUM)
-  // =========================
+  constructor(private http: HttpClient) {}
 
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiURL}/login`, data, {
@@ -37,15 +36,19 @@ export class Auth {
     );
   }
 
-  // =========================
-  // USER AUTH STATE
-  // =========================
-
   getUser(): Observable<any> {
-    return this.http.get(`${this.apiURL}/user`, {
-      withCredentials: true,
-    });
+    return this.http
+      .get(`${this.apiURL}/user`, {
+        withCredentials: true,
+      })
+      .pipe(tap((user) => this.user.set(user)));
   }
+
+  //  versión usada por guards
+  loadUser(): Observable<any> {
+    return this.getUser();
+  }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }

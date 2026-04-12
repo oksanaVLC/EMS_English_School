@@ -42,7 +42,7 @@
     color: black;
 
     &:hover {
-      color: #01c2d1;
+      color: #23dd90;
     }
   }
 }
@@ -213,7 +213,7 @@
   display: flex;
   gap: 1rem;
 
-  margin-top: 1rem; // 👈 separación respecto al menú
+  margin-top: 1rem; //  separación respecto al menú
 
   img {
     width: 32px;
@@ -242,6 +242,7 @@
 
 .active {
   border-bottom: 2px solid #acaf0c;
+
   font-weight: bold;
 }
 

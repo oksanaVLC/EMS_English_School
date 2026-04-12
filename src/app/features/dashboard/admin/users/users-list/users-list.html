@@ -1,0 +1,30 @@
+<div class="users">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Usuarios</h1>
+    <p>Listado de usuarios registrados en el sistema</p>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Registro</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.surname }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.created_at | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

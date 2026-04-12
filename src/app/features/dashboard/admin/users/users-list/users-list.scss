@@ -1,0 +1,61 @@
+:root {
+  --color-accent: #024d53;
+  --color-secondary: #01c2d1;
+  --main-gradient: linear-gradient(90deg, #01c2d1, #024d53);
+}
+
+.users {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Nunito', sans-serif;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    color: var(--color-accent);
+    font-size: 2rem;
+  }
+
+  p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: var(--color-accent);
+  color: white;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  transition: 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(1, 194, 209, 0.08);
+}
