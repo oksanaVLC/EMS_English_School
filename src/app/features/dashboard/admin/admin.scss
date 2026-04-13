@@ -56,12 +56,14 @@
 /* GRID */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   position: relative;
   z-index: 2;
-}
 
+  max-width: 600px; /*  importante para que no se estire raro */
+  margin: 0 auto; /*  centra el bloque */
+}
 /* CARD */
 .card {
   background: rgba(255, 255, 255, 0.85);
@@ -99,4 +101,17 @@
   .title {
     text-align: left;
   }
+}
+
+.admin-dashboard ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espacio icono-texto */
+}
+
+.admin-dashboard ul li a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
 }

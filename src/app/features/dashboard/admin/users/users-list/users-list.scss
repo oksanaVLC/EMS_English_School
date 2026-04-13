@@ -7,7 +7,7 @@
 .users {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Nunito', sans-serif;
 }
 
@@ -27,6 +27,11 @@
 }
 
 /* CARD */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* suaviza scroll en móvil */
+}
 .card {
   background: white;
   border-radius: 16px;

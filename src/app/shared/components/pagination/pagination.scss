@@ -1,0 +1,45 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* BOTONES */
+button {
+  background: var(--main-gradient);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* HOVER */
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* DISABLED */
+button:disabled {
+  opacity: 0.4;
+
+  background: #cfd8dc;
+  color: #666;
+  transform: none;
+  box-shadow: none;
+}
+
+/* TEXTO PAGINA */
+span {
+  font-weight: 600;
+  color: var(--color-accent);
+}
