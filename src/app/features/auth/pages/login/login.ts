@@ -70,4 +70,28 @@ export class Login {
     event.stopPropagation();
     this.showPassword = !this.showPassword;
   }
+  animatedCount = 0;
+  targetCount = 120;
+
+  ngOnInit() {
+    this.animateCount();
+  }
+
+  animateCount() {
+    const duration = 1000; // 1 segundo
+    const steps = 60;
+    const increment = this.targetCount / steps;
+
+    let current = 0;
+    const interval = setInterval(() => {
+      current += increment;
+
+      if (current >= this.targetCount) {
+        this.animatedCount = this.targetCount;
+        clearInterval(interval);
+      } else {
+        this.animatedCount = Math.floor(current);
+      }
+    }, duration / steps);
+  }
 }
