@@ -6,38 +6,18 @@
       <span class="accent">{{ userName() }}</span
       >!
     </h1>
-    <h2>¿Qué toca hacer hoy?</h2>
+    <h2>¿Qué toca revisar hoy?</h2>
   </div>
 
   <div class="dashboard-grid">
     <!-- VER -->
     <div class="card view">
-      <h2>Ver</h2>
+      <h2>Acciones</h2>
       <ul>
-        <li><a routerLink="/admin/users">Ver la lista de usuarios</a></li>
-        <li><a routerLink="/admin/blog">Ver la lista de artículos del blog</a></li>
-        <li><a routerLink="/admin/categories">Ver categorías</a></li>
+        <li><a routerLink="/admin/users">lista de usuarios registrados</a></li>
+        <li><a routerLink="/admin/blog">Lista de entradas del blog</a></li>
+        <li><a routerLink="/admin/categories">Lista de lecciones creadas</a></li>
       </ul>
     </div>
-
-    <!-- CREAR -->
-    <div class="card create">
-      <h2>Crear</h2>
-      <ul>
-        <li><a routerLink="/admin/users/new">Agregar usuario</a></li>
-        <li><a routerLink="/admin/blog/new">Crear artículo</a></li>
-        <li><a routerLink="/admin/categories/new">Crear categoría</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- TAGS / PILLS -->
-  <div class="pills">
-    <button>Gramática</button>
-    <button>Vocabulario</button>
-    <button>Pronunciación</button>
-    <button>Listening</button>
-    <button>Speaking</button>
-    <button>Writing</button>
   </div>
 </div>

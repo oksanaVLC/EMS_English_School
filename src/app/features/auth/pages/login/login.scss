@@ -28,7 +28,7 @@
 }
 
 label {
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 500;
   color: #333;
 }
@@ -82,6 +82,7 @@ input.ng-invalid.ng-touched {
 
 .subtitle {
   color: #666;
+  font-size: 1rem;
 
   .link {
     font-weight: 600;
@@ -134,12 +135,11 @@ input.ng-invalid.ng-touched {
 .remember {
   display: flex;
   gap: 6px;
-  font-size: 14px;
 }
 
 .forgot {
   color: var(--color-accent);
-  font-size: 14px;
+
   cursor: pointer;
   text-decoration: underline;
 }
@@ -301,25 +301,54 @@ a {
   font-size: 14px;
 }
 
-.password-wrapper .toggle {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.password-wrapper .toggle:focus,
-.password-wrapper .toggle:focus-visible {
-  outline: none;
-  box-shadow: none;
-  background: transparent;
-}
-
-.password-wrapper input:focus {
+.password-wrapper {
   position: relative;
-  z-index: 1;
+  isolation: isolate;
+
+  input {
+    width: 100%;
+    padding-right: 40px;
+  }
+
+  .toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    z-index: 10;
+
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .toggle img {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+}
+
+/* 🔥 elimina iconos nativos del navegador */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
 }

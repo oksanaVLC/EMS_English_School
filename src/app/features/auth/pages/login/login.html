@@ -42,12 +42,22 @@
           <label>Password</label>
 
           <div class="password-wrapper">
-            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              autocomplete="new-password"
+              spellcheck="false"
+            />
 
-            <button type="button" class="toggle" (click)="togglePassword($event)" tabindex="-1">
+            <button
+              type="button"
+              class="toggle"
+              (click)="togglePassword($event)"
+              aria-label="toggle password visibility"
+            >
               <img
                 [src]="showPassword ? '/images/opened_eye.png' : '/images/closed_eye.png'"
-                alt="toggle password visibility"
+                alt=""
                 draggable="false"
               />
             </button>
