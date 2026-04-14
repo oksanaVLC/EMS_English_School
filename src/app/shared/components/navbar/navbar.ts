@@ -45,9 +45,6 @@ export class Navbar implements OnInit {
   getDashboardLink(): string {
     const user = this.auth.user();
 
-    console.log('USER:', user);
-    console.log('ROLE:', user?.role);
-
     const role = user?.role;
 
     if (role === 'admin') return '/dashboard/admin';

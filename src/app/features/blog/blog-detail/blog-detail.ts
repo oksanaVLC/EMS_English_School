@@ -20,14 +20,14 @@ export class BlogDetail implements OnInit {
   post: any = null;
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.loadPost(id);
+    const slug = this.route.snapshot.paramMap.get('slug');
+    this.loadPost(slug);
   }
 
-  loadPost(id: string | null) {
-    if (!id) return;
+  loadPost(slug: string | null) {
+    if (!slug) return;
 
-    this.http.get<any>(`${this.apiUrl}/api/posts/${id}`).subscribe((res) => {
+    this.http.get<any>(`${this.apiUrl}/api/posts/slug/${slug}`).subscribe((res) => {
       this.post = res;
     });
   }

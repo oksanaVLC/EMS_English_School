@@ -39,10 +39,7 @@ export class PostsList implements OnInit {
     }
 
     this.http.get<any>(`${this.apiUrl}/api/posts`, { params }).subscribe((res) => {
-      this.posts = res.data.map((post: any) => ({
-        ...post,
-        cover: post.cover ? `${this.apiUrl}/storage/${post.cover}` : null,
-      }));
+      this.posts = res.data;
 
       this.currentPage = res.current_page;
       this.lastPage = res.last_page;

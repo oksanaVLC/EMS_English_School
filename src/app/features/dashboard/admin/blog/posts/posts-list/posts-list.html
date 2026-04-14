@@ -37,9 +37,11 @@
           @for (post of posts; track post.id) {
             <tr>
               <td>
-                <a [routerLink]="['/blog', post.id]">
-                  <img class="cover" [src]="post.cover" alt="cover" />
-                </a>
+                @if (post.slug) {
+                  <a [routerLink]="['/blog', post.slug]">
+                    <img class="cover" [src]="post.cover" alt="cover" />
+                  </a>
+                }
               </td>
 
               <td>
