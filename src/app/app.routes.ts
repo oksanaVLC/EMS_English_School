@@ -11,6 +11,15 @@ export const routes: Routes = [
   // Públicas
   { path: '', component: Home },
   { path: 'about', component: About },
+  {
+    path: 'blog',
+    loadComponent: () => import('./features/blog/blog-list/blog-list').then((m) => m.BlogList),
+  },
+  {
+    path: 'blog/:id',
+    loadComponent: () =>
+      import('./features/blog/blog-detail/blog-detail').then((m) => m.BlogDetail),
+  },
 
   // Auth
   { path: 'login', component: Login },
@@ -36,6 +45,39 @@ export const routes: Routes = [
       import('./features/dashboard/admin/users/users-list/users-list').then((m) => m.UsersList),
     canActivate: [roleGuard(['admin'])],
   },
+  {
+    path: 'admin/blog/posts',
+    loadComponent: () =>
+      import('./features/dashboard/admin/blog/posts/posts-list/posts-list').then(
+        (m) => m.PostsList,
+      ),
+    canActivate: [roleGuard(['admin'])],
+  },
+  {
+    path: 'admin/blog/posts/create',
+    loadComponent: () =>
+      import('./features/dashboard/admin/blog/posts/posts-form/posts-form').then(
+        (m) => m.PostsForm,
+      ),
+    canActivate: [roleGuard(['admin'])],
+  },
+  {
+    path: 'admin/blog/posts/edit/:id',
+    loadComponent: () =>
+      import('./features/dashboard/admin/blog/posts/posts-form/posts-form').then(
+        (m) => m.PostsForm,
+      ),
+    canActivate: [roleGuard(['admin'])],
+  },
+  {
+    path: 'admin/blog/posts/view/:id',
+    loadComponent: () =>
+      import('./features/dashboard/admin/blog/posts/posts-view/posts-view').then(
+        (m) => m.PostsView,
+      ),
+    canActivate: [roleGuard(['admin'])],
+  },
+
   {
     path: 'dashboard/teacher',
     loadComponent: () => import('./features/dashboard/teacher/teacher').then((m) => m.Teacher),

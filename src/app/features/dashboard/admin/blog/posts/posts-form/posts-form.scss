@@ -1,0 +1,146 @@
+.post-form-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    color: var(--color-accent);
+  }
+
+  p {
+    color: #666;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(1, 194, 209, 0.15);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background: var(--main-gradient);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* efecto hover suave */
+.btn-primary:hover {
+  opacity: 0.7;
+}
+
+.btn-secondary {
+  background: #888888;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+/* FILE INPUT bonito */
+input[type='file'] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+input[type='file']:hover {
+  border-color: var(--color-accent);
+}
+
+/* botón interno */
+input[type='file']::file-selector-button {
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-accent);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+input[type='file']::file-selector-button:hover {
+  opacity: 0.9;
+}
+
+/* PREVIEW  */
+.image-preview {
+  display: block;
+  margin: 0 auto;
+  max-height: 200px;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  //border: 2px solid rgb(175, 248, 181);
+  border: 1px solid #ccc;
+}
+
+/* 🟡 BOTÓN BORRADOR */
+.btn-draft {
+  background: #fff4e6;
+  color: #d97706;
+  border: 1px solid #fcd9b6;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  font-weight: 500;
+}
+
+/* hover suave */
+.btn-draft:hover {
+  background: #ffe9cc;
+  border-color: #fbbf24;
+}
+
+/* click feedback */
+.btn-draft:active {
+  transform: scale(0.98);
+}

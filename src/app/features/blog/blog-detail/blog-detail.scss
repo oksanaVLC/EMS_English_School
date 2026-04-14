@@ -1,0 +1,51 @@
+.blog-detail {
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+}
+
+.meta {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.4rem;
+}
+
+.status {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.status.published {
+  background: #e6ffed;
+  color: #1a7f37;
+}
+
+.status.draft {
+  background: #ffe6e6;
+  color: #b00020;
+}
+
+.cover {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}

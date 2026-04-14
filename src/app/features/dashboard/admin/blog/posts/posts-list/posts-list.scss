@@ -1,0 +1,201 @@
+.posts {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    color: var(--color-accent);
+  }
+
+  p {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 1.5rem;
+  }
+}
+
+.btn-create {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+
+  background: var(--main-gradient);
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+th {
+  background: var(--color-accent);
+  color: white;
+  padding: 12px;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.cover {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* BOTÓN BASE */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+
+  border: 1px solid #e0e0e0;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* ICONOS */
+.icon-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+/* HOVER */
+.icon-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+/* DELETE rojo */
+.icon-btn.danger:hover {
+  border-color: #e53935;
+  color: #e53935;
+}
+
+/* =========================
+    MOBILE RESPONSIVE
+   ========================= */
+@media (max-width: 768px) {
+  .actions {
+    justify-content: center;
+    width: 100%;
+  }
+  .icon-btn .text {
+    display: none; /*  solo iconos */
+  }
+
+  .icon-btn {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .icon-btn img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/****************************************************/
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 1rem;
+}
+
+.status.draft {
+  background: #ffe6e6;
+  color: #b00020;
+}
+
+.status.published {
+  background: #e6ffed;
+  color: #1a7f37;
+}
+
+/* FILTROS CONTAINER */
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* TEXTO "Filtrar por" */
+.filters-label {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  margin-right: 6px;
+}
+
+/* BOTONES FILTRO */
+.filters button {
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #444;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+/* HOVER */
+.filters button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+/* ACTIVE STATE */
+.filters button.active {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+}

@@ -1,0 +1,88 @@
+<div class="posts">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Artículos creados para el blog</h1>
+    <p>Gestiona el contenido del blog</p>
+    <div class="filters">
+      <span class="filters-label">Filtrar por:</span>
+
+      <button (click)="filter('')" [class.active]="filterStatus === ''">Todos</button>
+
+      <button (click)="filter('draft')" [class.active]="filterStatus === 'draft'">
+        Borradores
+      </button>
+
+      <button (click)="filter('published')" [class.active]="filterStatus === 'published'">
+        Publicados
+      </button>
+    </div>
+
+    <button class="btn-create" routerLink="/admin/blog/posts/create">Crear +</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Cover</th>
+            <th>Título</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (post of posts; track post.id) {
+            <tr>
+              <td>
+                <a [routerLink]="['/blog', post.id]">
+                  <img class="cover" [src]="post.cover" alt="cover" />
+                </a>
+              </td>
+
+              <td>
+                {{ post.title.length > 60 ? (post.title | slice: 0 : 60) + '...' : post.title }}
+              </td>
+
+              <td>
+                <span
+                  class="status"
+                  [class.draft]="post.status === 'draft'"
+                  [class.published]="post.status === 'published'"
+                >
+                  {{ post.status === 'draft' ? 'Borrador' : 'Publicado' }}
+                </span>
+              </td>
+
+              <td class="actions">
+                <button [routerLink]="['/admin/blog/posts/view', post.id]" class="icon-btn">
+                  <img src="/images/opened_eye.png" alt="ver" />
+                  <span class="text">Ver</span>
+                </button>
+
+                <button (click)="edit(post.id)" class="icon-btn">
+                  <img src="/images/edit.png" alt="editar" />
+                  <span class="text">Editar</span>
+                </button>
+
+                <button (click)="delete(post.id)" class="icon-btn danger">
+                  <img src="/images/delete.png" alt="borrar" />
+                  <span class="text">Borrar</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <app-pagination
+      [currentPage]="currentPage"
+      [lastPage]="lastPage"
+      (pageChange)="loadPosts($event)"
+    />
+  </div>
+</div>

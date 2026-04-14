@@ -1,0 +1,18 @@
+<div class="blog-detail" *ngIf="post">
+  <div class="container">
+    <h1 class="title">{{ post.title }}</h1>
+
+    <div class="meta">
+      <span>{{ post.created_at | date: 'mediumDate' }}</span>
+      <span class="status" [class]="post.status">
+        {{ post.status === 'published' ? 'Publicado' : 'Borrador' }}
+      </span>
+    </div>
+
+    <img class="cover" [src]="post.cover" alt="cover" *ngIf="post.cover" />
+
+    <div class="content">
+      {{ post.content }}
+    </div>
+  </div>
+</div>

@@ -43,3 +43,11 @@ span {
   font-weight: 600;
   color: var(--color-accent);
 }
+
+button.active {
+  background: white;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  font-weight: 700;
+  transform: scale(1.05);
+}

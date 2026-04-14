@@ -1,0 +1,49 @@
+<div class="post-form-page">
+  <div class="header">
+    <h1>
+      {{ isEdit ? 'Editar post' : 'Crear nuevo post' }}
+    </h1>
+    <p>
+      {{ isEdit ? 'Modifica el contenido del artículo' : 'Rellena los datos del nuevo artículo' }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="form">
+    <!-- TITLE -->
+    <div class="form-group">
+      <label>Título</label>
+      <input type="text" formControlName="title" />
+    </div>
+
+    <!-- COVER FILE -->
+    <div class="form-group">
+      <label>Imagen de portada</label>
+      <input type="file" (change)="onFileChange($event)" accept="image/*" />
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="form-group" *ngIf="preview">
+      <label>Preview</label>
+      <img [src]="preview" class="image-preview" />
+    </div>
+
+    <!-- CONTENT -->
+    <div class="form-group">
+      <label>Contenido</label>
+      <textarea rows="10" formControlName="content"></textarea>
+    </div>
+
+    <!-- BUTTON -->
+    <div class="actions">
+      <button type="button" class="btn-secondary" routerLink="/admin/blog/posts">Cancelar</button>
+
+      <!--  Guardar borrador -->
+      <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
+
+      <!-- Publicar -->
+      <button type="button" class="btn-primary" (click)="save('published')">
+        {{ isEdit ? 'Actualizar' : 'Publicar' }}
+      </button>
+    </div>
+  </form>
+</div>

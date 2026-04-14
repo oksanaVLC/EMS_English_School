@@ -1,7 +1,14 @@
 <div class="pagination">
-  <button (click)="prev()" [disabled]="currentPage === 1">←</button>
+  <button (click)="prev()" [disabled]="currentPage === 1">‹</button>
 
-  <span> {{ currentPage }} / {{ lastPage }} </span>
+  <button
+    *ngFor="let page of pages"
+    (click)="goTo(page)"
+    [class.active]="isActive(page)"
+    [disabled]="page === '...'"
+  >
+    {{ page }}
+  </button>
 
-  <button (click)="next()" [disabled]="currentPage === lastPage">→</button>
+  <button (click)="next()" [disabled]="currentPage === lastPage">›</button>
 </div>
