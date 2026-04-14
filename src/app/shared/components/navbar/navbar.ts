@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 import { Button } from '../button/button';
@@ -11,11 +11,18 @@ import { Button } from '../button/button';
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss'],
 })
-export class Navbar {
+export class Navbar implements OnInit {
   private auth = inject(Auth);
   private router = inject(Router);
 
   isOpen = signal(false);
+
+  ngOnInit() {
+    //  CLAVE: cargar usuario si no existe
+    if (!this.auth.user()) {
+      this.auth.getUser().subscribe();
+    }
+  }
 
   isLoggedIn(): boolean {
     return this.auth.isLoggedIn();
@@ -33,5 +40,20 @@ export class Navbar {
 
   closeMenu() {
     this.isOpen.set(false);
+  }
+
+  getDashboardLink(): string {
+    const user = this.auth.user();
+
+    console.log('USER:', user);
+    console.log('ROLE:', user?.role);
+
+    const role = user?.role;
+
+    if (role === 'admin') return '/dashboard/admin';
+    if (role === 'teacher') return '/dashboard/teacher';
+    if (role === 'user') return '/dashboard/user';
+
+    return '/';
   }
 }

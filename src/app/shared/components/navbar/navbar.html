@@ -21,6 +21,9 @@
           <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
         </li>
       }
+      <a [routerLink]="getDashboardLink()" class="dashboard-link">
+        <img src="images/dashboard.png" alt="Dashboard" />
+      </a>
     </ul>
 
     <!-- RIGHT (desktop) -->
@@ -48,6 +51,9 @@
   <div class="navbar__overlay">
     <!-- USER ICON -->
     <img src="images/user.png" alt="User" class="overlay__user" />
+    <a [routerLink]="getDashboardLink()" class="dashboard-link" (click)="closeMenu()">
+      <img src="images/dashboard.png" alt="Dashboard" />
+    </a>
 
     <!-- MENU MOBILE -->
     <ul class="navbar__menu">
