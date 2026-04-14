@@ -21,15 +21,18 @@
           <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
         </li>
       }
-      <a [routerLink]="getDashboardLink()" class="dashboard-link">
-        <img src="images/dashboard.png" alt="Dashboard" />
-      </a>
     </ul>
 
     <!-- RIGHT (desktop) -->
     <div class="navbar__right desktop-only">
       @if (!isLoggedIn()) {
         <app-button variant="primary" routerLink="/login"> Iniciar sesión </app-button>
+      }
+
+      @if (isLoggedIn()) {
+        <a [routerLink]="getDashboardLink()" (click)="closeMenu()">
+          <img src="images/user1.png" alt="Dashboard" />
+        </a>
       }
 
       @if (isLoggedIn()) {
@@ -50,9 +53,9 @@
   <!-- OVERLAY MOBILE -->
   <div class="navbar__overlay">
     <!-- USER ICON -->
-    <img src="images/user.png" alt="User" class="overlay__user" />
-    <a [routerLink]="getDashboardLink()" class="dashboard-link" (click)="closeMenu()">
-      <img src="images/dashboard.png" alt="Dashboard" />
+
+    <a [routerLink]="getDashboardLink()" (click)="closeMenu()">
+      <img src="images/user.png" alt="Dashboard" class="overlay__user" />
     </a>
 
     <!-- MENU MOBILE -->

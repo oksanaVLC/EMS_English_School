@@ -48,6 +48,31 @@
 }
 
 /* ================= RIGHT ================= */
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* iconos */
+.navbar__right img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+/* hover suave */
+.navbar__right a,
+.navbar__right button {
+  transition: transform 0.15s ease-in-out;
+}
+
+/* efecto hover */
+.navbar__right a:hover,
+.navbar__right button:hover {
+  transform: scale(1.08);
+}
 
 /* ================= HAMBURGER ================= */
 .navbar__toggle {
@@ -272,10 +297,4 @@
     transform: scale(1.05);
     transition: 0.2s ease;
   }
-}
-
-.dashboard-link img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
 }
