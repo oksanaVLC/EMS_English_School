@@ -5,11 +5,12 @@ import { Footer } from './shared/components/footer/footer';
 import { Header } from './shared/components/header/header';
 import { Navbar } from './shared/components/navbar/navbar';
 
+import { Breadcrumbs } from './shared/components/breadcrumbs/breadcrumbs';
 import { Tags } from './shared/components/tags/tags';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Header, Footer, Tags],
+  imports: [RouterOutlet, Navbar, Header, Footer, Tags, Breadcrumbs],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

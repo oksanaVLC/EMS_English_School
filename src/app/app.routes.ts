@@ -11,32 +11,51 @@ export const routes: Routes = [
   // =========================
   //  PÚBLICAS
   // =========================
-  { path: '', component: Home },
-  { path: 'about', component: About },
+  {
+    path: '',
+    component: Home,
+    data: { breadcrumb: 'Inicio' },
+  },
+  {
+    path: 'about',
+    component: About,
+    data: { breadcrumb: 'Sobre nosotros' },
+  },
 
   {
     path: 'blog',
     loadComponent: () => import('./features/blog/blog-list/blog-list').then((m) => m.BlogList),
+    data: { breadcrumb: 'Blog' },
   },
   {
     path: 'blog/:slug',
     loadComponent: () =>
       import('./features/blog/blog-detail/blog-detail').then((m) => m.BlogDetail),
+    data: { breadcrumb: 'Artículo' },
   },
 
   // =========================
   //  AUTH
   // =========================
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
+  {
+    path: 'login',
+    component: Login,
+    data: { breadcrumb: false },
+  },
+  {
+    path: 'register',
+    component: Register,
+    data: { breadcrumb: false },
+  },
 
   // =========================
-  //  LEVEL TEST (GLOBAL FEATURE)
+  //  LEVEL TEST
   // =========================
   {
     path: 'level-test',
     component: LevelTest,
     canActivate: [roleGuard(['admin', 'teacher', 'user'])],
+    data: { breadcrumb: 'Test de nivel' },
   },
 
   // =========================
@@ -46,12 +65,14 @@ export const routes: Routes = [
     path: 'dashboard/admin',
     loadComponent: () => import('./features/dashboard/admin/admin').then((m) => m.Admin),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Admin' },
   },
   {
     path: 'dashboard/admin/users',
     loadComponent: () =>
       import('./features/dashboard/admin/users/users-list/users-list').then((m) => m.UsersList),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Usuarios' },
   },
   {
     path: 'dashboard/admin/blog/posts',
@@ -60,6 +81,7 @@ export const routes: Routes = [
         (m) => m.PostsList,
       ),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Posts' },
   },
   {
     path: 'dashboard/admin/blog/posts/create',
@@ -68,6 +90,7 @@ export const routes: Routes = [
         (m) => m.PostsForm,
       ),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Crear post' },
   },
   {
     path: 'dashboard/admin/blog/posts/edit/:id',
@@ -76,6 +99,7 @@ export const routes: Routes = [
         (m) => m.PostsForm,
       ),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Editar post' },
   },
   {
     path: 'dashboard/admin/blog/posts/view/:id',
@@ -84,15 +108,8 @@ export const routes: Routes = [
         (m) => m.PostsView,
       ),
     canActivate: [roleGuard(['admin'])],
+    data: { breadcrumb: 'Ver post' },
   },
-  /* {
-  path: 'dashboard/admin/lessons',
-  loadComponent: () =>
-    import('./features/dashboard/admin/lessons/lessons').then(
-      (m) => m.Lessons
-    ),
-  canActivate: [roleGuard(['admin'])],
-},*/
 
   // =========================
   //  DASHBOARD TEACHER
@@ -101,6 +118,7 @@ export const routes: Routes = [
     path: 'dashboard/teacher',
     loadComponent: () => import('./features/dashboard/teacher/teacher').then((m) => m.Teacher),
     canActivate: [roleGuard(['teacher'])],
+    data: { breadcrumb: 'Profesor' },
   },
 
   // =========================
@@ -110,16 +128,21 @@ export const routes: Routes = [
     path: 'dashboard/user',
     loadComponent: () => import('./features/dashboard/user/user').then((m) => m.User),
     canActivate: [roleGuard(['user'])],
+    data: { breadcrumb: 'Panel usuario' },
   },
   {
     path: 'dashboard/user/settings',
     loadComponent: () =>
       import('./features/dashboard/user/configuration/configuration').then((m) => m.Configuration),
     canActivate: [roleGuard(['user', 'admin', 'teacher'])],
+    data: { breadcrumb: 'Configuración' },
   },
 
   // =========================
   //  FALLBACK
   // =========================
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

@@ -1,1 +1,21 @@
-<p>breadcrumbs works!</p>
+@if (show()) {
+  <nav class="breadcrumbs">
+    @for (bc of breadcrumbs(); track bc.url; let last = $last) {
+      <span class="crumb">
+        @if (!last) {
+          <a [routerLink]="bc.url" class="crumb-link">
+            {{ bc.label }}
+          </a>
+        } @else {
+          <span class="crumb-current">
+            {{ bc.label }}
+          </span>
+        }
+
+        @if (!last) {
+          <span class="separator">›</span>
+        }
+      </span>
+    }
+  </nav>
+}
