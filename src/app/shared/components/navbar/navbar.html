@@ -73,7 +73,9 @@
       }
 
       @if (isLoggedIn()) {
-        <li><a (click)="logout(); closeMenu()">Cerrar sesión</a></li>
+        <li>
+          <button class="menu-link" (click)="logout(); closeMenu()">Cerrar sesión</button>
+        </li>
       }
     </ul>
 

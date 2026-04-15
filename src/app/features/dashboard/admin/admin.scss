@@ -1,32 +1,14 @@
 .admin-dashboard {
   position: relative;
-  padding: 2rem;
+  padding: 1rem;
   overflow: hidden;
   max-width: 1200px;
   margin: 0 auto;
-  .title {
-    text-align: center;
-  }
-}
-.admin-dashboard ul li a {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  padding: 0.6rem 0.5rem;
-  border-radius: 8px;
-  transition: 0.2s ease;
-  cursor: pointer;
 }
 
-.admin-dashboard ul li a:hover {
-  background: rgba(1, 209, 164, 0.12);
-  color: var(--color-accent);
-  transform: translateX(4px);
-}
-
-/* opcional: mejorar separación */
-.admin-dashboard ul li {
-  list-style: none;
+/* ===== HEADER / TITLE ===== */
+.admin-dashboard .title {
+  text-align: center;
 }
 
 /* TITULO */
@@ -53,7 +35,35 @@
   }
 }
 
-/* GRID */
+/* ===== LINKS ===== */
+.admin-dashboard ul li a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+
+  padding: 0.6rem 0.5rem;
+  border-radius: 8px;
+  transition: 0.2s ease;
+  cursor: pointer;
+  gap: 20px;
+}
+
+.admin-dashboard ul li a img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.admin-dashboard ul li a:hover {
+  background: rgba(1, 209, 164, 0.12);
+  color: var(--color-accent);
+  transform: translateX(4px);
+}
+
+/* ===== GRID ===== */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -61,10 +71,11 @@
   position: relative;
   z-index: 2;
 
-  max-width: 600px; /*  importante para que no se estire raro */
-  margin: 0 auto; /*  centra el bloque */
+  max-width: 600px;
+  margin: 0 auto;
 }
-/* CARD */
+
+/* ===== CARD ===== */
 .card {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
@@ -92,7 +103,7 @@
   }
 }
 
-/* RESPONSIVE */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -101,17 +112,10 @@
   .title {
     text-align: left;
   }
-}
 
-.admin-dashboard ul li a {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* espacio icono-texto */
-}
-
-.admin-dashboard ul li a img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  flex-shrink: 0;
+  .admin-dashboard ul li a {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.2rem;
+    gap: 15px;
+  }
 }

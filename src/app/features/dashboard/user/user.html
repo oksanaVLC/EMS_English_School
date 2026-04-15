@@ -1,1 +1,59 @@
-<p>user works!</p>
+<div class="user-dashboard">
+  <!-- HEADER -->
+  <div class="title">
+    <h1>
+      ¡Bienvenid@,
+      <span class="accent">{{ userName() }}</span
+      >!
+    </h1>
+    <h2>Tu espacio personal</h2>
+  </div>
+
+  <!-- PROFILE CARD -->
+  <div class="profile-card">
+    <!-- FOTO -->
+    <div class="avatar">
+      <img [src]="user()?.avatar_url || 'images/user.png'" alt="avatar" />
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="card">
+      <ul>
+        <li>
+          <a routerLink="/dashboard/user/settings">
+            <img src="images/settings.png" />
+            <span>Configuración del perfil</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/tests">
+            <img src="images/test-done-black.png" />
+            <span>Tests realizados</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/favorites-lessons">
+            <img src="images/book.png" />
+            <span>Mis lecciones favoritas</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/favorites-posts">
+            <img src="images/blog.png" />
+            <span>Mis artículos favoritos</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/user/notes">
+            <img src="images/edit.png" />
+            <span>Mis apuntes</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

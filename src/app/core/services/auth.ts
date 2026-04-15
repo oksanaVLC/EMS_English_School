@@ -29,7 +29,6 @@ export class Auth {
   logout(): Observable<any> {
     return this.http.post(`${this.apiURL}/logout`, {}, { withCredentials: true }).pipe(
       tap(() => {
-        localStorage.removeItem('token');
         this.user.set(null);
       }),
     );
@@ -49,6 +48,9 @@ export class Auth {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.user();
+  }
+  setUser(user: any) {
+    this.user.set(user);
   }
 }

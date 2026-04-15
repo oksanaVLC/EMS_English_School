@@ -298,3 +298,11 @@
     transition: 0.2s ease;
   }
 }
+
+.menu-link {
+  all: unset;
+  cursor: pointer;
+  font-size: 2rem;
+  color: white;
+  display: block;
+}

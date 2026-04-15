@@ -1,0 +1,45 @@
+<div class="profile-config">
+  <!-- HEADER -->
+  <div class="title">
+    <h1>
+      Configuración de perfil de
+      <span class="accent">{{ user()?.name }}</span>
+    </h1>
+    <h2>Edita tu información personal</h2>
+  </div>
+
+  <!-- CARD -->
+  <div class="card">
+    <!-- AVATAR -->
+    <div class="avatar">
+      <img [src]="previewUrl || user()?.avatar || 'images/user.png'" alt="avatar" />
+
+      <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+
+      <button type="button" class="change-avatar" (click)="fileInput.click()">Cambiar foto</button>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <label>
+        Nombre
+        <input formControlName="name" type="text" />
+      </label>
+
+      <label>
+        Apellido
+        <input formControlName="surname" type="text" />
+      </label>
+
+      <label>
+        Email
+        <input formControlName="email" type="email" />
+      </label>
+
+      <button type="submit" class="save-btn">Guardar cambios</button>
+    </form>
+
+    <!-- BACK -->
+    <button type="button" (click)="back()" class="back-link">← Volver al panel</button>
+  </div>
+</div>
