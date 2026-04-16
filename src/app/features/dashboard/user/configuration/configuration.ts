@@ -79,7 +79,7 @@ export class Configuration {
           this.previewUrl = null;
 
           // 🔥 redirección
-          this.router.navigate(['/dashboard/user']);
+          this.router.navigate(['/user']);
         },
         error: (err) => {
           console.error('Error actualizando perfil', err);
@@ -91,6 +91,6 @@ export class Configuration {
   // BACK
   // =====================
   back() {
-    this.router.navigate(['/dashboard/user']);
+    this.router.navigate(['/user']);
   }
 }

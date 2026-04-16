@@ -10,21 +10,23 @@ export const roleGuard = (roles: string[]): CanActivateFn => {
 
     const cachedUser = auth.user();
 
-    //  si ya tengo usuario en signal → sin HTTP
+    // ✅ 1. Si ya hay user en memoria → NO HTTP
     if (cachedUser) {
       if (!roles.includes(cachedUser.role)) {
-        return of(router.createUrlTree(['/dashboard/user']));
+        return of(router.createUrlTree(['/user']));
       }
       return of(true);
     }
 
-    //  si no hay user → pedirlo al backend
-    return auth.getUser().pipe(
-      map((user) => {
+    // ✅ 2. Si NO hay user → llamar backend
+    return auth.loadUser().pipe(
+      map((user: any) => {
         if (!user) return router.createUrlTree(['/login']);
+
         if (!roles.includes(user.role)) {
-          return router.createUrlTree(['/dashboard/user']);
+          return router.createUrlTree(['/user']);
         }
+
         return true;
       }),
       catchError(() => of(router.createUrlTree(['/login']))),

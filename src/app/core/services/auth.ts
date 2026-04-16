@@ -1,55 +1,61 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
+import { switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class Auth {
-  private apiURL = environment.apiUrl + '/api';
+  private apiUrl = environment.apiUrl; // ✅ Sin /api
 
-  //  estado global
   user = signal<any | null>(null);
+  isLoggedIn = computed(() => !!this.user());
 
   constructor(private http: HttpClient) {}
 
-  login(data: any): Observable<any> {
-    return this.http.post(`${this.apiURL}/login`, data, {
-      withCredentials: true,
-    });
-  }
+  login(data: any) {
+    console.log('Login intentado con:', data.email);
 
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.apiURL}/register`, data, {
-      withCredentials: true,
-    });
-  }
-
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiURL}/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => {
-        this.user.set(null);
-      }),
-    );
-  }
-
-  getUser(): Observable<any> {
     return this.http
-      .get(`${this.apiURL}/user`, {
+      .get(`${this.apiUrl}/sanctum/csrf-cookie`, {
         withCredentials: true,
       })
-      .pipe(tap((user) => this.user.set(user)));
+      .pipe(
+        switchMap(() =>
+          this.http.post(`${this.apiUrl}/api/login`, data, {
+            withCredentials: true,
+          }),
+        ),
+        switchMap((response: any) => {
+          console.log('Login response:', response);
+          return this.http.get(`${this.apiUrl}/api/user`, {
+            withCredentials: true,
+          });
+        }),
+        tap((user: any) => {
+          console.log('Usuario obtenido:', user);
+          this.user.set(user);
+        }),
+      );
   }
 
-  //  versión usada por guards
-  loadUser(): Observable<any> {
-    return this.getUser();
+  loadUser() {
+    return this.http
+      .get(`${this.apiUrl}/api/user`, { withCredentials: true })
+      .pipe(tap((user: any) => this.user.set(user)));
   }
 
-  isLoggedIn(): boolean {
-    return !!this.user();
+  logout() {
+    return this.http
+      .post(`${this.apiUrl}/api/logout`, {}, { withCredentials: true })
+      .pipe(tap(() => this.user.set(null)));
   }
+
+  register(data: any) {
+    return this.http.post(`${this.apiUrl}/api/register`, data, {
+      withCredentials: true,
+    });
+  }
+
   setUser(user: any) {
     this.user.set(user);
   }

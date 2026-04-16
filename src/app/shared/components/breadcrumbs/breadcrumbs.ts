@@ -58,6 +58,7 @@ export class Breadcrumbs {
   private getLabel(segment: string): string | null {
     const map: Record<string, string> = {
       admin: 'Admin',
+      user: 'User',
       users: 'Usuarios',
       posts: 'Posts',
       create: 'Crear post',
@@ -69,9 +70,12 @@ export class Breadcrumbs {
       login: 'Login',
       register: 'Registro',
       'level-test': 'Test de nivel',
+      teacher: 'Teacher',
+      dashboard: 'Dashboard',
+      configuration: 'Configuración',
     };
 
-    return map[segment] ?? segment; // 👈 IMPORTANTE cambio aquí
+    return map[segment] ?? segment;
   }
 
   private hiddenSegments = new Set(['edit', 'view']);

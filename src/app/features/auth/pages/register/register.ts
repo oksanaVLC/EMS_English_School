@@ -67,7 +67,7 @@ export class Register {
 
                 const role = res.user.role;
 
-                this.router.navigate([`/dashboard/${role}`]);
+                this.router.navigate([`/${role}`]);
               },
               error: () => {
                 this.router.navigate(['/login']);
