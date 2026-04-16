@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../../core/services/auth';
@@ -17,17 +17,24 @@ export class Login {
   private router = inject(Router);
   private auth = inject(Auth);
 
+  @ViewChild('counterElement') counterElement!: ElementRef;
+
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
   showPassword = false;
 
   animatedCount = 0;
   targetCount = 120;
+  hasAnimated = false; // Para que solo se ejecute una vez
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+
+  ngAfterViewInit() {
+    this.observeCounter();
+  }
 
   login() {
     if (this.form.invalid) return;
@@ -47,8 +54,48 @@ export class Login {
       },
     });
   }
+
   togglePassword(event: MouseEvent) {
     event.preventDefault();
     this.showPassword = !this.showPassword;
+  }
+
+  observeCounter() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Si el elemento entra en viewport y aún no se ha animado
+          if (entry.isIntersecting && !this.hasAnimated) {
+            this.hasAnimated = true;
+            this.animateCount();
+            observer.disconnect(); // Dejar de observar después de animar
+          }
+        });
+      },
+      {
+        threshold: 0.3, // 30% visible para empezar
+        rootMargin: '0px',
+      },
+    );
+
+    observer.observe(this.counterElement.nativeElement);
+  }
+
+  animateCount() {
+    const duration = 1000; // 1 segundo
+    const steps = 60;
+    const increment = this.targetCount / steps;
+
+    let current = 0;
+    const interval = setInterval(() => {
+      current += increment;
+
+      if (current >= this.targetCount) {
+        this.animatedCount = this.targetCount;
+        clearInterval(interval);
+      } else {
+        this.animatedCount = Math.floor(current);
+      }
+    }, duration / steps);
   }
 }

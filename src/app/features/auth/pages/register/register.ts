@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../../core/services/auth';
@@ -17,11 +17,17 @@ export class Register {
   private auth = inject(Auth);
   private router = inject(Router);
 
+  @ViewChild('counterElement') counterElement!: ElementRef;
+
   showPassword = false;
   showConfirmPassword = false;
 
   successMessage = signal<string | null>(null);
   errorMessage = signal<string | null>(null);
+
+  animatedCount = 0;
+  targetCount = 120;
+  hasAnimated = false; // Para que solo se ejecute una vez
 
   form = this.fb.group({
     name: ['', Validators.required],
@@ -30,6 +36,10 @@ export class Register {
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required],
   });
+
+  ngAfterViewInit() {
+    this.observeCounter();
+  }
 
   register() {
     if (this.form.invalid) return;
@@ -53,7 +63,7 @@ export class Register {
       })
       .subscribe({
         next: () => {
-          //  LOGIN AUTOMÁTICO
+          // LOGIN AUTOMÁTICO
           this.auth
             .login({
               email,
@@ -80,11 +90,27 @@ export class Register {
       });
   }
 
-  animatedCount = 0;
-  targetCount = 120;
+  observeCounter() {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Si el elemento entra en viewport y aún no se ha animado
+          if (entry.isIntersecting && !this.hasAnimated) {
+            this.hasAnimated = true;
+            this.animateCount();
+            observer.disconnect(); // Dejar de observar después de animar
+          }
+        });
+      },
+      {
+        threshold: 0.3, // 30% visible para empezar
+        rootMargin: '0px',
+      },
+    );
 
-  ngOnInit() {
-    this.animateCount();
+    if (this.counterElement) {
+      observer.observe(this.counterElement.nativeElement);
+    }
   }
 
   animateCount() {
@@ -103,5 +129,15 @@ export class Register {
         this.animatedCount = Math.floor(current);
       }
     }, duration / steps);
+  }
+
+  togglePassword(event: MouseEvent) {
+    event.preventDefault();
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword(event: MouseEvent) {
+    event.preventDefault();
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }

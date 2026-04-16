@@ -10,6 +10,7 @@ import { Component, Input } from '@angular/core';
 })
 export class Button {
   @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
-
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
+  @Input() size: 'small' | 'medium' | 'large' = 'medium';
+  @Input() fullWidth: boolean = false;
 }

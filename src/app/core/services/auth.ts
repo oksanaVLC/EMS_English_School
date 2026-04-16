@@ -25,15 +25,12 @@ export class Auth {
             withCredentials: true,
           }),
         ),
-        switchMap((response: any) => {
+        tap((response: any) => {
           console.log('Login response:', response);
-          return this.http.get(`${this.apiUrl}/api/user`, {
-            withCredentials: true,
-          });
-        }),
-        tap((user: any) => {
-          console.log('Usuario obtenido:', user);
-          this.user.set(user);
+          // ✅ El usuario viene en response.user, no necesitas otra petición
+          if (response && response.user) {
+            this.user.set(response.user);
+          }
         }),
       );
   }

@@ -86,7 +86,9 @@
 
         <!-- Submit -->
         <div class="button-wrapper">
-          <app-button variant="primary" type="submit" class="w-full"> Iniciar sesión </app-button>
+          <app-button variant="primary" type="submit" size="large" [fullWidth]="true">
+            Iniciar sesión
+          </app-button>
         </div>
 
         <!-- Divider -->
@@ -110,7 +112,7 @@
         <div class="feature-card">Videos educativos</div>
         <div class="feature-card">Recursos para profes</div>
 
-        <div class="students-card">
+        <div class="students-card" #counterElement>
           <div class="number">{{ animatedCount }}</div>
           <small>alumnos registrados</small>
         </div>
