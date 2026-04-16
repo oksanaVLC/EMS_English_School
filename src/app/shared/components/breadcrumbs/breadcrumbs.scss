@@ -3,10 +3,17 @@
   align-items: center;
   gap: 0.4rem;
 
-  padding: 0.5rem 0;
-  padding-left: 1rem;
+  padding: 0.5rem 1rem;
 
   color: #6b7280;
+
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+.breadcrumbs::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .breadcrumbs a {

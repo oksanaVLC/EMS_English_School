@@ -1,0 +1,102 @@
+.blog {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h1 {
+    color: var(--color-accent);
+  }
+
+  p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* GRID tipo blog moderno */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* CARD */
+.card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* IMAGE */
+.image-wrapper img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* CONTENT */
+.content {
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* META */
+.meta {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.dot {
+  font-weight: bold;
+}
+
+/* EXCERPT con ellipsis real */
+.excerpt {
+  font-size: 1rem;
+  color: #444;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* CTA */
+.read-more {
+  display: inline-block;
+  margin-top: 0.8rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}

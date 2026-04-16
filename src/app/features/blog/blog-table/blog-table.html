@@ -1,0 +1,32 @@
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Cover</th>
+        <th>Título</th>
+
+        <th>Fecha</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (post of posts; track post.id) {
+        <tr>
+          <td>
+            <a [routerLink]="['/blog', post.slug]">
+              <img class="cover" [src]="post.cover" />
+            </a>
+          </td>
+
+          <td class="title">
+            {{ post.title }}
+          </td>
+
+          <td>
+            {{ post.created_at | date: 'dd MMM yyyy' }}
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

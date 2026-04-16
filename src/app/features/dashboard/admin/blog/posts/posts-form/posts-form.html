@@ -27,6 +27,17 @@
       <img [src]="preview" class="image-preview" />
     </div>
 
+    <!-- SHORT DESCRIPTION -->
+    <div class="form-group">
+      <label>Descripción corta</label>
+      <textarea
+        rows="3"
+        maxlength="300"
+        formControlName="short_description"
+        placeholder="Resumen breve del artículo..."
+      ></textarea>
+    </div>
+
     <!-- CONTENT -->
     <div class="form-group">
       <label>Contenido</label>

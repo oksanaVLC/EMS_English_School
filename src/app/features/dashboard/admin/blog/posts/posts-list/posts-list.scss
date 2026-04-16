@@ -199,3 +199,62 @@ td {
   color: white;
   border: none;
 }
+
+/*******Modal confirmación**********/
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal h2 {
+  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+}
+
+.modal p {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.cancel {
+  background: #e5e7eb;
+  color: #111;
+}
+
+.btn.danger {
+  background: #e53935;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #c62828;
+}

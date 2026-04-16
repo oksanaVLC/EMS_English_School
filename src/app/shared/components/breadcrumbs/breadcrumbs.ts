@@ -1,11 +1,10 @@
-import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 
-export interface Breadcrumb {
-  label: string;
+interface Breadcrumb {
   url: string;
+  label: string;
 }
 
 @Component({
@@ -18,52 +17,62 @@ export interface Breadcrumb {
 export class Breadcrumbs {
   private router = inject(Router);
 
-  private navEnd$ = toSignal(
-    this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd)),
-    { initialValue: null },
-  );
+  breadcrumbs: WritableSignal<Breadcrumb[]> = signal([]);
+  show = signal(false);
 
-  // 👇 ocultar en home, login y register
-  show = computed(() => {
-    const event = this.navEnd$();
-    if (!event) return false;
+  constructor() {
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(() => this.buildBreadcrumbs());
+  }
 
-    const url = event.urlAfterRedirects.split('?')[0];
+  private buildBreadcrumbs(): void {
+    const segments = this.router.url.split('/').filter(Boolean);
 
-    const hiddenRoutes = ['/login', '/register'];
+    const breadcrumbs: Breadcrumb[] = [];
 
-    return url !== '/' && !hiddenRoutes.includes(url);
-  });
+    let url = '';
 
-  // 👇 breadcrumbs mejorados
-  breadcrumbs = computed<Breadcrumb[]>(() => {
-    const event = this.navEnd$();
-    if (!event) return [];
+    for (const segment of segments) {
+      url += `/${segment}`;
 
-    const root: Breadcrumb = {
-      label: 'Inicio',
-      url: '/',
-    };
+      const label = this.getLabel(segment);
 
-    const segments = event.urlAfterRedirects.split('?')[0].split('/').filter(Boolean);
+      if (!label) continue;
 
-    let path = '';
+      // 👇 ocultamos segmentos técnicos PERO seguimos avanzando URL
+      if (this.hiddenSegments.has(segment)) continue;
 
-    const crumbs: Breadcrumb[] = [root];
-
-    for (const seg of segments) {
-      path += `/${seg}`;
-
-      crumbs.push({
-        label: this.formatLabel(seg),
-        url: path,
-      });
+      breadcrumbs.push({ url, label });
     }
 
-    return crumbs;
-  });
+    // 👇 SOLO añadir Inicio si NO estamos en home
+    if (breadcrumbs.length > 0) {
+      breadcrumbs.unshift({ url: '/', label: 'Inicio' });
+    }
 
-  private formatLabel(seg: string): string {
-    return seg.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+    this.breadcrumbs.set(breadcrumbs);
+    this.show.set(breadcrumbs.length > 1);
   }
+
+  private getLabel(segment: string): string | null {
+    const map: Record<string, string> = {
+      admin: 'Admin',
+      users: 'Usuarios',
+      posts: 'Posts',
+      create: 'Crear post',
+      edit: 'Editar',
+      view: 'Ver',
+
+      about: 'Sobre nosotros',
+      blog: 'Blog',
+      login: 'Login',
+      register: 'Registro',
+      'level-test': 'Test de nivel',
+    };
+
+    return map[segment] ?? segment; // 👈 IMPORTANTE cambio aquí
+  }
+
+  private hiddenSegments = new Set(['edit', 'view']);
 }

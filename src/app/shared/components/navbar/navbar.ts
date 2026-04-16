@@ -47,9 +47,9 @@ export class Navbar implements OnInit {
 
     const role = user?.role;
 
-    if (role === 'admin') return '/dashboard/admin';
-    if (role === 'teacher') return '/dashboard/teacher';
-    if (role === 'user') return '/dashboard/user';
+    if (role === 'admin') return '/admin';
+    if (role === 'teacher') return '/teacher';
+    if (role === 'user') return '/user';
 
     return '/';
   }

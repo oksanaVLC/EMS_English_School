@@ -14,7 +14,6 @@ export const routes: Routes = [
   {
     path: '',
     component: Home,
-    data: { breadcrumb: 'Inicio' },
   },
   {
     path: 'about',
@@ -24,14 +23,13 @@ export const routes: Routes = [
 
   {
     path: 'blog',
-    loadComponent: () => import('./features/blog/blog-list/blog-list').then((m) => m.BlogList),
+    loadComponent: () => import('./features/blog/blog/blog').then((m) => m.Blog),
     data: { breadcrumb: 'Blog' },
   },
   {
     path: 'blog/:slug',
     loadComponent: () =>
       import('./features/blog/blog-detail/blog-detail').then((m) => m.BlogDetail),
-    data: { breadcrumb: 'Artículo' },
   },
 
   // =========================
@@ -59,79 +57,79 @@ export const routes: Routes = [
   },
 
   // =========================
-  //  DASHBOARD ADMIN
+  //  ADMIN
   // =========================
+
   {
-    path: 'dashboard/admin',
+    path: 'admin',
     loadComponent: () => import('./features/dashboard/admin/admin').then((m) => m.Admin),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Admin' },
   },
+
   {
-    path: 'dashboard/admin/users',
+    path: 'admin/users',
     loadComponent: () =>
       import('./features/dashboard/admin/users/users-list/users-list').then((m) => m.UsersList),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Usuarios' },
   },
+
   {
-    path: 'dashboard/admin/blog/posts',
+    path: 'admin/posts',
     loadComponent: () =>
       import('./features/dashboard/admin/blog/posts/posts-list/posts-list').then(
         (m) => m.PostsList,
       ),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Posts' },
   },
+
   {
-    path: 'dashboard/admin/blog/posts/create',
+    path: 'admin/posts/create',
     loadComponent: () =>
       import('./features/dashboard/admin/blog/posts/posts-form/posts-form').then(
         (m) => m.PostsForm,
       ),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Crear post' },
   },
+
   {
-    path: 'dashboard/admin/blog/posts/edit/:id',
+    path: 'admin/posts/edit/:id',
     loadComponent: () =>
       import('./features/dashboard/admin/blog/posts/posts-form/posts-form').then(
         (m) => m.PostsForm,
       ),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Editar post' },
   },
+
   {
-    path: 'dashboard/admin/blog/posts/view/:id',
+    path: 'admin/posts/view/:id',
     loadComponent: () =>
       import('./features/dashboard/admin/blog/posts/posts-view/posts-view').then(
         (m) => m.PostsView,
       ),
-    canActivate: [roleGuard(['admin'])],
     data: { breadcrumb: 'Ver post' },
   },
 
   // =========================
-  //  DASHBOARD TEACHER
+  //  TEACHER
   // =========================
   {
-    path: 'dashboard/teacher',
+    path: 'teacher',
     loadComponent: () => import('./features/dashboard/teacher/teacher').then((m) => m.Teacher),
     canActivate: [roleGuard(['teacher'])],
     data: { breadcrumb: 'Profesor' },
   },
 
   // =========================
-  //  DASHBOARD USER
+  //  USER
   // =========================
   {
-    path: 'dashboard/user',
+    path: 'user',
     loadComponent: () => import('./features/dashboard/user/user').then((m) => m.User),
     canActivate: [roleGuard(['user'])],
     data: { breadcrumb: 'Panel usuario' },
   },
   {
-    path: 'dashboard/user/settings',
+    path: 'user/settings',
     loadComponent: () =>
       import('./features/dashboard/user/configuration/configuration').then((m) => m.Configuration),
     canActivate: [roleGuard(['user', 'admin', 'teacher'])],

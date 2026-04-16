@@ -29,6 +29,7 @@ export class PostsForm {
   form = this.fb.group({
     title: ['', Validators.required],
     cover: [''],
+    short_description: [''],
     content: ['', Validators.required],
   });
 
@@ -71,10 +72,12 @@ export class PostsForm {
     const formData = new FormData();
     const title = this.form.value.title ?? '';
     const content = this.form.value.content ?? '';
+    const shortDescription = this.form.value.short_description ?? '';
 
     formData.append('title', title);
     formData.append('content', content);
     formData.append('status', status);
+    formData.append('short_description', shortDescription);
 
     if (this.file) {
       formData.append('cover', this.file);

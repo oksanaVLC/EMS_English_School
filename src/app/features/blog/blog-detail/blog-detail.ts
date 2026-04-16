@@ -4,6 +4,20 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 
+interface Post {
+  id: number;
+  title: string;
+  slug: string;
+  content: string;
+  cover?: string;
+  created_at: string;
+
+  user?: {
+    name: string;
+    surname: string;
+  };
+}
+
 @Component({
   selector: 'app-blog-detail',
   standalone: true,
@@ -12,23 +26,25 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./blog-detail.scss'],
 })
 export class BlogDetail implements OnInit {
-  private http = inject(HttpClient);
   private route = inject(ActivatedRoute);
+  private http = inject(HttpClient);
 
   private apiUrl = environment.apiUrl;
 
-  post: any = null;
+  post: Post | null = null;
 
   ngOnInit() {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    this.loadPost(slug);
+    this.route.paramMap.subscribe((params) => {
+      const slug = params.get('slug');
+      if (!slug) return;
+
+      this.loadPost(slug);
+    });
   }
 
-  loadPost(slug: string | null) {
-    if (!slug) return;
-
-    this.http.get<any>(`${this.apiUrl}/api/posts/slug/${slug}`).subscribe((res) => {
-      this.post = res;
+  private loadPost(slug: string) {
+    this.http.get<Post>(`${this.apiUrl}/api/posts/slug/${slug}`).subscribe((res) => {
+      this.post = res ?? null;
     });
   }
 }

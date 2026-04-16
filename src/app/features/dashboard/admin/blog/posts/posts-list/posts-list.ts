@@ -27,6 +27,9 @@ export class PostsList implements OnInit {
 
   filterStatus: PostStatus = '';
 
+  showDeleteModal = false;
+  deleteId: number | null = null;
+
   ngOnInit() {
     this.loadPosts();
   }
@@ -66,10 +69,43 @@ export class PostsList implements OnInit {
     this.router.navigate(['/admin/blog/posts/edit', id]);
   }
 
-  delete(id: number) {
-    // SOLO CAMBIO IMPORTANTE AQUÍ
-    this.http.delete(`${this.apiUrl}/api/posts/${id}`).subscribe(() => {
+  /*
+  Para
+    <button (click)="delete(post.id)" class="icon-btn danger">
+                  <img src="/images/delete.png" alt="borrar" />
+                  <span class="text">Borrar</span>
+    </button>
+                
+    delete(id: number) {
+    if (!confirm('¿Eliminar este artículo?')) return;
+
+    this.http.delete(`${this.apiUrl}/api/posts/${id}`).subscribe({
+      next: () => {
+        this.loadPosts(this.currentPage, this.filterStatus);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error al borrar el post');
+      },
+    });
+  }*/
+
+  openDeleteModal(id: number) {
+    this.deleteId = id;
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.deleteId = null;
+  }
+
+  confirmDelete() {
+    if (!this.deleteId) return;
+
+    this.http.delete(`${this.apiUrl}/api/posts/${this.deleteId}`).subscribe(() => {
       this.loadPosts(this.currentPage, this.filterStatus);
+      this.closeDeleteModal();
     });
   }
 

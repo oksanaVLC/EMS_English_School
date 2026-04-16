@@ -1,0 +1,30 @@
+<div class="blog-layout">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Blog</h1>
+    <p>Explora artículos en modo Grid o Tabla</p>
+
+    <!-- TOGGLE -->
+    <div class="toggle">
+      <button (click)="setView('grid')" [class.active]="viewMode === 'grid'">Grid</button>
+
+      <button (click)="setView('table')" [class.active]="viewMode === 'table'">Table</button>
+    </div>
+  </div>
+
+  <!-- VISTAS -->
+  @if (viewMode === 'grid') {
+    <app-blog-grid [posts]="posts"></app-blog-grid>
+  }
+
+  @if (viewMode === 'table') {
+    <app-blog-table [posts]="posts"></app-blog-table>
+  }
+
+  <!-- PAGINATION -->
+  <app-pagination
+    [currentPage]="currentPage"
+    [lastPage]="lastPage"
+    (pageChange)="onPageChange($event)"
+  />
+</div>

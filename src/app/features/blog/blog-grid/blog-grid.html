@@ -1,0 +1,30 @@
+<div class="grid">
+  @for (post of posts; track post.id) {
+    <article class="card">
+      <a [routerLink]="['/blog', post.slug]" class="image-wrapper">
+        <img [src]="post.cover" alt="cover" />
+      </a>
+
+      <div class="content">
+        <h2 class="title">
+          {{ post.title }}
+        </h2>
+
+        <div class="meta">
+          <span class="author">{{ post.user?.name }}</span>
+          <span class="dot">•</span>
+          <span class="date">
+            {{ post.created_at | date: 'dd MMM yyyy' }}
+          </span>
+        </div>
+
+        <p class="excerpt">
+          {{ getExcerpt(post) | slice: 0 : 140 }}
+          {{ getExcerpt(post).length > 140 ? '...' : '' }}
+        </p>
+
+        <a [routerLink]="['/blog', post.slug]" class="read-more"> Leer más → </a>
+      </div>
+    </article>
+  }
+</div>
