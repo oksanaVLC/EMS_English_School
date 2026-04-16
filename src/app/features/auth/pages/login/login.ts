@@ -36,13 +36,34 @@ export class Login {
     this.observeCounter();
   }
 
-  login() {
+  /*login() {
     if (this.form.invalid) return;
 
     const { email, password } = this.form.value;
 
     this.auth.login({ email, password }).subscribe({
       next: (user: any) => {
+        const role = user.role;
+
+        if (role === 'admin') this.router.navigate(['/admin']);
+        else if (role === 'teacher') this.router.navigate(['/teacher']);
+        else this.router.navigate(['/user']);
+      },
+      error: () => {
+        this.errorMessage.set('Credenciales incorrectas');
+      },
+    });
+  }*/
+
+  login() {
+    if (this.form.invalid) return;
+
+    const { email, password } = this.form.value;
+
+    this.auth.login({ email, password }).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta login:', response);
+        const user = response.user; //  Extraer el usuario de la respuesta
         const role = user.role;
 
         if (role === 'admin') this.router.navigate(['/admin']);

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
-import { switchMap, tap } from 'rxjs';
+import { catchError, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -36,9 +36,20 @@ export class Auth {
   }
 
   loadUser() {
-    return this.http
-      .get(`${this.apiUrl}/api/user`, { withCredentials: true })
-      .pipe(tap((user: any) => this.user.set(user)));
+    return this.http.get(`${this.apiUrl}/api/user`, { withCredentials: true }).pipe(
+      tap((user: any) => {
+        if (user) {
+          this.user.set(user);
+        }
+      }),
+      catchError((error) => {
+        // ✅ Si hay error 401, simplemente ignorar (usuario no logueado)
+        if (error.status === 401) {
+          this.user.set(null);
+        }
+        return of(null);
+      }),
+    );
   }
 
   logout() {
