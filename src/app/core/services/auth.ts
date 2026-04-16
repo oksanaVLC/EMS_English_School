@@ -45,9 +45,31 @@ export class Auth {
   }
 
   logout() {
+    console.log('Enviando petición de logout...');
+
     return this.http
-      .post(`${this.apiUrl}/api/logout`, {}, { withCredentials: true })
-      .pipe(tap(() => this.user.set(null)));
+      .post(
+        `${this.apiUrl}/api/logout`,
+        {},
+        {
+          withCredentials: true,
+          observe: 'response',
+        },
+      )
+      .pipe(
+        tap({
+          next: (response) => {
+            console.log('Logout response status:', response.status);
+            // Siempre limpiamos el usuario localmente
+            this.user.set(null);
+          },
+          error: (error) => {
+            console.error('Error en logout:', error);
+            // Aún así limpiamos el usuario localmente
+            this.user.set(null);
+          },
+        }),
+      );
   }
 
   register(data: any) {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core'; // ✅ Añade 'computed'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 import { Button } from '../button/button';
@@ -17,7 +17,9 @@ export class Navbar {
 
   isOpen = signal(false);
 
-  isLoggedIn = this.auth.user;
+  // ✅ CORRECTO: Solo esta versión, elimina la otra
+  isLoggedIn = computed(() => !!this.auth.user());
+
   ngOnInit() {
     this.auth.loadUser().subscribe({
       error: () => this.auth.user.set(null),
@@ -25,8 +27,15 @@ export class Navbar {
   }
 
   logout() {
-    this.auth.logout().subscribe(() => {
-      this.router.navigate(['/login']);
+    this.auth.logout().subscribe({
+      next: () => {
+        // ✅ Redirigir al login
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        // ✅ Aunque haya error, redirigir al login
+        this.router.navigate(['/login']);
+      },
     });
   }
 
@@ -39,7 +48,7 @@ export class Navbar {
   }
 
   getDashboardLink(): string {
-    const user = this.auth.user(); // ✅ SIEMPRE ()
+    const user = this.auth.user();
 
     switch (user?.role) {
       case 'admin':
