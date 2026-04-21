@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { environment } from '../../../../../../../environments/environment';
+import { AdminPostService } from '../../../../../../core/services/admin-post.service';
 
 @Component({
   selector: 'app-posts-form',
@@ -12,44 +11,55 @@ import { environment } from '../../../../../../../environments/environment';
   templateUrl: './posts-form.html',
   styleUrls: ['./posts-form.scss'],
 })
-export class PostsForm {
+export class PostsForm implements OnInit {
   private fb = inject(FormBuilder);
-  private http = inject(HttpClient);
+  private postService = inject(AdminPostService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private apiUrl = environment.apiUrl;
-
   isEdit = false;
-  postId: string | null = null;
+  postId: number | null = null;
+  loading = false;
 
   file: File | null = null;
   preview: string | ArrayBuffer | null = null;
 
   form = this.fb.group({
     title: ['', Validators.required],
-    cover: [''],
     short_description: [''],
     content: ['', Validators.required],
   });
 
-  constructor() {
-    this.postId = this.route.snapshot.paramMap.get('id');
-    this.isEdit = !!this.postId;
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.isEdit = !!id;
+    this.postId = id ? parseInt(id, 10) : null;
 
-    if (this.isEdit) {
+    if (this.isEdit && this.postId) {
       this.loadPost();
     }
   }
 
-  // ✅ FIXED
   loadPost() {
-    this.http.get<any>(`${this.apiUrl}/api/posts/${this.postId}`).subscribe((post) => {
-      this.form.patchValue(post);
+    this.loading = true;
 
-      if (post.cover) {
-        this.preview = post.cover;
-      }
+    this.postService.getPost(this.postId!).subscribe({
+      next: (post) => {
+        this.form.setValue({
+          title: post.title || '',
+          short_description: post.short_description || '',
+          content: post.content || '',
+        });
+
+        if (post.cover) {
+          this.preview = post.cover;
+        }
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar post:', err);
+        this.loading = false;
+      },
     });
   }
 
@@ -67,33 +77,92 @@ export class PostsForm {
   }
 
   save(status: 'draft' | 'published' = 'draft') {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      return;
+    }
 
-    const formData = new FormData();
     const title = this.form.value.title ?? '';
     const content = this.form.value.content ?? '';
     const shortDescription = this.form.value.short_description ?? '';
 
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('status', status);
-    formData.append('short_description', shortDescription);
+    if (this.isEdit && this.postId) {
+      if (this.file) {
+        const titleValue = this.form.get('title')?.value;
+        const contentValue = this.form.get('content')?.value;
+        const shortDescriptionValue = this.form.get('short_description')?.value;
 
-    if (this.file) {
-      formData.append('cover', this.file);
-    }
+        const formData = new FormData();
+        formData.append('title', titleValue || '');
+        formData.append('content', contentValue || '');
+        formData.append('status', status);
+        formData.append('short_description', shortDescriptionValue || '');
+        formData.append('cover', this.file);
+        formData.append('_method', 'PUT');
 
-    // ✅ FIXED
-    if (this.isEdit) {
-      formData.append('_method', 'PUT');
+        this.postService.updatePostWithImage(this.postId, formData).subscribe({
+          next: () => {
+            this.router.navigate(['/admin/posts']);
+          },
+          error: (err) => {
+            if (err.error && err.error.errors) {
+              const firstError = Object.values(err.error.errors)[0];
+              alert(firstError);
+            } else {
+              alert('Error al actualizar el post');
+            }
+          },
+        });
+      } else {
+        const jsonData = {
+          title: title,
+          content: content,
+          status: status,
+          short_description: shortDescription,
+        };
 
-      this.http
-        .post(`${this.apiUrl}/api/posts/${this.postId}`, formData)
-        .subscribe(() => this.router.navigate(['/admin/blog/posts']));
+        this.postService.updatePost(this.postId, jsonData).subscribe({
+          next: () => {
+            this.router.navigate(['/admin/posts']);
+          },
+          error: (err) => {
+            if (err.error && err.error.errors) {
+              let errorMsg = '';
+              for (const [campo, mensajes] of Object.entries(err.error.errors)) {
+                errorMsg += `${campo}: ${(mensajes as any[]).join(', ')}\n`;
+              }
+              alert(errorMsg);
+            } else if (err.error && err.error.message) {
+              alert(err.error.message);
+            } else {
+              alert('Error al actualizar el post');
+            }
+          },
+        });
+      }
     } else {
-      this.http
-        .post(`${this.apiUrl}/api/posts`, formData)
-        .subscribe(() => this.router.navigate(['/admin/blog/posts']));
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('content', content);
+      formData.append('status', status);
+      formData.append('short_description', shortDescription);
+
+      if (this.file) {
+        formData.append('cover', this.file);
+      }
+
+      this.postService.createPost(formData).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/posts']);
+        },
+        error: (err) => {
+          if (err.error && err.error.errors) {
+            const firstError = Object.values(err.error.errors)[0];
+            alert(firstError);
+          } else {
+            alert('Error al crear el post');
+          }
+        },
+      });
     }
   }
 }

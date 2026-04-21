@@ -1,7 +1,7 @@
 .profile-config {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem 2rem;
 }
 
 /* TITULO */
@@ -10,13 +10,17 @@
   margin-bottom: 2rem;
 
   h1 {
-    font-size: 2rem;
     color: var(--color-accent);
+    text-align: center;
+
+    margin-bottom: 1rem;
   }
 
   h2 {
     font-weight: 400;
     opacity: 0.7;
+    font-family: 'Clicker Script', cursive;
+    font-size: 2rem;
   }
 
   .accent {
@@ -45,8 +49,8 @@
   justify-content: center;
 
   img {
-    width: 110px;
-    height: 110px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid var(--color-accent);
@@ -61,7 +65,6 @@
     padding: 0.3rem 0.6rem;
     border-radius: 10px;
     cursor: pointer;
-    font-size: 0.8rem;
   }
 }
 
@@ -70,11 +73,12 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-size: 1.2rem;
 
   label {
     display: flex;
     flex-direction: column;
-    font-size: 0.9rem;
+
     gap: 0.3rem;
   }
 
@@ -83,7 +87,9 @@ form {
     border-radius: 8px;
     border: 1px solid #ddd;
     outline: none;
+    color: #5f5f5f;
 
+    font-size: 1rem;
     &:focus {
       border-color: var(--color-accent);
     }
@@ -91,25 +97,65 @@ form {
 }
 
 /* BOTON */
+/* BOTON GUARDAR */
 .save-btn {
   background: var(--color-accent);
   color: white;
   border: none;
-  padding: 0.7rem;
-  border-radius: 10px;
+  padding: 0.85rem 1.5rem;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.3s ease;
+  width: 100%;
+  letter-spacing: 0.5px;
 
   &:hover {
-    transform: scale(1.02);
+    background: darken(#01d1a4, 8%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(1, 209, 164, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
 /* BACK */
+
 .back-link {
-  text-align: center;
-  display: block;
-  margin-top: 1rem;
-  color: var(--color-accent);
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: fit-content;
+  margin: 1.5rem auto 0;
+  padding: 0.8rem 2rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  color: #555;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateX(-4px);
+    box-shadow: 0 4px 16px rgba(1, 209, 164, 0.2);
+  }
+
+  &:active {
+    transform: translateX(-2px);
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-config {
+    padding: 0 1rem;
+  }
 }

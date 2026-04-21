@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Post {
   id: number;
@@ -13,22 +14,22 @@ export interface Post {
   providedIn: 'root',
 })
 export class BlogService {
-  private readonly baseUrl = '/api/blog';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  // 📌 obtener listado
+  // Obtener listado de posts publicados
   getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.baseUrl}`);
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/published`);
   }
 
-  // 📌 obtener por slug (para tu resolver actual)
+  // Obtener por slug
   getBySlug(slug: string): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/slug/${slug}`);
+    return this.http.get<Post>(`${this.apiUrl}/posts/slug/${slug}`);
   }
 
-  // 📌 obtener por id (si luego cambias arquitectura)
+  // Obtener por id
   getById(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.baseUrl}/${id}`);
+    return this.http.get<Post>(`${this.apiUrl}/posts/${id}`);
   }
 }

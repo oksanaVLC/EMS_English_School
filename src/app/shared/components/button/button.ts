@@ -13,4 +13,5 @@ export class Button {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() fullWidth: boolean = false;
+  @Input() disabled: boolean = false;
 }

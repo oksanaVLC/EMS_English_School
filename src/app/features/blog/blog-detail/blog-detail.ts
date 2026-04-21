@@ -43,7 +43,7 @@ export class BlogDetail implements OnInit {
   }
 
   private loadPost(slug: string) {
-    this.http.get<Post>(`${this.apiUrl}/api/posts/slug/${slug}`).subscribe((res) => {
+    this.http.get<Post>(`${this.apiUrl}/posts/slug/${slug}`).subscribe((res) => {
       this.post = res ?? null;
     });
   }

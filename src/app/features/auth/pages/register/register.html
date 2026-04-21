@@ -124,9 +124,28 @@
           }
         </div>
 
+        <!-- ✅ TÉRMINOS Y CONDICIONES -->
+        <div class="form-group terms-group">
+          <label class="terms-label">
+            <input type="checkbox" formControlName="acceptTerms" class="terms-checkbox" />
+            <span class="terms-text">
+              Acepto los <a href="/terminos" target="_blank">términos y condiciones</a> y la
+              <a href="/privacidad" target="_blank">política de privacidad</a>
+            </span>
+          </label>
+
+          @if (form.get('acceptTerms')?.touched && form.get('acceptTerms')?.errors?.['required']) {
+            <div class="error">
+              <span>Debes aceptar los términos y condiciones</span>
+            </div>
+          }
+        </div>
+
         <!-- Submit -->
         <div class="button-wrapper">
-          <app-button variant="primary" type="submit" class="w-full"> Crear cuenta </app-button>
+          <app-button variant="primary" type="submit" class="w-full" [disabled]="form.invalid">
+            Crear cuenta
+          </app-button>
         </div>
       </form>
     </div>

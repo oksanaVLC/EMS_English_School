@@ -41,7 +41,7 @@ export class PostsList implements OnInit {
       params = params.set('status', status);
     }
 
-    this.http.get<any>(`${this.apiUrl}/api/posts`, { params }).subscribe((res) => {
+    this.http.get<any>(`${this.apiUrl}/posts`, { params }).subscribe((res) => {
       this.posts = res.data;
 
       this.currentPage = res.current_page;
@@ -69,27 +69,6 @@ export class PostsList implements OnInit {
     this.router.navigate(['/admin/blog/posts/edit', id]);
   }
 
-  /*
-  Para
-    <button (click)="delete(post.id)" class="icon-btn danger">
-                  <img src="/images/delete.png" alt="borrar" />
-                  <span class="text">Borrar</span>
-    </button>
-                
-    delete(id: number) {
-    if (!confirm('¿Eliminar este artículo?')) return;
-
-    this.http.delete(`${this.apiUrl}/api/posts/${id}`).subscribe({
-      next: () => {
-        this.loadPosts(this.currentPage, this.filterStatus);
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Error al borrar el post');
-      },
-    });
-  }*/
-
   openDeleteModal(id: number) {
     this.deleteId = id;
     this.showDeleteModal = true;
@@ -103,7 +82,7 @@ export class PostsList implements OnInit {
   confirmDelete() {
     if (!this.deleteId) return;
 
-    this.http.delete(`${this.apiUrl}/api/posts/${this.deleteId}`).subscribe(() => {
+    this.http.delete(`${this.apiUrl}/posts/${this.deleteId}`).subscribe(() => {
       this.loadPosts(this.currentPage, this.filterStatus);
       this.closeDeleteModal();
     });

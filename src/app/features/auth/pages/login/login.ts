@@ -25,7 +25,7 @@ export class Login {
 
   animatedCount = 0;
   targetCount = 120;
-  hasAnimated = false; // Para que solo se ejecute una vez
+  hasAnimated = false;
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -36,34 +36,23 @@ export class Login {
     this.observeCounter();
   }
 
-  /*login() {
-    if (this.form.invalid) return;
-
-    const { email, password } = this.form.value;
-
-    this.auth.login({ email, password }).subscribe({
-      next: (user: any) => {
-        const role = user.role;
-
-        if (role === 'admin') this.router.navigate(['/admin']);
-        else if (role === 'teacher') this.router.navigate(['/teacher']);
-        else this.router.navigate(['/user']);
-      },
-      error: () => {
-        this.errorMessage.set('Credenciales incorrectas');
-      },
-    });
-  }*/
-
   login() {
     if (this.form.invalid) return;
 
-    const { email, password } = this.form.value;
+    // ✅ CORRECCIÓN: Extraer valores y validar que no sean null/undefined
+    const email = this.form.get('email')?.value;
+    const password = this.form.get('password')?.value;
+
+    // ✅ Validación imprescindible para TypeScript
+    if (!email || !password) {
+      this.errorMessage.set('Email y contraseña son obligatorios');
+      return;
+    }
 
     this.auth.login({ email, password }).subscribe({
       next: (response: any) => {
         console.log('Respuesta login:', response);
-        const user = response.user; //  Extraer el usuario de la respuesta
+        const user = response.user;
         const role = user.role;
 
         if (role === 'admin') this.router.navigate(['/admin']);
@@ -85,25 +74,26 @@ export class Login {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Si el elemento entra en viewport y aún no se ha animado
           if (entry.isIntersecting && !this.hasAnimated) {
             this.hasAnimated = true;
             this.animateCount();
-            observer.disconnect(); // Dejar de observar después de animar
+            observer.disconnect();
           }
         });
       },
       {
-        threshold: 0.3, // 30% visible para empezar
+        threshold: 0.3,
         rootMargin: '0px',
       },
     );
 
-    observer.observe(this.counterElement.nativeElement);
+    if (this.counterElement) {
+      observer.observe(this.counterElement.nativeElement);
+    }
   }
 
   animateCount() {
-    const duration = 1000; // 1 segundo
+    const duration = 1000;
     const steps = 60;
     const increment = this.targetCount / steps;
 

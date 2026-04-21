@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 
@@ -10,7 +10,7 @@ import { Auth } from '../../../core/services/auth';
   styleUrls: ['./admin.scss'],
 })
 export class Admin {
-  constructor(public auth: Auth) {}
+  private auth = inject(Auth);
 
   userName = computed(() => this.auth.user()?.name ?? 'admin');
 }

@@ -173,6 +173,7 @@
   max-width: 900px;
   margin: 2rem auto;
   padding: 0 2rem;
+  font-family: 'Nunito', sans-serif;
 
   display: flex;
   flex-direction: column;
@@ -195,8 +196,10 @@
 .faq-question {
   width: 100%;
   padding: 1.2rem;
-  font-family: inherit;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  // font-family: inherit;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(2rem, 2.5vw, 2.3rem);
+  font-family: 'Clicker Script', cursive;
   text-align: left;
   border: none;
   cursor: pointer;

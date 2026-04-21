@@ -29,7 +29,7 @@ export class UsersList implements OnInit {
   loadUsers(page: number) {
     this.loading = true;
 
-    this.http.get<any>(`${environment.apiUrl}/api/users?page=${page}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/users?page=${page}`).subscribe({
       next: (res) => {
         this.users = res.data; //  IMPORTANTE
         this.currentPage = res.current_page;

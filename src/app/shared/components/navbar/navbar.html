@@ -86,7 +86,12 @@
       </a>
     </div>
 
-    <img src="images/cookies.webp" alt="Cookies" class="overlay__cookies" />
+    <img
+      src="images/cookies.webp"
+      alt="Cookies"
+      class="overlay__cookies"
+      [@rotateCookie]="cookieState()"
+    />
     <img src="images/mountain.png" alt="Mountain" class="overlay__mountain" />
   </div>
 </nav>

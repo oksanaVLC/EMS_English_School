@@ -38,7 +38,7 @@ export class Blog implements OnInit {
   loadPosts(page: number = 1): void {
     const params = new HttpParams().set('page', page);
 
-    this.http.get<any>(`${this.apiUrl}/api/posts/published`, { params }).subscribe((res) => {
+    this.http.get<any>(`${this.apiUrl}/posts/published`, { params }).subscribe((res) => {
       this.posts = res?.data ?? [];
       this.currentPage = res?.current_page ?? 1;
       this.lastPage = res?.last_page ?? 1;

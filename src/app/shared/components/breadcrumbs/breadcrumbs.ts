@@ -20,6 +20,9 @@ export class Breadcrumbs {
   breadcrumbs: WritableSignal<Breadcrumb[]> = signal([]);
   show = signal(false);
 
+  // Rutas donde NO se deben mostrar los breadcrumbs
+  private hiddenRoutes = new Set(['/login', '/register', '/']);
+
   constructor() {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
@@ -27,6 +30,14 @@ export class Breadcrumbs {
   }
 
   private buildBreadcrumbs(): void {
+    const currentUrl = this.router.url;
+
+    // ✅ No mostrar breadcrumbs en login y register
+    if (this.hiddenRoutes.has(currentUrl)) {
+      this.show.set(false);
+      return;
+    }
+
     const segments = this.router.url.split('/').filter(Boolean);
 
     const breadcrumbs: Breadcrumb[] = [];
@@ -40,13 +51,13 @@ export class Breadcrumbs {
 
       if (!label) continue;
 
-      // 👇 ocultamos segmentos técnicos PERO seguimos avanzando URL
+      //  ocultamos segmentos técnicos PERO seguimos avanzando URL
       if (this.hiddenSegments.has(segment)) continue;
 
       breadcrumbs.push({ url, label });
     }
 
-    // 👇 SOLO añadir Inicio si NO estamos en home
+    //  SOLO añadir Inicio si NO estamos en home
     if (breadcrumbs.length > 0) {
       breadcrumbs.unshift({ url: '/', label: 'Inicio' });
     }
@@ -73,6 +84,7 @@ export class Breadcrumbs {
       teacher: 'Teacher',
       dashboard: 'Dashboard',
       configuration: 'Configuración',
+      settings: 'Ajustes',
     };
 
     return map[segment] ?? segment;

@@ -26,7 +26,7 @@ export class PostsView implements OnInit {
   loadPost(id: string | null) {
     if (!id) return;
 
-    this.http.get<any>(`${this.apiUrl}/api/posts/${id}`).subscribe((res) => {
+    this.http.get<any>(`${this.apiUrl}/posts/${id}`).subscribe((res) => {
       this.post = res;
     });
   }

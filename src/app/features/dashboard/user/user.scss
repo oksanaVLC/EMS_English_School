@@ -18,6 +18,8 @@
   h2 {
     font-weight: 400;
     margin-top: 0.5rem;
+    font-family: 'Clicker Script', cursive;
+    font-size: 2rem;
   }
 
   .accent {
@@ -116,12 +118,6 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .avatar {
-    width: 120px;
-    height: 120px;
-    top: -60px;
-  }
-
   .card a {
     font-size: 1.1rem;
     gap: 15px;
@@ -129,5 +125,9 @@
 
   .title {
     margin-bottom: 5rem;
+  }
+
+  .user-dashboard {
+    padding: 0;
   }
 }

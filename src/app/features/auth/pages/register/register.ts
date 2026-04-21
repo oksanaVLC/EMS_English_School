@@ -14,7 +14,7 @@ import { Button } from '../../../../shared/components/button/button';
 })
 export class Register {
   private fb = inject(FormBuilder);
-  private auth = inject(Auth);
+  private auth = inject(Auth); //
   private router = inject(Router);
 
   @ViewChild('counterElement') counterElement!: ElementRef;
@@ -27,7 +27,7 @@ export class Register {
 
   animatedCount = 0;
   targetCount = 120;
-  hasAnimated = false; // Para que solo se ejecute una vez
+  hasAnimated = false;
 
   form = this.fb.group({
     name: ['', Validators.required],
@@ -35,6 +35,7 @@ export class Register {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', Validators.required],
+    acceptTerms: [false, Validators.requiredTrue],
   });
 
   ngAfterViewInit() {
@@ -54,38 +55,27 @@ export class Register {
       return;
     }
 
+    // ✅ Register SOLO crea el usuario, NO genera token
     this.auth
       .register({
-        name,
-        surname,
-        email,
-        password,
+        name: name || '', // ✅ Solución para el error TypeScript
+        surname: surname || '',
+        email: email || '',
+        password: password || '',
       })
       .subscribe({
         next: () => {
-          // LOGIN AUTOMÁTICO
-          this.auth
-            .login({
-              email,
-              password,
-            })
-            .subscribe({
-              next: (res) => {
-                // guardar token + user
-                localStorage.setItem('token', res.token);
-                localStorage.setItem('user', JSON.stringify(res.user));
+          this.successMessage.set('¡Registro exitoso! Por favor inicia sesión.');
+          this.form.reset();
 
-                const role = res.user.role;
-
-                this.router.navigate([`/${role}`]);
-              },
-              error: () => {
-                this.router.navigate(['/login']);
-              },
-            });
+          // ✅ Redirigir al login después de 2 segundos
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
         },
         error: (err) => {
-          this.errorMessage.set(err?.error?.message || 'Error al registrar. Inténtalo de nuevo.');
+          const message = err?.error?.message || 'Error al registrar. Inténtalo de nuevo.';
+          this.errorMessage.set(message);
         },
       });
   }
@@ -94,16 +84,15 @@ export class Register {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Si el elemento entra en viewport y aún no se ha animado
           if (entry.isIntersecting && !this.hasAnimated) {
             this.hasAnimated = true;
             this.animateCount();
-            observer.disconnect(); // Dejar de observar después de animar
+            observer.disconnect();
           }
         });
       },
       {
-        threshold: 0.3, // 30% visible para empezar
+        threshold: 0.3,
         rootMargin: '0px',
       },
     );
@@ -114,7 +103,7 @@ export class Register {
   }
 
   animateCount() {
-    const duration = 1000; // 1 segundo
+    const duration = 1000;
     const steps = 60;
     const increment = this.targetCount / steps;
 
@@ -129,15 +118,5 @@ export class Register {
         this.animatedCount = Math.floor(current);
       }
     }, duration / steps);
-  }
-
-  togglePassword(event: MouseEvent) {
-    event.preventDefault();
-    this.showPassword = !this.showPassword;
-  }
-
-  toggleConfirmPassword(event: MouseEvent) {
-    event.preventDefault();
-    this.showConfirmPassword = !this.showConfirmPassword;
   }
 }
