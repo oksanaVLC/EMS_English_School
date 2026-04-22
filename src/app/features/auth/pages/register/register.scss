@@ -310,3 +310,15 @@ a {
     font-size: 0.8rem;
   }
 }
+
+.mobile-avatar {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .mobile-avatar {
+    width: 195px;
+    display: block;
+    margin: -3rem auto -2rem auto;
+  }
+}
