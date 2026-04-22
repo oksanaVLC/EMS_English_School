@@ -12,7 +12,7 @@
   <div class="card">
     <!-- AVATAR -->
     <div class="avatar">
-      <img [src]="previewUrl || user()?.avatar_url || 'images/user.png'" alt="avatar" />
+      <img [src]="previewUrl || user()?.avatar_url || 'images/user.jpg'" alt="avatar" />
 
       <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
 

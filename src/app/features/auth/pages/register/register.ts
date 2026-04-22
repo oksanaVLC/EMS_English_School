@@ -29,6 +29,8 @@ export class Register {
   targetCount = 120;
   hasAnimated = false;
 
+  serverError = signal<string | null>(null);
+
   form = this.fb.group({
     name: ['', Validators.required],
     surname: ['', Validators.required],
@@ -43,7 +45,20 @@ export class Register {
   }
 
   register() {
-    if (this.form.invalid) return;
+    // ✅ Marcar todos los campos como touched para mostrar errores
+    Object.keys(this.form.controls).forEach((key) => {
+      this.form.get(key)?.markAsTouched();
+    });
+
+    if (this.form.invalid) {
+      // ✅ Mostrar mensaje específico para términos
+      if (this.form.get('acceptTerms')?.errors?.['required']) {
+        this.errorMessage.set('Debes aceptar los términos y condiciones');
+      } else {
+        this.errorMessage.set('Por favor, completa todos los campos correctamente');
+      }
+      return;
+    }
 
     this.successMessage.set(null);
     this.errorMessage.set(null);
@@ -55,10 +70,9 @@ export class Register {
       return;
     }
 
-    // ✅ Register SOLO crea el usuario, NO genera token
     this.auth
       .register({
-        name: name || '', // ✅ Solución para el error TypeScript
+        name: name || '',
         surname: surname || '',
         email: email || '',
         password: password || '',
@@ -68,7 +82,11 @@ export class Register {
           this.successMessage.set('¡Registro exitoso! Por favor inicia sesión.');
           this.form.reset();
 
-          // ✅ Redirigir al login después de 2 segundos
+          // ✅ Resetear touched state después de reset
+          Object.keys(this.form.controls).forEach((key) => {
+            this.form.get(key)?.markAsUntouched();
+          });
+
           setTimeout(() => {
             this.router.navigate(['/login']);
           }, 2000);

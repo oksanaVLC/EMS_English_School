@@ -4,15 +4,17 @@
     <div class="register-left">
       <form [formGroup]="form" (ngSubmit)="register()" class="form">
         <h2 class="title">Crear cuenta</h2>
+        <!-- Mensaje de éxito -->
         @if (successMessage()) {
           <div class="success">
             {{ successMessage() }}
           </div>
         }
 
-        @if (errorMessage()) {
+        <!-- Mensaje de error SOLO para errores del servidor (no validación) -->
+        @if (serverError()) {
           <div class="error">
-            {{ errorMessage() }}
+            {{ serverError() }}
           </div>
         }
 
@@ -28,7 +30,7 @@
 
           @if (form.get('name')?.touched && form.get('name')?.errors) {
             <div class="error">
-              <span>Name is required</span>
+              <span>El nombre es requerido</span>
             </div>
           }
         </div>
@@ -39,7 +41,7 @@
 
           @if (form.get('surname')?.touched && form.get('surname')?.errors) {
             <div class="error">
-              <span>Surname is required</span>
+              <span>El apellido es requerido</span>
             </div>
           }
         </div>
@@ -51,10 +53,10 @@
           @if (form.get('email')?.touched && form.get('email')?.errors) {
             <div class="error">
               @if (form.get('email')?.errors?.['required']) {
-                <span>Email is required</span>
+                <span>El email es requerido</span>
               }
               @if (form.get('email')?.errors?.['email']) {
-                <span>Invalid email format</span>
+                <span>Formato de email inválido</span>
               }
             </div>
           }
@@ -88,7 +90,7 @@
 
           @if (form.get('password')?.touched && form.get('password')?.errors) {
             <div class="error">
-              <span>Password must be at least 6 characters</span>
+              <span>La contraseña debe tener al menos 6 caracteres</span>
             </div>
           }
         </div>
@@ -119,12 +121,12 @@
 
           @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.errors) {
             <div class="error">
-              <span>Confirmation required</span>
+              <span>Debes confirmar tu contraseña</span>
             </div>
           }
         </div>
 
-        <!-- ✅ TÉRMINOS Y CONDICIONES -->
+        <!-- TÉRMINOS Y CONDICIONES -->
         <div class="form-group terms-group">
           <label class="terms-label">
             <input type="checkbox" formControlName="acceptTerms" class="terms-checkbox" />
