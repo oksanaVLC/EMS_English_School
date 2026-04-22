@@ -4,6 +4,7 @@
     <div class="register-left">
       <form [formGroup]="form" (ngSubmit)="register()" class="form">
         <h2 class="title">Crear cuenta</h2>
+
         <!-- Mensaje de éxito -->
         @if (successMessage()) {
           <div class="success">
@@ -11,10 +12,10 @@
           </div>
         }
 
-        <!-- Mensaje de error SOLO para errores del servidor (no validación) -->
-        @if (serverError()) {
+        <!-- Mensaje de error general -->
+        @if (errorMessage()) {
           <div class="error">
-            {{ serverError() }}
+            {{ errorMessage() }}
           </div>
         }
 
@@ -34,6 +35,7 @@
             </div>
           }
         </div>
+
         <!-- Surname -->
         <div class="form-group">
           <label>Apellido</label>
@@ -45,6 +47,7 @@
             </div>
           }
         </div>
+
         <!-- Email -->
         <div class="form-group">
           <label>E-mail</label>
@@ -57,6 +60,9 @@
               }
               @if (form.get('email')?.errors?.['email']) {
                 <span>Formato de email inválido</span>
+              }
+              @if (form.get('email')?.errors?.['taken']) {
+                <span>Este email ya está registrado</span>
               }
             </div>
           }
@@ -119,9 +125,20 @@
             </button>
           </div>
 
-          @if (form.get('confirmPassword')?.touched && form.get('confirmPassword')?.errors) {
+          <!-- Error: campo requerido -->
+          @if (
+            form.get('confirmPassword')?.touched &&
+            form.get('confirmPassword')?.errors?.['required']
+          ) {
             <div class="error">
               <span>Debes confirmar tu contraseña</span>
+            </div>
+          }
+
+          <!-- Error: contraseñas no coinciden -->
+          @if (form.errors?.['mismatch'] && form.get('confirmPassword')?.touched) {
+            <div class="error">
+              <span>Las contraseñas no coinciden</span>
             </div>
           }
         </div>
