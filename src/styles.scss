@@ -59,6 +59,12 @@ a {
   text-decoration: none;
 }
 
+/*  Por defecto, scroll suave */
 html {
   scroll-behavior: smooth;
+}
+
+/* Esta clase solo se añade cuando un componente la pide */
+html.no-smooth-scroll {
+  scroll-behavior: auto;
 }
