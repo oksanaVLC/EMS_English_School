@@ -56,6 +56,14 @@ export class Auth {
   }
 
   login(data: { email: string; password: string }): Observable<LoginResponse> {
+    console.log('=== LOGIN DEBUG ===');
+    console.log('URL:', `${this.apiUrl}/login`);
+    console.log('Datos enviados:', {
+      email: data.email,
+      password: '***',
+      device_name: 'angular_web_app',
+    });
+
     return this.http
       .post<LoginResponse>(`${this.apiUrl}/login`, {
         email: data.email,
@@ -63,12 +71,36 @@ export class Auth {
         device_name: 'angular_web_app',
       })
       .pipe(
-        tap((response) => {
-          if (response.token) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-            this.userSignal.set(response.user);
-          }
+        tap({
+          next: (response) => {
+            console.log('✅ Login exitoso:', response);
+            console.log('Token recibido:', response.token ? 'Sí' : 'No');
+            console.log('Usuario:', response.user);
+
+            if (response.token) {
+              localStorage.setItem('token', response.token);
+              localStorage.setItem('user', JSON.stringify(response.user));
+              this.userSignal.set(response.user);
+              console.log('✅ Token y usuario guardados en localStorage');
+            }
+          },
+          error: (error) => {
+            console.error('❌ Login falló:', error);
+            console.error('Status:', error.status);
+            console.error('Status text:', error.statusText);
+            console.error('Error body:', error.error);
+
+            if (error.status === 422 && error.error?.errors) {
+              console.error('📋 Errores de validación:');
+              Object.keys(error.error.errors).forEach((key) => {
+                console.error(`  ${key}: ${error.error.errors[key].join(', ')}`);
+              });
+            } else if (error.status === 401) {
+              console.error('🔐 Credenciales incorrectas');
+            } else if (error.status === 419) {
+              console.error('🍪 Error CSRF - Problema con cookies/sesiones');
+            }
+          },
         }),
       );
   }
