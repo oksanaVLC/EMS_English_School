@@ -41,8 +41,8 @@ export class Header {
         break;
 
       case '/blog':
-        this.title.set('Blog');
-        this.subtitle.set('Consejos y recursos');
+        this.title.set('English Maximizer School');
+        this.subtitle.set('Blog de consejos y recursos para aprender inglés.');
         break;
 
       case '/contact':

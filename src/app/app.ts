@@ -6,11 +6,12 @@ import { Header } from './shared/components/header/header';
 import { Navbar } from './shared/components/navbar/navbar';
 
 import { Breadcrumbs } from './shared/components/breadcrumbs/breadcrumbs';
+import { Spinner } from './shared/components/spinner/spinner';
 import { Tags } from './shared/components/tags/tags';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, Header, Footer, Tags, Breadcrumbs],
+  imports: [RouterOutlet, Navbar, Header, Footer, Tags, Breadcrumbs, Spinner],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
