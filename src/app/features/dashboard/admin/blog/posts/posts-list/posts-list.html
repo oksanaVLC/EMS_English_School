@@ -5,18 +5,18 @@
     <p>Gestiona el contenido del blog</p>
     <div class="filters">
       <span class="filters-label">Filtrar por:</span>
+      <div>
+        <button (click)="filter('')" [class.active]="filterStatus === ''">Todos</button>
 
-      <button (click)="filter('')" [class.active]="filterStatus === ''">Todos</button>
+        <button (click)="filter('draft')" [class.active]="filterStatus === 'draft'">
+          Borradores
+        </button>
 
-      <button (click)="filter('draft')" [class.active]="filterStatus === 'draft'">
-        Borradores
-      </button>
-
-      <button (click)="filter('published')" [class.active]="filterStatus === 'published'">
-        Publicados
-      </button>
+        <button (click)="filter('published')" [class.active]="filterStatus === 'published'">
+          Publicados
+        </button>
+      </div>
     </div>
-
     <button class="btn-create" routerLink="/admin/posts/create">Crear +</button>
   </div>
 
