@@ -1,5 +1,5 @@
 .wrapper {
-  max-width: 1400px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 1rem;
   padding-bottom: 0.5rem;
@@ -44,4 +44,12 @@
 .breadcrumbs span:last-child {
   color: #111827;
   font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .breadcrumbs {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 0;
+  }
 }

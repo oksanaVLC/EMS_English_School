@@ -3,6 +3,7 @@
   <div class="header">
     <h1>Artículos creados para el blog</h1>
     <p>Gestiona el contenido del blog</p>
+
     <div class="filters">
       <span class="filters-label">Filtrar por:</span>
       <div>
@@ -17,6 +18,7 @@
         </button>
       </div>
     </div>
+
     <button class="btn-create" routerLink="/admin/posts/create">Crear +</button>
   </div>
 
@@ -45,7 +47,7 @@
               </td>
 
               <td>
-                {{ post.title.length > 60 ? (post.title | slice: 0 : 60) + '...' : post.title }}
+                {{ truncate(getPostTitle(post)) }}
               </td>
 
               <td>

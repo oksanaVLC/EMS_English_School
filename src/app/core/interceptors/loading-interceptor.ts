@@ -6,7 +6,12 @@ import { LoadingService } from '../services/loading';
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
 
-  const skipLoader = req.url.includes('/login') || req.url.includes('/refresh');
+  const skipLoader =
+    req.headers.has('X-Skip-Loading') ||
+    req.url.includes('/favorite') ||
+    req.url.includes('/like') ||
+    req.url.includes('/toggle') ||
+    req.url.includes('/status');
 
   if (!skipLoader) {
     loadingService.loadingOn();

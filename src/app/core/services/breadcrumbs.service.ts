@@ -50,6 +50,7 @@ export class BreadcrumbsService {
   }
 
   private format(value: string): string {
-    return value.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+    const text = value.replace(/-/g, ' ');
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 }

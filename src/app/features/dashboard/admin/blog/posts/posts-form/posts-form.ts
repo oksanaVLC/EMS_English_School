@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { PostModel } from '../../../../../../core/models/post.model';
 import { AdminPostService } from '../../../../../../core/services/admin-post.service';
 
 @Component({
@@ -24,16 +25,23 @@ export class PostsForm implements OnInit {
   file: File | null = null;
   preview: string | ArrayBuffer | null = null;
 
+  // FORM limpio
   form = this.fb.group({
     title: ['', Validators.required],
-    short_description: [''],
     content: ['', Validators.required],
+
+    title_en: [''],
+    content_en: [''],
+
+    short_description: [''],
+    short_description_en: [''], // 👈 OK si existe en backend
   });
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+
     this.isEdit = !!id;
-    this.postId = id ? parseInt(id, 10) : null;
+    this.postId = id ? Number(id) : null;
 
     if (this.isEdit && this.postId) {
       this.loadPost();
@@ -44,16 +52,20 @@ export class PostsForm implements OnInit {
     this.loading = true;
 
     this.postService.getPost(this.postId!).subscribe({
-      next: (post) => {
-        this.form.setValue({
+      next: (post: PostModel) => {
+        this.form.patchValue({
           title: post.title || '',
-          short_description: post.short_description || '',
           content: post.content || '',
+
+          title_en: post.title_en || '',
+          content_en: post.content_en || '',
+
+          short_description: post.short_description || '',
+          short_description_en: post.short_description_en || '',
         });
 
-        if (post.cover) {
-          this.preview = post.cover;
-        }
+        this.preview = post.cover || post.cover_url || null;
+
         this.loading = false;
       },
       error: (err) => {
@@ -64,7 +76,7 @@ export class PostsForm implements OnInit {
   }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];
+    const file = event.target.files?.[0];
     if (!file) return;
 
     this.file = file;
@@ -77,92 +89,91 @@ export class PostsForm implements OnInit {
   }
 
   save(status: 'draft' | 'published' = 'draft') {
-    if (this.form.invalid) {
-      return;
+    if (this.form.invalid) return;
+
+    const formData = new FormData();
+
+    formData.append('title', this.form.value.title || '');
+    formData.append('content', this.form.value.content || '');
+
+    formData.append('title_en', this.form.value.title_en || '');
+    formData.append('content_en', this.form.value.content_en || '');
+
+    formData.append('short_description', this.form.value.short_description || '');
+    formData.append('short_description_en', this.form.value.short_description_en || '');
+
+    formData.append('status', status);
+
+    if (this.file) {
+      formData.append('cover', this.file);
     }
 
-    const title = this.form.value.title ?? '';
-    const content = this.form.value.content ?? '';
-    const shortDescription = this.form.value.short_description ?? '';
-
+    // =========================
+    // EDIT
+    // =========================
     if (this.isEdit && this.postId) {
-      if (this.file) {
-        const titleValue = this.form.get('title')?.value;
-        const contentValue = this.form.get('content')?.value;
-        const shortDescriptionValue = this.form.get('short_description')?.value;
+      const title = this.form.value.title || '';
+      const content = this.form.value.content || '';
 
+      // 👉 CASO CON IMAGEN
+      if (this.file) {
         const formData = new FormData();
-        formData.append('title', titleValue || '');
-        formData.append('content', contentValue || '');
+
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('title_en', this.form.value.title_en || '');
+        formData.append('content_en', this.form.value.content_en || '');
+        formData.append('short_description', this.form.value.short_description || '');
+        formData.append('short_description_en', this.form.value.short_description_en || '');
         formData.append('status', status);
-        formData.append('short_description', shortDescriptionValue || '');
+
         formData.append('cover', this.file);
         formData.append('_method', 'PUT');
 
         this.postService.updatePostWithImage(this.postId, formData).subscribe({
-          next: () => {
-            this.router.navigate(['/admin/posts']);
-          },
-          error: (err) => {
-            if (err.error && err.error.errors) {
-              const firstError = Object.values(err.error.errors)[0];
-              alert(firstError);
-            } else {
-              alert('Error al actualizar el post');
-            }
-          },
+          next: () => this.router.navigate(['/admin/posts']),
+          error: (err) => this.handleError(err),
         });
       } else {
-        const jsonData = {
-          title: title,
-          content: content,
-          status: status,
-          short_description: shortDescription,
+        // 👉 CASO SIN IMAGEN (JSON NORMAL)
+        const data = {
+          title,
+          content,
+          title_en: this.form.value.title_en || '',
+          content_en: this.form.value.content_en || '',
+          short_description: this.form.value.short_description || '',
+          short_description_en: this.form.value.short_description_en || '',
+          status,
         };
 
-        this.postService.updatePost(this.postId, jsonData).subscribe({
-          next: () => {
-            this.router.navigate(['/admin/posts']);
-          },
-          error: (err) => {
-            if (err.error && err.error.errors) {
-              let errorMsg = '';
-              for (const [campo, mensajes] of Object.entries(err.error.errors)) {
-                errorMsg += `${campo}: ${(mensajes as any[]).join(', ')}\n`;
-              }
-              alert(errorMsg);
-            } else if (err.error && err.error.message) {
-              alert(err.error.message);
-            } else {
-              alert('Error al actualizar el post');
-            }
-          },
+        this.postService.updatePost(this.postId, data).subscribe({
+          next: () => this.router.navigate(['/admin/posts']),
+          error: (err) => this.handleError(err),
         });
       }
+
+      return;
+    }
+
+    // =========================
+    // CREATE
+    // =========================
+    this.postService.createPost(formData).subscribe({
+      next: () => this.router.navigate(['/admin/posts']),
+      error: (err) => console.error('Error al crear:', err),
+    });
+  }
+
+  private handleError(err: any) {
+    console.error('Error completo:', err);
+
+    if (err?.error?.errors) {
+      const firstError = Object.values(err.error.errors)[0];
+      alert(Array.isArray(firstError) ? firstError[0] : firstError);
+    } else if (err?.error?.message) {
+      alert(err.error.message);
     } else {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('content', content);
-      formData.append('status', status);
-      formData.append('short_description', shortDescription);
-
-      if (this.file) {
-        formData.append('cover', this.file);
-      }
-
-      this.postService.createPost(formData).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/posts']);
-        },
-        error: (err) => {
-          if (err.error && err.error.errors) {
-            const firstError = Object.values(err.error.errors)[0];
-            alert(firstError);
-          } else {
-            alert('Error al crear el post');
-          }
-        },
-      });
+      alert('Error en el servidor');
     }
   }
 }

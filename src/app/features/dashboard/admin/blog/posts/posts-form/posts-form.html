@@ -8,52 +8,69 @@
     </p>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="form">
-    <!-- TITLE -->
-    <div class="form-group">
-      <label>Título</label>
-      <input type="text" formControlName="title" />
-    </div>
-
-    <!-- COVER FILE -->
+  <form [formGroup]="form" class="form" (ngSubmit)="save('published')">
+    <!-- COVER -->
     <div class="form-group">
       <label>Imagen de portada</label>
       <input type="file" (change)="onFileChange($event)" accept="image/*" />
     </div>
 
     <!-- PREVIEW -->
-    <div class="form-group" *ngIf="preview">
-      <label>Preview</label>
-      <img [src]="preview" class="image-preview" />
+    @if (preview) {
+      <div class="form-group">
+        <img [src]="preview" class="image-preview" />
+      </div>
+    }
+
+    <!-- TITLE ES -->
+    <div class="form-group">
+      <label>Título (ES) *</label>
+      <input type="text" formControlName="title" />
+      @if (form.get('title')?.invalid && form.get('title')?.touched) {
+        <small class="error">El título es requerido</small>
+      }
     </div>
 
-    <!-- SHORT DESCRIPTION -->
+    <!-- SHORT ES -->
     <div class="form-group">
       <label>Descripción corta</label>
-      <textarea
-        rows="3"
-        maxlength="300"
-        formControlName="short_description"
-        placeholder="Resumen breve del artículo..."
-      ></textarea>
+      <textarea rows="3" formControlName="short_description"></textarea>
     </div>
 
-    <!-- CONTENT -->
+    <!-- CONTENT ES -->
     <div class="form-group">
-      <label>Contenido</label>
+      <label>Contenido (ES) *</label>
       <textarea rows="10" formControlName="content"></textarea>
+      @if (form.get('content')?.invalid && form.get('content')?.touched) {
+        <small class="error">El contenido es requerido</small>
+      }
     </div>
 
-    <!-- BUTTON -->
+    <!-- TITLE EN -->
+    <div class="form-group">
+      <label>Título (EN)</label>
+      <input type="text" formControlName="title_en" />
+    </div>
+    <!-- SHORT EN -->
+    <div class="form-group">
+      <label>Short description (EN)</label>
+      <textarea rows="3" formControlName="short_description_en"></textarea>
+    </div>
+
+    <!-- CONTENT EN -->
+    <div class="form-group">
+      <label>Contenido (EN)</label>
+      <textarea rows="10" formControlName="content_en"></textarea>
+    </div>
+
+    <!-- ACTIONS -->
     <div class="actions">
       <button type="button" class="btn-secondary" routerLink="/admin/posts">Cancelar</button>
-
-      <!--  Guardar borrador -->
-      <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
-
-      <!-- Publicar -->
-      <button type="button" class="btn-primary" (click)="save('published')">
-        {{ isEdit ? 'Actualizar' : 'Publicar' }}
+      <button type="button" class="btn-draft" (click)="save('draft')" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar borrador' }}
+      </button>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        {{ loading ? 'Procesando...' : isEdit ? 'Actualizar' : 'Publicar' }}
       </button>
     </div>
   </form>

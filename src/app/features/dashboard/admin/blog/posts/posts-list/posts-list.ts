@@ -1,8 +1,8 @@
-import { SlicePipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../../../../../environments/environment';
+import { PostModel } from '../../../../../../core/models/post.model';
 import { Pagination } from '../../../../../../shared/components/pagination/pagination';
 
 type PostStatus = '' | 'draft' | 'published';
@@ -10,25 +10,25 @@ type PostStatus = '' | 'draft' | 'published';
 @Component({
   selector: 'app-posts-list',
   standalone: true,
-  imports: [Pagination, RouterLink, SlicePipe],
+  imports: [Pagination, RouterLink],
   templateUrl: './posts-list.html',
   styleUrl: './posts-list.scss',
 })
 export class PostsList implements OnInit {
   private http = inject(HttpClient);
   private router = inject(Router);
-
   private apiUrl = environment.apiUrl;
 
-  posts: any[] = [];
+  posts: PostModel[] = [];
 
   currentPage = 1;
   lastPage = 1;
-
   filterStatus: PostStatus = '';
-
   showDeleteModal = false;
   deleteId: number | null = null;
+
+  currentLang: 'es' | 'en' = 'es';
+  isLoading = false;
 
   ngOnInit() {
     this.loadPosts();
@@ -37,36 +37,33 @@ export class PostsList implements OnInit {
   loadPosts(page = 1, status: PostStatus = this.filterStatus) {
     let params = new HttpParams().set('page', page);
 
-    if (status) {
-      params = params.set('status', status);
-    }
+    if (status) params = params.set('status', status);
 
-    this.http.get<any>(`${this.apiUrl}/posts`, { params }).subscribe((res) => {
-      this.posts = res.data;
-
-      this.currentPage = res.current_page;
-      this.lastPage = res.last_page;
-    });
+    this.http
+      .get<any>(`${this.apiUrl}/posts`, {
+        params,
+        headers: { 'X-Skip-Loading': 'true' },
+      })
+      .subscribe({
+        next: (res) => {
+          this.posts = res.data || [];
+          this.currentPage = res.current_page || 1;
+          this.lastPage = res.last_page || 1;
+        },
+        error: (err) => console.error(err),
+      });
   }
 
-  nextPage() {
-    if (this.currentPage < this.lastPage) {
-      this.loadPosts(this.currentPage + 1, this.filterStatus);
-    }
+  getPostTitle(post: PostModel): string {
+    return (this.currentLang === 'en' ? post.title_en : post.title) || post.title || 'Sin título';
   }
 
-  prevPage() {
-    if (this.currentPage > 1) {
-      this.loadPosts(this.currentPage - 1, this.filterStatus);
-    }
+  getPostContent(post: PostModel): string {
+    return (this.currentLang === 'en' ? post.content_en : post.content) || post.content || '';
   }
 
-  view(id: number) {
-    this.router.navigate(['/admin/blog/posts/view', id]);
-  }
-
-  edit(id: number) {
-    this.router.navigate(['/admin/blog/posts/edit', id]);
+  toggleLanguage() {
+    this.currentLang = this.currentLang === 'es' ? 'en' : 'es';
   }
 
   openDeleteModal(id: number) {
@@ -82,9 +79,12 @@ export class PostsList implements OnInit {
   confirmDelete() {
     if (!this.deleteId) return;
 
-    this.http.delete(`${this.apiUrl}/posts/${this.deleteId}`).subscribe(() => {
-      this.loadPosts(this.currentPage, this.filterStatus);
-      this.closeDeleteModal();
+    this.http.delete(`${this.apiUrl}/posts/${this.deleteId}`).subscribe({
+      next: () => {
+        this.closeDeleteModal(); //  cerrar modal
+        this.loadPosts(this.currentPage, this.filterStatus); // refrescar lista
+      },
+      error: console.error,
     });
   }
 
@@ -92,5 +92,9 @@ export class PostsList implements OnInit {
     this.filterStatus = status;
     this.currentPage = 1;
     this.loadPosts(1, status);
+  }
+
+  truncate(text: string, len = 60): string {
+    return text.length > len ? text.slice(0, len) + '...' : text;
   }
 }

@@ -8,6 +8,8 @@ export interface Post {
   title: string;
   slug: string;
   content?: string;
+
+  is_favorited?: boolean;
 }
 
 @Injectable({
@@ -31,5 +33,9 @@ export class BlogService {
   // Obtener por id
   getById(id: number): Observable<Post> {
     return this.http.get<Post>(`${this.apiUrl}/posts/${id}`);
+  }
+
+  toggleFavorite(postId: number) {
+    return this.http.post<{ favorited: boolean }>(`${this.apiUrl}/posts/${postId}/favorite`, {});
   }
 }

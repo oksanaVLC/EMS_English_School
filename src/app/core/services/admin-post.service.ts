@@ -2,22 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface Post {
-  id: number;
-  title: string;
-  slug: string;
-  content: string;
-  short_description: string | null;
-  status: 'draft' | 'published';
-  cover: string | null;
-  created_at: string;
-  user?: {
-    id: number;
-    name: string;
-    surname: string;
-  };
-}
+import { PostModel } from '../models/post.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,26 +18,33 @@ export class AdminPostService {
   }
 
   // Obtener un post por ID
-  getPost(id: number): Observable<Post> {
-    return this.http.get<Post>(`${this.apiUrl}/posts/${id}`);
+  getPost(id: number): Observable<PostModel> {
+    return this.http.get<PostModel>(`${this.apiUrl}/posts/${id}`);
   }
 
   // Crear un nuevo post (con imagen)
-  createPost(formData: FormData): Observable<Post> {
-    return this.http.post<Post>(`${this.apiUrl}/posts`, formData);
+  createPost(formData: FormData): Observable<PostModel> {
+    return this.http.post<PostModel>(`${this.apiUrl}/posts`, formData);
   }
 
   // Actualizar un post SIN imagen nueva
   updatePost(
     id: number,
-    data: { title: string; content: string; status: string; short_description: string },
-  ): Observable<Post> {
-    return this.http.put<Post>(`${this.apiUrl}/posts/${id}`, data);
+    data: {
+      title: string;
+      content: string;
+      status: string;
+      short_description: string;
+      title_en?: string;
+      content_en?: string;
+    },
+  ): Observable<PostModel> {
+    return this.http.put<PostModel>(`${this.apiUrl}/posts/${id}`, data);
   }
 
   // Actualizar un post CON imagen nueva
-  updatePostWithImage(id: number, formData: FormData): Observable<Post> {
-    return this.http.post<Post>(`${this.apiUrl}/posts/${id}`, formData);
+  updatePostWithImage(id: number, formData: FormData): Observable<PostModel> {
+    return this.http.post<PostModel>(`${this.apiUrl}/posts/${id}`, formData);
   }
 
   // Eliminar un post

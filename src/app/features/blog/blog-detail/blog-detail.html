@@ -1,19 +1,92 @@
 @if (post) {
-  <div class="blog-detail">
-    <div class="container">
-      <h1 class="title">{{ post.title }}</h1>
+  <article class="blog-detail">
+    <!-- HERO -->
+    @if (post.cover) {
+      <div class="hero">
+        <img [src]="post.cover" alt="cover" />
+      </div>
+    }
 
+    <div class="container">
+      <!-- TÍTULO -->
+      <h1 class="title">
+        {{ getTitle() }}
+      </h1>
+
+      <!-- META -->
       <div class="meta">
-        <span>{{ post.created_at | date: 'mediumDate' }}</span>
+        <div class="author">
+          <div class="avatar">
+            {{ post.user?.name?.charAt(0) }}
+          </div>
+          <div class="info">
+            <span class="name"> {{ post.user?.name }} {{ post.user?.surname }} </span>
+            <span class="date">
+              {{ post.created_at | date: 'mediumDate' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="actions-wrapper">
+          <div class="actions">
+            <!-- LIKE -->
+            <button
+              type="button"
+              class="icon-btn heart"
+              [class.active]="liked"
+              [class.loading]="likeLoading"
+              [attr.aria-pressed]="liked"
+              (click)="toggleLike()"
+            >
+              <i [class]="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
+            </button>
+            <!-- 🔗 SHARE -->
+            <button class="icon-btn" (click)="sharePost()">🔗</button>
+
+            <!-- MENSAJE COPIADO -->
+            <span class="copy-msg" [class.show]="copied"> Link copiado </span>
+          </div>
+
+          <!--  MENSAJE LOGIN -->
+          @if (showLoginMessage) {
+            <div class="login-toast">⚠️ Solo usuarios registrados pueden añadir a favoritos</div>
+          }
+        </div>
       </div>
 
-      @if (post.cover) {
-        <img class="cover" [src]="post.cover" alt="cover" />
-      }
+      <!-- IDIOMA -->
+      <div class="lang-toggle">
+        <button type="button" (click)="setLang('es')" [class.active]="lang === 'es'">ES</button>
 
-      <div class="content">
-        {{ post.content }}
+        <button
+          type="button"
+          (click)="setLang('en')"
+          [class.active]="lang === 'en'"
+          [disabled]="!hasEnglishContent()"
+        >
+          EN
+        </button>
+      </div>
+
+      <!-- CONTENIDO -->
+      <div class="content-wrapper">
+        <div class="content" [innerHTML]="getSafeContent()"></div>
+      </div>
+
+      <!-- SIN TRADUCCIÓN -->
+      @if (lang === 'en' && !hasEnglishContent()) {
+        <div class="no-translation">
+          <p>⚠️ This post is not available in English yet.</p>
+          <button (click)="setLang('es')" class="back-to-es">Ver en español</button>
+        </div>
+      }
+      <div class="print-wrapper">
+        <button class="icon-btn--flat" (click)="printPost()" title="Imprimir">
+          <i class="fa-solid fa-print"></i>
+          <span>Imprimir</span>
+        </button>
       </div>
     </div>
-  </div>
+  </article>
 }

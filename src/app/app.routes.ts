@@ -4,6 +4,7 @@ import { roleGuard } from './core/guards/role-guard';
 import { About } from './features/about/about';
 import { Login } from './features/auth/pages/login/login';
 import { Register } from './features/auth/pages/register/register';
+import { postResolver } from './features/blog/resolvers/post.resolver';
 import { Home } from './features/home/home';
 import { LevelTest } from './features/level-test/level-test';
 
@@ -30,6 +31,9 @@ export const routes: Routes = [
     path: 'blog/:slug',
     loadComponent: () =>
       import('./features/blog/blog-detail/blog-detail').then((m) => m.BlogDetail),
+    resolve: {
+      post: postResolver,
+    },
   },
 
   // =========================

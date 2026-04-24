@@ -9,7 +9,11 @@
 
     <!-- CENTER (desktop) -->
     <ul class="navbar__center">
-      <li><a routerLink="/" routerLinkActive="active">Inicio</a></li>
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Inicio
+        </a>
+      </li>
       <li><a routerLink="/about" routerLinkActive="active">Sobre</a></li>
       <li><a routerLink="/student" routerLinkActive="active">Estudiante</a></li>
       <li><a routerLink="/teacher" routerLinkActive="active">Profesor</a></li>
