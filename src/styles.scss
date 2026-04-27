@@ -39,7 +39,9 @@ h3 {
   line-height: 1.2;
 }
 h1 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  text-align: center;
+  color: var(--color-accent);
 }
 
 h2 {
@@ -51,7 +53,7 @@ h3 {
 }
 
 p {
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-size: clamp(1.2rem, 1.2vw, 1.4rem);
   line-height: 1.6;
 }
 
@@ -67,4 +69,72 @@ html {
 /* Esta clase solo se añade cuando un componente la pide */
 html.no-smooth-scroll {
   scroll-behavior: auto;
+}
+
+/* original mío de RECETAS ANGULAR 
+
+.gold-gradient {
+  font-weight: bold;
+  font-size: 2rem;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #3d3d3d,
+    #3d3d3d 40%,
+    #fff9e4 50%,
+    #3d3d3d 60%,
+    #3d3d3d
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: slidingGradient 3s linear infinite;
+} 
+
+@keyframes slidingGradient {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+*/
+
+// En tu archivo de estilos
+.gold-gradient {
+  font-weight: bold;
+  font-family: 'Clicker Script', cursive;
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  background: linear-gradient(90deg, #b8860b, #ffd700, #fff9e4, #ffd700, #b8860b);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: goldSlide 7s linear infinite;
+}
+
+// Para las estrellas
+.stars {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #b8860b, #ffd700, #fff9e4, #ffd700, #b8860b);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: goldSlide 7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes goldSlide {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
 }

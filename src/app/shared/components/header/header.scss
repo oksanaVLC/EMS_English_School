@@ -2,31 +2,23 @@
   height: clamp(180px, 30vh, 260px);
   position: relative;
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: linear-gradient(135deg, #26ee76, #01c2d1);
   color: white;
   text-align: center;
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
-
-  position: relative;
-  overflow: hidden;
 }
 
 /* CÍRCULO DE FONDO */
 .header::before {
   content: '';
   position: absolute;
-
   width: clamp(250px, 40vw, 400px);
   height: clamp(250px, 40vw, 400px);
-
   border-radius: 50%;
-
   background: radial-gradient(
     circle,
     rgba(255, 255, 255, 0.8) 0%,
@@ -34,12 +26,11 @@
     rgba(247, 250, 252, 0.2) 70%,
     rgba(247, 250, 252, 0) 100%
   );
-
   bottom: -130px;
   right: -60px;
-
   pointer-events: none;
   z-index: 1;
+  animation: pulseGlow 3s ease-in-out infinite alternate;
 }
 
 /* CONTENIDO */
@@ -59,16 +50,29 @@
       1px 1px 0 rgba(0, 0, 0, 0.2),
       2px 2px 0 rgba(0, 0, 0, 0.15),
       3px 3px 5px rgba(0, 0, 0, 0.2);
+
+    /* ZOOM IN */
+    animation: zoomIn 0.5s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.9);
   }
 
   .stars {
-    color: #ffe600;
     font-size: clamp(1.5rem, 2vw, 1.6rem);
     letter-spacing: 5px;
-    text-shadow:
-      1px 1px 0 rgba(0, 0, 0, 0.2),
-      2px 2px 0 rgba(0, 0, 0, 0.15),
-      3px 3px 5px rgba(0, 0, 0, 0.2);
+
+    /* Mantener el gradiente dorado */
+    background: linear-gradient(90deg, #b8860b, #ffd700, #fff9e4, #ffd700, #b8860b);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation:
+      goldSlide 7s linear infinite,
+      fadeIn 0.4s ease-out 0.15s forwards;
+    opacity: 0;
+    display: inline-block;
   }
 
   p {
@@ -80,6 +84,63 @@
       1px 1px 0 rgba(0, 0, 0, 0.2),
       2px 2px 0 rgba(0, 0, 0, 0.15),
       3px 3px 5px rgba(0, 0, 0, 0.2);
+
+    /* SLIDE FROM RIGHT */
+    animation: slideFromRight 0.5s ease-out 0.3s forwards;
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+
+/* KEYFRAMES - Texto */
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes goldSlide {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.04);
   }
 }
 
@@ -88,9 +149,17 @@
   position: absolute;
   bottom: -40px;
   right: -80px;
-
   width: clamp(240px, 40vw, 400px);
-
   pointer-events: none;
   z-index: 1;
+  animation: mountainFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes mountainFloat {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
 }

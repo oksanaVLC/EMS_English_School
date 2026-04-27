@@ -1,0 +1,417 @@
+.students-home {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.8rem;
+}
+
+/* =========================
+   TITLE WITH DECORATIVE LINES
+========================= */
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.line {
+  height: 6px;
+  width: 100px;
+  background: linear-gradient(90deg, #00c2d1, #26ee76);
+  position: relative;
+}
+
+.line.left {
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+
+.line.right {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+/* Ocultar líneas decorativas en móviles */
+@media (max-width: 768px) {
+  .line {
+    display: none;
+  }
+}
+
+/* =========================
+   TEXTO CENTRADO
+========================= */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-text,
+.hero-info,
+.level-info {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.level-info {
+  margin-top: 1rem;
+}
+.hero-info {
+  margin: 1rem auto;
+  color: #666;
+}
+
+/* =========================
+   LEVEL BUTTONS
+========================= */
+/* =========================
+   LEVEL BUTTONS - GRADIENT VERSION
+========================= */
+
+.levels {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.level {
+  color: white;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  border-radius: 40px;
+
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+
+  /* Efecto de brillo sutil */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+/* GRADIENTES POR NIVEL */
+.a1 {
+  background: linear-gradient(135deg, #ff65a2, #ff3b7f);
+  box-shadow: 0 4px 12px rgba(255, 101, 162, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(255, 101, 162, 0.4);
+  }
+}
+
+.a2 {
+  background: linear-gradient(135deg, #ff8c42, #ff6f37);
+  box-shadow: 0 4px 12px rgba(255, 111, 55, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(255, 111, 55, 0.4);
+  }
+}
+
+.b1 {
+  background: linear-gradient(135deg, #f5d742, #fdbd28);
+  box-shadow: 0 4px 12px rgba(253, 189, 40, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(253, 189, 40, 0.4);
+  }
+}
+
+.b2 {
+  background: linear-gradient(135deg, #2ecc71, #00a83d);
+  box-shadow: 0 4px 12px rgba(0, 168, 61, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 168, 61, 0.4);
+  }
+}
+
+.c1 {
+  background: linear-gradient(135deg, #4ecdc4, #02b2dd);
+  box-shadow: 0 4px 12px rgba(2, 178, 221, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(2, 178, 221, 0.4);
+  }
+}
+
+.c2 {
+  background: linear-gradient(135deg, #3498db, #005299);
+  box-shadow: 0 4px 12px rgba(0, 82, 153, 0.3);
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 82, 153, 0.4);
+  }
+}
+
+/* =========================
+   LEVEL TEST SECTION
+========================= */
+.hero-info {
+  color: #111;
+}
+.level-info {
+  color: #777;
+  font-style: italic;
+  text-align: center;
+}
+
+.pointer-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.cursor-img {
+  position: absolute;
+  width: 35px;
+  right: calc(50% - 100px);
+  bottom: -20px;
+}
+
+/* =========================
+   SECCIONES
+========================= */
+
+.sections {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.sections h3 {
+  color: #666;
+}
+
+/* =========================
+   GRID CARDS - RESPONSIVE
+========================= */
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+/* Pantallas grandes: 3 columnas fijas */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Tablets: 2 columnas */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Móviles: 1 columna */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* TOP AREA */
+/* =========================
+   CARD STYLES
+========================= */
+
+.card {
+  background: var(--main-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  border-radius: 20px;
+  height: auto; /* CAMBIADO: de 200px a auto */
+  min-height: 200px; /* Altura mínima en lugar de fija */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* TOP AREA - CORREGIDO */
+.card-top {
+  flex: 1;
+  background: transparent;
+  padding: 1rem;
+  position: relative;
+}
+
+/* Lista de temas - CORREGIDO */
+.card-topics {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+  position: relative;
+  text-align: left;
+  font-weight: bold;
+}
+
+.card-topics li {
+  color: white;
+  font-size: clamp(0.8rem, 3vw, 1.3rem);
+  line-height: 1.6;
+
+  position: relative;
+  padding-left: 18px;
+}
+
+.card-topics li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: bold;
+  font-size: 1em;
+}
+/* BOTTOM WHITE AREA */
+.card-bottom {
+  background: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  min-height: 60px;
+  span {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}
+
+/* ICON CIRCLE - escala con la card */
+.icon-circle {
+  width: 22%; /* Porcentaje del ancho de la card */
+  max-width: 78px;
+  min-width: 40px;
+  aspect-ratio: 1 / 1; /* Mantiene proporción cuadrada */
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+  top: -35%; /* Posición relativa a la altura */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+
+  /* Sombra blanca con blur 
+  box-shadow:
+    0 0 20px 5px rgba(255, 255, 255, 0.8),
+    0 0 40px 10px rgba(255, 255, 255, 0.5),
+    0 0 60px 15px rgba(255, 255, 255, 0.3);*/
+  /* Sombra base */
+  box-shadow:
+    0 0 20px 8px rgba(255, 255, 255, 0.6),
+    0 0 40px 15px rgba(255, 255, 255, 0.3);
+
+  /* Animación de brillo */
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow:
+      0 0 15px 5px rgba(255, 255, 255, 0.5),
+      0 0 30px 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow:
+      0 0 30px 12px rgba(255, 255, 255, 0.9),
+      0 0 50px 20px rgba(255, 255, 255, 0.5),
+      0 0 70px 25px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.category-icon {
+  width: 55%; /* Porcentaje del círculo */
+  height: auto;
+  object-fit: contain;
+}
+
+.card:hover .icon-circle {
+  transform: scale(1.05);
+}
+
+/* Opcional: límites para pantallas muy grandes */
+@media (min-width: 1200px) {
+  .icon-circle {
+    max-width: 80px;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .levels {
+    gap: 0.5rem;
+  }
+
+  .level {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .icon-circle {
+    width: 35px;
+    height: 35px;
+    right: -2px;
+    top: -18px;
+  }
+
+  .category-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-bottom span {
+    font-size: 0.85rem;
+  }
+}

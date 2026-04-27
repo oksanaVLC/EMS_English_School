@@ -23,6 +23,19 @@ export const routes: Routes = [
   },
 
   {
+    path: 'students',
+    loadComponent: () =>
+      import('./features/students-home/students-home').then((m) => m.StudentsHome),
+    data: { breadcrumb: 'Estudiantes' },
+  },
+
+  {
+    path: 'teachers',
+    loadComponent: () =>
+      import('./features/teachers-home/teachers-home').then((m) => m.TeachersHome),
+    data: { breadcrumb: 'Profesores' },
+  },
+  {
     path: 'blog',
     loadComponent: () => import('./features/blog/blog/blog').then((m) => m.Blog),
     data: { breadcrumb: 'Blog' },

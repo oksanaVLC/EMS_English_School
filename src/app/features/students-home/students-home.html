@@ -1,0 +1,148 @@
+<section class="students-home">
+  <header class="hero">
+    <div class="title-wrapper">
+      <span class="line left"></span>
+      <h1 class="title">Elige el nivel que te interesa</h1>
+
+      <span class="line right"></span>
+    </div>
+
+    <p class="hero-text">
+      En este apartado encontrarás ejercicios, PDF descargables, tests y mucho más para dominar el
+      inglés.
+    </p>
+
+    <!-- LEVEL BUTTONS -->
+    <div class="levels">
+      <button class="level a1">A1</button>
+      <button class="level a2">A2</button>
+      <button class="level b1">B1</button>
+      <button class="level b2">B2</button>
+      <button class="level c1">C1</button>
+      <button class="level c2">C2</button>
+    </div>
+
+    <p class="hero-info">
+      ¿No conoces tu nivel de inglés? Haz la prueba según el
+      <b>Marco Europeo Común de Referencia </b>para las Lenguas (CEFR).
+    </p>
+
+    <!-- TEST BUTTON (igual que home) -->
+    <div class="pointer-wrapper">
+      <a routerLink="/level-test">
+        <app-button variant="primary" size="large">Prueba de nivel</app-button>
+      </a>
+      <img src="images/pointer.png" alt="" class="cursor-img" />
+    </div>
+    <p class="level-info">Para hacer la prueba de nivel, hay que iniciar la sesión.</p>
+  </header>
+
+  <!-- SECTIONS -->
+  <section class="sections">
+    <div class="title-wrapper">
+      <span class="line left"></span>
+      <h1 class="title">Todos los niveles</h1>
+      <span class="line right"></span>
+    </div>
+
+    <p class="hero-text">Elige el apartado que te interesa</p>
+
+    <div class="grid">
+      <!-- CARD -->
+      <div class="card" routerLink="/students/describimosr">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>Patrones de verbos</li>
+            <li>Tiempos verbales</li>
+            <li>Condicionales</li>
+            <li>Modales</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Grammar</span>
+          <div class="icon-circle">
+            <img src="images/settings.png" alt="Grammar icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" routerLink="/students/vocabulary">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>Vacabulario activo</li>
+            <li>Vocabulario pasivo</li>
+            <li>Condicionales</li>
+            <li>Palabras según tema</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Vocabulary</span>
+          <div class="icon-circle">
+            <img src="images/vocabulary.png" alt="Vocabulary icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" routerLink="/students/pronunciation">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>Sonidos que confunden</li>
+            <li>Regla de pronunciación</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Pronunciation</span>
+          <div class="icon-circle">
+            <img src="images/pronunciation.png" alt="Pronunciation icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" routerLink="/students/listening">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>Multiple choice</li>
+            <li>Dictations</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Listening</span>
+          <div class="icon-circle">
+            <img src="images/listening.png" alt="Listening icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" routerLink="/students/writing">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>Descripción</li>
+            <li>Carta de presentación</li>
+            <li>Mini-historias</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Writing</span>
+          <div class="icon-circle">
+            <img src="images/writing.png" alt="Writing icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card" routerLink="/students/speaking">
+        <div class="card-top">
+          <ul class="card-topics">
+            <li>· Describimos una foto</li>
+            <li>Preparamos para la entrevista</li>
+          </ul>
+        </div>
+        <div class="card-bottom">
+          <span>Speaking</span>
+          <div class="icon-circle">
+            <img src="images/speaking.png" alt="Speaking icon" class="category-icon" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

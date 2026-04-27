@@ -2,9 +2,9 @@
 
 .about-section {
   max-width: 1000px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-
+  margin: 1rem auto;
+  padding: 0 1rem;
+  color: rgb(194, 77, 77) 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,9 +22,14 @@
 .about-text {
   flex: 1;
   color: var(--color-accent);
-  font-family: 'Clicker Script', cursive;
+
   p {
-    font-size: clamp(1.8rem, 2.5vw, 2rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -36,7 +41,7 @@
 
   display: inline-block;
   width: 100%;
-  max-width: 380px;
+  max-width: 480px;
 }
 
 .gradient-frame img {
@@ -52,8 +57,8 @@
   background: var(--main-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
-  font-size: clamp(2rem, 2.5vw, 2.6rem);
+  font-family: 'Clicker Script', cursive;
+  font-size: clamp(2rem, 2.5vw, 3rem);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
@@ -68,8 +73,17 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-
+  color: var(--color-accent);
   gap: 1rem;
+  p {
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+  }
+  .level-info {
+    color: #868585;
+    font-style: italic;
+    max-width: 700px;
+    font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  }
 }
 
 .level-circles {
@@ -89,14 +103,8 @@
   max-width: 700px;
 }
 
-.level-info {
-  color: #868585;
-
-  max-width: 700px;
-}
-
 .levels-img {
-  width: clamp(200px, 60%, 300px);
+  width: clamp(230px, 60%, 300px);
   display: block;
 }
 
@@ -136,8 +144,8 @@
   align-items: center;
 
   h2 {
-    white-space: nowrap; /* evita saltos de línea */
-    font-size: clamp(1.3rem, 3.5vw, 2rem);
+    white-space: nowrap;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
     text-align: center;
   }
 }
@@ -198,8 +206,8 @@
   padding: 1.2rem;
   // font-family: inherit;
   font-family: 'Nunito', sans-serif;
-  font-size: clamp(2rem, 2.5vw, 2.3rem);
-  font-family: 'Clicker Script', cursive;
+  font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+
   text-align: left;
   border: none;
   cursor: pointer;
@@ -215,16 +223,19 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-
+  font-size: clamp(1.3rem, 2.5vw, 1.5rem);
   transition:
     grid-template-rows 0.35s ease,
     opacity 0.25s ease;
 }
 
-/* 🔥 clave para suavidad real */
 .faq-answer > div {
   overflow: hidden;
   padding: 0 1.2rem;
+}
+.faq-answer * {
+  font-size: inherit;
+  color: var(--color-accent);
 }
 
 /* ESTADO ACTIVO */
