@@ -62,6 +62,22 @@ export class Home implements AfterViewInit {
       loaded: false,
       reveal: 50,
     },
+    {
+      id: 'xxk2LwBt62U',
+      thumb: '',
+      title: 'TEMA 5',
+      embedUrl: null,
+      loaded: false,
+      reveal: 50,
+    },
+    {
+      id: '75MbeDqiyoQ',
+      thumb: '',
+      title: 'TEMA 6',
+      embedUrl: null,
+      loaded: false,
+      reveal: 50,
+    },
   ];
 
   constructor(private sanitizer: DomSanitizer) {
