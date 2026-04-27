@@ -138,3 +138,120 @@ html.no-smooth-scroll {
     background-position: 300% 0%;
   }
 }
+
+/************Silver Shine*******************/
+.silver-shine {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Imagen base */
+.silver-shine img {
+  display: block;
+  width: clamp(230px, 60%, 300px);
+  height: auto;
+  border-radius: 16px;
+}
+
+/* =========================
+   SHINE PRINCIPAL (iOS STYLE)
+   ========================= */
+.silver-shine::after {
+  content: '';
+  position: absolute;
+
+  top: 0;
+  left: -150%;
+
+  width: 60%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0.05) 75%,
+    transparent 100%
+  );
+
+  transform: skewX(-15deg);
+  filter: blur(2px);
+  opacity: 0.8;
+
+  animation: iosShineMain 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* =========================
+   SHINE SECUNDARIO (FINO)
+   ========================= */
+.silver-shine::before {
+  content: '';
+  position: absolute;
+
+  top: 0;
+  left: -120%;
+
+  width: 30%;
+  height: 100%;
+
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+
+  transform: skewX(-15deg);
+  filter: blur(3px);
+  opacity: 0.6;
+
+  animation: iosShineSoft 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* =========================
+   ANIMACIONES
+   ========================= */
+
+/* brillo principal */
+@keyframes iosShineMain {
+  0% {
+    left: -150%;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  80% {
+    opacity: 0.4;
+  }
+
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
+}
+
+/* brillo secundario más suave */
+@keyframes iosShineSoft {
+  0% {
+    left: -120%;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    left: 160%;
+    opacity: 0;
+  }
+}

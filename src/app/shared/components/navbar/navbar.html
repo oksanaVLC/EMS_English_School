@@ -3,7 +3,7 @@
     <!-- LEFT -->
     <div class="navbar__left">
       <a routerLink="/">
-        <img src="images/logo.png" alt="Logo" class="logo" />
+        <img src="images/logo.webp" alt="Logo" class="logo" />
       </a>
     </div>
 
@@ -35,13 +35,13 @@
 
       @if (isLoggedIn()) {
         <a [routerLink]="getDashboardLink()" (click)="closeMenu()">
-          <img src="images/user1.png" alt="Dashboard" />
+          <img src="images/user1.webp" alt="Dashboard" />
         </a>
       }
 
       @if (isLoggedIn()) {
         <button class="logout-btn" (click)="logout()">
-          <img src="/images/logout.png" alt="Cerrar sesión" />
+          <img src="/images/logout.webp" alt="Cerrar sesión" />
         </button>
       }
     </div>
@@ -58,7 +58,7 @@
   <div class="navbar__overlay">
     <!-- USER ICON -->
     <a [routerLink]="getDashboardLink()" (click)="closeMenu()">
-      <img src="images/user_avatar.png" alt="Dashboard" class="overlay__user" />
+      <img src="images/user_avatar.webp" alt="Dashboard" class="overlay__user" />
     </a>
 
     <!-- MENU MOBILE -->
@@ -96,6 +96,6 @@
       class="overlay__cookies"
       [@rotateCookie]="cookieState()"
     />
-    <img src="images/mountain.png" alt="Mountain" class="overlay__mountain" />
+    <img src="images/mountain.webp" alt="Mountain" class="overlay__mountain" />
   </div>
 </nav>

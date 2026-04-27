@@ -12,7 +12,7 @@
   <div class="card">
     <!-- AVATAR -->
     <div class="avatar">
-      <img [src]="previewUrl || user()?.avatar_url || 'images/user.jpg'" alt="avatar" />
+      <img [src]="previewUrl || user()?.avatar_url || 'images/user.webp'" alt="avatar" />
 
       <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
 
@@ -40,48 +40,6 @@
     </form>
 
     <!-- BACK -->
-    <button type="button" (click)="back()" class="back-link">← Volver al panel</button>
-  </div>
-</div>
-
-<!-- MODAL DE CONFIRMACIÓN -->
-<div class="profile-config">
-  <div class="title">
-    <h1>
-      Configuración de perfil de
-      <span class="accent">{{ user()?.name }}.</span>
-    </h1>
-    <h2>Edita tu información personal</h2>
-  </div>
-
-  <div class="card">
-    <div class="avatar">
-      <img [src]="previewUrl || user()?.avatar_url || 'images/user.jpg'" />
-
-      <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
-
-      <button type="button" class="change-avatar" (click)="fileInput.click()">Cambiar foto</button>
-    </div>
-
-    <form [formGroup]="form" (ngSubmit)="save()">
-      <label>
-        Nombre
-        <input formControlName="name" />
-      </label>
-
-      <label>
-        Apellido
-        <input formControlName="surname" />
-      </label>
-
-      <label>
-        Email
-        <input formControlName="email" />
-      </label>
-
-      <button type="submit" class="save-btn">Guardar cambios</button>
-    </form>
-
     <button type="button" (click)="back()" class="back-link">← Volver al panel</button>
   </div>
 </div>

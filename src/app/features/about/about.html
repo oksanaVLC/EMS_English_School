@@ -2,7 +2,7 @@
 <section class="about-section">
   <div class="about-image">
     <div class="image-frame">
-      <img src="images/yo.png" alt="Oksana" class="profile-img" />
+      <img src="images/yo.webp" alt="Oksana" class="profile-img" />
     </div>
   </div>
 
@@ -31,12 +31,15 @@
     Lenguas (CEFR)?
   </p>
 
-  <img src="images/levels.png" alt="Niveles CEFR" class="levels-img" />
+  <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
 
   <p class="level-info">Para hacer la prueba de nivel, hay que iniciar la sesión.</p>
 
   <div class="pointer-wrapper">
-    <app-button variant="primary">Prueba de nivel</app-button>
-    <img src="images/pointer.png" alt="" class="cursor-img" />
+    <a [routerLink]="['/level-test']">
+      <app-button variant="primary" size="large">Prueba de nivel</app-button>
+    </a>
+
+    <img src="images/pointer.webp" alt="" class="cursor-img" />
   </div>
 </section>
