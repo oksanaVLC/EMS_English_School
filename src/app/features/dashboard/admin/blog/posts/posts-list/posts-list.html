@@ -62,17 +62,17 @@
 
               <td class="actions">
                 <button [routerLink]="['/admin/posts/view', post.id]" class="icon-btn">
-                  <img src="/images/opened_eye.png" alt="ver" />
+                  <img src="/images/opened_eye.webp" alt="ver" />
                   <span class="text">Ver</span>
                 </button>
 
                 <button class="icon-btn" [routerLink]="['/admin/posts/edit', post.id]">
-                  <img src="/images/edit.png" alt="editar" />
+                  <img src="/images/edit.webp" alt="editar" />
                   <span class="text">Editar</span>
                 </button>
 
                 <button (click)="openDeleteModal(post.id)" class="icon-btn danger">
-                  <img src="/images/delete.png" alt="borrar" />
+                  <img src="/images/delete.webp" alt="borrar" />
                   <span class="text">Borrar</span>
                 </button>
               </td>
