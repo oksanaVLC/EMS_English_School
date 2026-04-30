@@ -296,3 +296,29 @@ form {
     }
   }
 }
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  margin-top: 1rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}

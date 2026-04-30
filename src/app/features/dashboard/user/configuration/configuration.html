@@ -37,6 +37,8 @@
       </label>
 
       <button type="submit" class="save-btn">Guardar cambios</button>
+
+      <button type="button" class="delete-btn" (click)="openDeleteModal()">Eliminar cuenta</button>
     </form>
 
     <!-- BACK -->
@@ -44,7 +46,7 @@
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL SALIR-->
 @if (showLeaveModal) {
   <div class="modal-overlay">
     <div class="modal-container">
@@ -55,6 +57,23 @@
         <button class="btn-cancel" (click)="cancelLeave()">Cancelar</button>
 
         <button class="btn-confirm" (click)="confirmLeave()">Sí, abandonar</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- MODAL ELIMINAR CUENTA-->
+@if (showDeleteModal) {
+  <div class="modal-overlay">
+    <div class="modal-container">
+      <h3>¿Eliminar cuenta?</h3>
+      <p>Esta acción es irreversible. Confirma tu contraseña para continuar.</p>
+
+      <input type="password" placeholder="Introduce tu contraseña" [(ngModel)]="deletePassword" />
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="cancelDelete()">Cancelar</button>
+        <button class="btn-confirm" (click)="confirmDelete()">Sí, eliminar</button>
       </div>
     </div>
   </div>

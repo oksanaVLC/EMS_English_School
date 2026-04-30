@@ -1,9 +1,9 @@
 <div class="grid">
   @for (post of posts; track post.id) {
     <article class="card">
-      <a [routerLink]="['/blog', post.slug]" class="image-wrapper">
+      <div class="image-wrapper" (click)="goToPost(post.slug)">
         <img [src]="post.cover" alt="cover" />
-      </a>
+      </div>
 
       <div class="content">
         <h2 class="title">
@@ -23,7 +23,7 @@
           {{ getExcerpt(post).length > 140 ? '...' : '' }}
         </p>
 
-        <a [routerLink]="['/blog', post.slug]" class="read-more"> Leer más → </a>
+        <span class="read-more" (click)="goToPost(post.slug)"> Leer más → </span>
       </div>
     </article>
   }

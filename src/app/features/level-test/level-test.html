@@ -1,43 +1,140 @@
 <div class="level-test">
-  <!-- HEADER -->
+  <!-- ========================= -->
+  <!-- HEADER (SIEMPRE VISIBLE) -->
+  <!-- ========================= -->
   <section class="level-test__header">
-    <h1>Haz la prueba y descubre tu nivel de inglés.</h1>
+    <h1>Haz la prueba y descubre tu nivel de inglés</h1>
+
     <p>
       Al completar este test vas a saber cuál es tu nivel de inglés, teniendo en cuenta la
       gramática, el vocabulario y la comprensión escrita. Las preguntas están divididas en cinco
-      secciones, según el Marco Común Europeo de Referencia: desde A1 hasta C1.
+      secciones, según el Marco Común Europeo: desde A1 hasta C1.
     </p>
-    <img src="images/levels.png" alt="Niveles CEFR" class="levels-img" />
-  </section>
-
-  <hr class="divider" />
-
-  <!-- TEST -->
-  <section class="level-test__content">
-    <h2>NIVEL A1</h2>
-
-    <div class="question">
-      <p>1. Elije la respuesta correcta:</p>
-      <label><input type="radio" name="q1" /> I have the apple.</label>
-      <label><input type="radio" name="q1" /> I have an apple.</label>
-      <label><input type="radio" name="q1" /> I have apple.</label>
+    <div class="silver-shine">
+      <div class="silver-shine">
+        <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
+      </div>
     </div>
-
-    <!-- Repetir para más preguntas -->
   </section>
 
-  <!-- PROGRESS -->
-  <div class="progress">
-    <div class="progress__bar" style="width: 30%"></div>
-  </div>
+  <!-- <hr class="divider" />-->
 
-  <!-- LOGIN MESSAGE -->
-  <p class="login-text">
-    Para poder completar el test, es necesario
-    <a href="#">iniciar la sesión</a>.
-  </p>
+  <!-- ========================= -->
+  <!-- LOADING -->
+  <!-- ========================= -->
+  @if (loading) {
+    <p class="loading">Cargando test...</p>
+  }
 
-  <div class="login-btn">
-    <app-button variant="primary">Iniciar sesión</app-button>
-  </div>
+  <!-- ========================= -->
+  <!-- ERROR -->
+  <!-- ========================= -->
+  @if (error && !loading) {
+    <div class="error-container">
+      <p class="error">{{ error }}</p>
+      <button class="primary-btn" (click)="loadTest()">Reintentar</button>
+    </div>
+  }
+
+  <!-- ========================= -->
+  <!-- INTRO -->
+  <!-- ========================= -->
+  @if (!started && !loading && !error) {
+    <div class="pointer-wrapper">
+      <app-button variant="primary" size="large" (clicked)="startTest()"> Empezar test </app-button>
+
+      <img src="images/pointer.webp" alt="" class="cursor-img" />
+    </div>
+  }
+
+  <!-- ========================= -->
+  <!-- TEST (UNA PREGUNTA) -->
+  <!-- ========================= -->
+  @if (started && currentIndex < questions.length && !error) {
+    <section class="test-card">
+      <!-- NIVEL -->
+      <h2 class="level-title">Nivel {{ currentQuestion().level }}</h2>
+
+      <!-- PROGRESS (debajo del nivel, fijo visualmente) -->
+      <div class="progress">
+        <div class="progress__bar" [style.width.%]="progress()"></div>
+      </div>
+
+      <!-- PREGUNTA -->
+      <p class="question">{{ currentIndex + 1 }}. {{ currentQuestion().question }}</p>
+
+      <!-- OPCIONES -->
+      <div class="options">
+        @for (opt of currentQuestion().options; track opt.id) {
+          <button
+            class="option"
+            (click)="selectOption(opt.id)"
+            [class.selected]="isSelected(opt)"
+            [class.correct]="isCorrect(opt)"
+            [class.wrong]="isWrong(opt)"
+            [class.disabled]="locked"
+          >
+            {{ opt.text }}
+          </button>
+        }
+      </div>
+
+      <!-- EXPLICACIÓN + NEXT -->
+      @if (locked) {
+        <div class="feedback">
+          <div class="explanation">
+            {{ currentQuestion().explanation }}
+          </div>
+
+          <button class="next-btn" (click)="next()">Siguiente →</button>
+        </div>
+      }
+    </section>
+  }
+
+  <!-- ========================= -->
+  <!-- RESULTADO FINAL -->
+  <!-- ========================= -->
+  @if (!loading && started && currentIndex >= questions.length && !error) {
+    <section class="final">
+      <h1>🎉 ¡Bien hecho!</h1>
+
+      <p class="subtitle">Has completado el test de nivel de inglés (A1–C1)</p>
+
+      <!-- SCORE -->
+      <div class="score-box">
+        <div class="score">{{ score }}/{{ questions.length }}</div>
+
+        <div class="level">Nivel {{ levelResult().level }}</div>
+      </div>
+
+      <!-- MENSAJE -->
+      <p class="result-message">
+        {{ levelResult().message }}
+      </p>
+
+      <!-- SOCIAL -->
+      <p class="social-proof">
+        Esta prueba ha sido completada por más de <strong>1000 estudiantes</strong>
+      </p>
+
+      <!-- CTA -->
+      <div class="cta">
+        <button class="primary-btn">Ver curso para nivel {{ levelResult().level }}</button>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="secondary-actions">
+        <button class="secondary-btn" (click)="restartTest()">Repetir test</button>
+
+        <button class="secondary-btn">Compartir resultado</button>
+      </div>
+
+      <!-- IMÁGENES -->
+      <div class="final-images">
+        <img src="images/2750298.png" alt="celebration" />
+        <img src="images/user.webp" alt="user" />
+      </div>
+    </section>
+  }
 </div>

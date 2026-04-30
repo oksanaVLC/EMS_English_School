@@ -14,7 +14,7 @@
 
   <!-- VISTAS -->
   @if (viewMode === 'grid') {
-    <app-blog-grid [posts]="posts"></app-blog-grid>
+    <app-blog-grid [posts]="posts" [currentPage]="currentPage"> </app-blog-grid>
   }
 
   @if (viewMode === 'table') {

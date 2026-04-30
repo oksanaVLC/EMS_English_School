@@ -61,12 +61,19 @@ a {
   text-decoration: none;
 }
 
-/*  Por defecto, scroll suave */
+/* styles.scss - estilos globales */
+
+/* Scroll suave para toda la aplicación */
 html {
   scroll-behavior: smooth;
 }
 
-/* Esta clase solo se añade cuando un componente la pide */
+/* Para elementos específicos con scroll interno */
+* {
+  scroll-margin-top: 20px; /* Espacio adicional para elementos anclados */
+}
+
+/* Clase para deshabilitar scroll suave (cuando sea necesario) */
 html.no-smooth-scroll {
   scroll-behavior: auto;
 }
@@ -102,7 +109,7 @@ html.no-smooth-scroll {
 }
 */
 
-// En tu archivo de estilos
+//Golden Gradient
 .gold-gradient {
   font-weight: bold;
   font-family: 'Clicker Script', cursive;

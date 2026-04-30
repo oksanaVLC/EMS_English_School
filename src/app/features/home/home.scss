@@ -65,8 +65,13 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Clicker Script', cursive;
-  font-size: clamp(2rem, 2.5vw, 3rem);
+  font-size: clamp(3rem, 2.5vw, 4rem);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+@media (max-width: 414px) {
+  .gradient-text {
+    font-size: 2.2rem;
+  }
 }
 
 /* ================= LEVEL SECTION ================= */

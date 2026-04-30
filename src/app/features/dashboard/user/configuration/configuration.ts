@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { CanComponentDeactivate } from '../../../../core/guards/can-deactivate-guard';
@@ -9,7 +9,7 @@ import { Auth } from '../../../../core/services/auth';
 @Component({
   selector: 'app-user-config',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './configuration.html',
   styleUrls: ['./configuration.scss'],
 })
@@ -18,6 +18,9 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
+
+  deletePassword = '';
+  showDeleteModal = false;
 
   user = this.auth.user;
 
@@ -66,7 +69,7 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
     return changed || !!this.selectedFile;
   }
 
-  // 🔥 GUARD CALLS THIS
+  //  GUARD CALLS THIS
   showLeaveConfirmation(): Promise<boolean> {
     this.showLeaveModal = true;
 
@@ -149,5 +152,31 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
     };
 
     reader.readAsDataURL(file);
+  }
+  openDeleteModal() {
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete() {
+    this.showDeleteModal = false;
+  }
+
+  confirmDelete() {
+    if (!this.deletePassword) return;
+
+    this.http
+      .post(`${environment.apiUrl}/user/delete`, {
+        password: this.deletePassword,
+      })
+      .subscribe({
+        next: () => {
+          this.auth.logout();
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Contraseña incorrecta o error al eliminar la cuenta');
+        },
+      });
   }
 }

@@ -1,0 +1,39 @@
+<div class="level-test">
+  <!-- HEADER -->
+  <section class="level-test__header">
+    <h1>Haz la prueba y descubre tu nivel de inglés</h1>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- QUESTIONS -->
+  <section class="level-test__content">
+    <h2>NIVEL A1</h2>
+
+    <div class="question" *ngFor="let q of questions; let i = index">
+      <p class="question__text">{{ i + 1 }}. {{ q.question_text }}</p>
+
+      <label
+        class="option"
+        *ngFor="let opt of q.options"
+        (click)="selectOption(q.id, opt.id)"
+        [class.selected]="isSelected(q.id, opt.id)"
+        [class.correct]="isCorrect(q, opt)"
+        [class.wrong]="isWrong(q, opt)"
+      >
+        <input type="radio" [name]="'q' + q.id" />
+        {{ opt.text }}
+      </label>
+
+      <!-- EXPLANATION SOLO AL FINAL -->
+      <div class="explanation" *ngIf="submitted">
+        {{ q.explanation }}
+      </div>
+    </div>
+
+    <!-- SUBMIT BUTTON -->
+    <div class="submit-wrapper" *ngIf="!submitted">
+      <button class="submit-btn" (click)="submitTest()">Enviar respuestas</button>
+    </div>
+  </section>
+</div>

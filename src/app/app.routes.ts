@@ -69,8 +69,14 @@ export const routes: Routes = [
   {
     path: 'level-test',
     component: LevelTest,
-    canActivate: [roleGuard(['admin', 'teacher', 'user'])],
     data: { breadcrumb: 'Test de nivel' },
+  },
+  {
+    path: 'level-test/run',
+    loadComponent: () =>
+      import('./features/level-test/test-runner/test-runner').then((m) => m.TestRunner),
+    canActivate: [roleGuard(['admin', 'teacher', 'user'])],
+    canDeactivate: [canDeactivateGuard],
   },
 
   // =========================

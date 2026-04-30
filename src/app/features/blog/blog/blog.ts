@@ -21,6 +21,7 @@ export class Blog implements OnInit {
   private apiUrl = environment.apiUrl;
 
   posts: any[] = [];
+  private stateKey = 'blog_state';
 
   currentPage = 1;
   lastPage = 1;
@@ -42,9 +43,31 @@ export class Blog implements OnInit {
       this.posts = res?.data ?? [];
       this.currentPage = res?.current_page ?? 1;
       this.lastPage = res?.last_page ?? 1;
+
+      // 👇 RESTAURAR ESTADO
+      const saved = sessionStorage.getItem(this.stateKey);
+
+      if (saved) {
+        const state = JSON.parse(saved);
+
+        // si venimos de otra página → recargar esa página
+        if (state.page && state.page !== this.currentPage) {
+          this.loadPosts(state.page);
+          return;
+        }
+
+        // si estamos en la misma → restaurar scroll
+        setTimeout(() => {
+          window.scrollTo({
+            top: state.scroll,
+            behavior: 'auto',
+          });
+        }, 50);
+
+        sessionStorage.removeItem(this.stateKey);
+      }
     });
   }
-
   onPageChange(page: number) {
     this.loadPosts(page);
   }

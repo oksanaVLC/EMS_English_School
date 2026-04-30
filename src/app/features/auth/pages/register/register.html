@@ -161,11 +161,15 @@
         </div>
 
         <!-- Submit -->
-        <div class="button-wrapper">
-          <app-button variant="primary" type="submit" class="w-full" [disabled]="form.invalid">
-            Crear cuenta
-          </app-button>
-        </div>
+        <app-button
+          variant="primary"
+          type="submit"
+          size="large"
+          [fullWidth]="true"
+          [disabled]="form.invalid"
+        >
+          Crear cuenta
+        </app-button>
         <img class="mobile-avatar" src="/images/user.webp" alt="user" />
       </form>
     </div>

@@ -1,19 +1,32 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ScrollService {
   private renderer: Renderer2;
 
-  constructor(rendererFactory: RendererFactory2) {
+  constructor(
+    rendererFactory: RendererFactory2,
+    private router: Router,
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
+    this.initAutoScroll();
   }
 
-  // Activar scroll instantáneo (solo para componentes que lo necesitan)
+  // Scroll automático al cambiar de página
+  private initAutoScroll() {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      this.scrollToTop('smooth');
+    });
+  }
+
+  // Activar scroll instantáneo
   enableInstantScroll() {
     this.renderer.addClass(document.documentElement, 'no-smooth-scroll');
   }
 
-  // Volver a scroll suave
+  // Activar scroll suave
   enableSmoothScroll() {
     this.renderer.removeClass(document.documentElement, 'no-smooth-scroll');
   }
@@ -26,7 +39,6 @@ export class ScrollService {
     document.getElementById(elementId)?.scrollIntoView({ behavior });
   }
 
-  // Guardar posición (solo para componentes que lo necesitan)
   savePosition(key: string) {
     sessionStorage.setItem(`scroll_${key}`, window.scrollY.toString());
   }

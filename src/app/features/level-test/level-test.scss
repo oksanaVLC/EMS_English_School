@@ -1,122 +1,444 @@
 .level-test {
-  max-width: 900px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
   color: #222;
 }
 
+/* ========================= */
 /* HEADER */
+/* ========================= */
 .level-test__header {
   margin-bottom: 2rem;
 
   h1 {
     font-size: 1.8rem;
-    margin-bottom: 1rem;
     font-weight: 600;
+    margin-bottom: 1rem;
   }
 
   p {
     max-width: 700px;
     margin: 0 auto;
     line-height: 1.6;
-    color: var(--color-accent);
-    font-family: 'Clicker Script', cursive;
-    font-size: clamp(1.5rem, 2vw, 2rem);
-    font-weight: 500;
-    padding-bottom: 1rem;
+    color: #666;
   }
+
   img {
-    height: 45px;
+    margin: 2rem 1rem auto;
   }
 }
 
+/* ========================= */
 /* DIVIDER */
+/* ========================= */
 .divider {
-  margin: 2rem auto;
+  margin: 2rem 0;
   border: none;
   height: 3px;
-  width: 100%;
   background: linear-gradient(to right, #00c6ff, #00ff99);
 }
 
-/* CONTENT */
-.level-test__content {
-  text-align: left;
-
-  h2 {
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-
-  p {
-    margin: 2rem 0;
-  }
+/* ========================= */
+/* LOADING */
+/* ========================= */
+.loading {
+  margin: 2rem 0;
 }
 
-/* QUESTION */
-.question {
+/* ========================= */
+/* TEST CARD */
+/* ========================= */
+.test-card {
+  text-align: left;
+}
+
+/* NIVEL */
+
+.level-title {
+  background: var(--main-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  font-weight: 700;
+  text-align: center;
   margin-bottom: 2rem;
 
-  p {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
+  /* filter: drop-shadow(0 2px 6px rgba(0, 255, 200, 0.15));
 
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-    padding-left: 1rem;
-  }
-
-  input {
-    margin-right: 8px;
-  }
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 -1px 0 rgba(255, 255, 255, 0.1);*/
 }
 
-/* PROGRESS BAR */
+.levels-img {
+  width: clamp(230px, 60%, 300px);
+  display: block;
+}
+
+.pointer-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.cursor-img {
+  position: absolute;
+  width: 30px;
+  right: -15px;
+  bottom: -15px;
+  pointer-events: none;
+}
+/* ========================= */
+/* PROGRESS */
+/* ========================= */
 .progress {
   width: 100%;
   height: 10px;
   background: #e6e6e6;
   border-radius: 10px;
   overflow: hidden;
-  margin: 2rem 0;
+  margin-bottom: 2rem;
 }
 
 .progress__bar {
   height: 100%;
   background: linear-gradient(to right, #00ff99, #00c6ff);
-  width: 0%;
-  transition: width 0.3s ease;
+  transition: width 0.4s ease;
 }
 
-/* LOGIN TEXT */
-.login-text {
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+/* ========================= */
+/* QUESTION */
+/* ========================= */
+.question {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
 
-  a {
-    color: #3b82f6;
-    text-decoration: underline;
-    cursor: pointer;
+/* ========================= */
+/* OPTIONS */
+/* ========================= */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.option {
+  padding: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-size: 0.95rem;
+
+  &:hover {
+    background: #f7f7f7;
   }
 }
 
-/* BUTTON */
-.login-btn {
+/* SELECTED */
+.option.selected {
+  border-color: #00c6ff;
+  background: #eefaff;
+}
+
+/* CORRECT */
+.option.correct {
+  border-color: #00c853;
+  background: #e8f5e9;
+}
+
+/* WRONG */
+.option.wrong {
+  border-color: #ff1744;
+  background: #ffebee;
+}
+
+/* DISABLED */
+.option.disabled {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* ========================= */
+/* FEEDBACK */
+/* ========================= */
+.feedback {
+  margin-top: 1.5rem;
+}
+
+/* EXPLANATION */
+.explanation {
+  padding: 1rem;
+  background: #d1d1cf42;
+  border-left: 4px solid #00c6ff;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
+
+.next-btn {
+  width: 100%;
+  margin-top: 1rem;
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.secondary-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.7rem 1.2rem;
+  border-radius: 20px;
+  cursor: pointer;
+
+  &:hover {
+    background: #f7f7f7;
+  }
+}
+
+/* ========================= */
+/* FINAL SCREEN */
+/* ========================= */
+.final {
+  margin-top: 2rem;
+}
+
+.subtitle {
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+/* SCORE */
+.score-box {
+  margin: 1.5rem 0;
+}
+
+.score {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #00c6ff;
+}
+
+.level {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+/* RESULT MESSAGE */
+.result-message {
+  max-width: 500px;
+  margin: 1rem auto;
+}
+
+/* SOCIAL */
+.social-proof {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 1.5rem;
+}
+
+/* CTA */
+.cta {
+  margin-bottom: 1.5rem;
+}
+
+/* ACTIONS */
+.secondary-actions {
   display: flex;
   justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .level-test__header h1 {
-    font-size: 1.4rem;
+/* ========================= */
+/* FINAL IMAGES */
+/* ========================= */
+.final-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  img:first-child {
+    max-width: 200px;
+    width: 100%;
   }
 
+  img:last-child {
+    max-width: 120px;
+    width: 100%;
+  }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+@media (max-width: 600px) {
   .question {
-    padding: 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .option {
+    font-size: 0.9rem;
+  }
+
+  .primary-btn {
+    width: 100%;
+  }
+}
+
+/*******************/
+.progress {
+  position: relative;
+  margin: 1rem 0;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+
+  .progress__bar {
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+  }
+
+  .progress-text {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.final {
+  .results-intro {
+    text-align: center;
+    color: #666;
+    margin: 1rem 0;
+  }
+
+  .score-box {
+    text-align: center;
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+
+    .score {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4caf50;
+    }
+
+    .total {
+      color: #666;
+    }
+  }
+
+  .level-result-box {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+
+    .level-badge {
+      font-size: 2rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .level-message {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    .level-description {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-top: 1rem;
+    }
+  }
+
+  .social-stats {
+    background: #e3f2fd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+
+    .social-proof {
+      font-size: 1rem;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .share-message {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 0;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .level-links {
+    text-align: center;
+    margin: 1rem 0;
+
+    .hint {
+      color: #666;
+      font-size: 0.9rem;
+    }
+  }
+
+  .final-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    img {
+      max-width: 200px;
+      height: auto;
+    }
+  }
+}
+
+.next-btn {
+  &.primary {
+    background-color: #4caf50;
+    color: white;
+
+    &:hover {
+      background-color: #45a049;
+    }
   }
 }

@@ -1,3 +1,9 @@
-<button class="app-button" [ngClass]="[variant, size]" [attr.type]="type">
+<button
+  class="app-button"
+  [ngClass]="[variant, size, fullWidth ? 'w-full' : '']"
+  [attr.type]="type"
+  [disabled]="disabled"
+  (click)="handleClick()"
+>
   <ng-content></ng-content>
 </button>

@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -10,8 +10,14 @@ import { Component, Input } from '@angular/core';
 })
 export class Button {
   @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
-  @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() fullWidth: boolean = false;
   @Input() disabled: boolean = false;
+
+  @Output() clicked = new EventEmitter<void>();
+
+  handleClick() {
+    this.clicked.emit();
+  }
 }

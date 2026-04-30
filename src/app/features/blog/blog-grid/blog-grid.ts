@@ -1,18 +1,32 @@
 import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-blog-grid',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe, SlicePipe],
+  imports: [CommonModule, DatePipe, SlicePipe],
   templateUrl: './blog-grid.html',
   styleUrl: './blog-grid.scss',
 })
 export class BlogGrid {
+  private router = inject(Router);
   @Input() posts: any[] = [];
+
+  @Input() currentPage!: number;
 
   getExcerpt(post: any): string {
     return post?.short_description || post?.content || '';
+  }
+  goToPost(slug: string) {
+    sessionStorage.setItem(
+      'blog_state',
+      JSON.stringify({
+        page: this.currentPage,
+        scroll: window.scrollY,
+      }),
+    );
+
+    this.router.navigate(['/blog', slug]);
   }
 }

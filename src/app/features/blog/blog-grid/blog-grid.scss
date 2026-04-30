@@ -100,3 +100,8 @@
 .read-more:hover {
   text-decoration: underline;
 }
+
+.image-wrapper,
+.read-more {
+  cursor: pointer;
+}
