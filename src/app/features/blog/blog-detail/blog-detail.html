@@ -30,27 +30,33 @@
         <!-- ACCIONES -->
         <div class="actions-wrapper">
           <div class="actions">
-            <!-- LIKE -->
+            <!-- LIKE - AHORA USA post.is_favorited -->
             <button
               type="button"
               class="icon-btn heart"
-              [class.active]="liked"
+              [class.active]="post.is_favorited"
               [class.loading]="likeLoading"
-              [attr.aria-pressed]="liked"
+              [attr.aria-pressed]="post.is_favorited"
               (click)="toggleLike()"
             >
-              <i [class]="liked ? 'fas fa-heart' : 'far fa-heart'"></i>
+              <i [class]="post.is_favorited ? 'fas fa-heart' : 'far fa-heart'"></i>
             </button>
-            <!-- 🔗 SHARE -->
-            <button class="icon-btn" (click)="sharePost()">🔗</button>
+
+            <!-- SHARE -->
+            <button class="icon-btn" (click)="sharePost()" title="Compartir">
+              <i class="fa-solid fa-share-nodes"></i>
+            </button>
 
             <!-- MENSAJE COPIADO -->
             <span class="copy-msg" [class.show]="copied"> Link copiado </span>
           </div>
 
-          <!--  MENSAJE LOGIN -->
+          <!-- MENSAJE LOGIN -->
           @if (showLoginMessage) {
-            <div class="login-toast">⚠️ Solo usuarios registrados pueden añadir a favoritos</div>
+            <div class="login-toast">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>Solo usuarios registrados pueden añadir a favoritos</span>
+            </div>
           }
         </div>
       </div>
@@ -81,7 +87,21 @@
           <button (click)="setLang('es')" class="back-to-es">Ver en español</button>
         </div>
       }
+
       <div class="print-wrapper">
+        <!-- VOLVER -->
+        <button class="icon-btn--flat" (click)="goBack()" title="Volver">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Volver</span>
+        </button>
+
+        <!-- SUBIR ARRIBA -->
+        <button class="icon-btn--flat" (click)="scrollToTop()" title="Subir arriba">
+          <i class="fa-solid fa-arrow-up"></i>
+          <span>Arriba</span>
+        </button>
+
+        <!-- IMPRIMIR -->
         <button class="icon-btn--flat" (click)="printPost()" title="Imprimir">
           <i class="fa-solid fa-print"></i>
           <span>Imprimir</span>

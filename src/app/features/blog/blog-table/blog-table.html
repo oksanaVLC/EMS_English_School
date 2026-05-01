@@ -4,11 +4,10 @@
       <tr>
         <th>Cover</th>
         <th>Título</th>
-
         <th>Fecha</th>
+        <th>Guardado</th>
       </tr>
     </thead>
-
     <tbody>
       @for (post of posts; track post.id) {
         <tr>
@@ -17,13 +16,17 @@
               <img class="cover" [src]="post.cover" />
             </a>
           </td>
-
-          <td class="title">
-            {{ post.title }}
-          </td>
-
-          <td>
-            {{ post.created_at | date: 'dd MMM yyyy' }}
+          <td class="title">{{ post.title }}</td>
+          <td>{{ post.created_at | date: 'dd MMM yyyy' }}</td>
+          <td class="like-cell">
+            <button
+              class="like-btn"
+              [class.liked]="post.is_favorited"
+              [disabled]="favoriteLoading[post.id]"
+              (click)="onToggleFavorite(post, $event)"
+            >
+              <i [class]="post.is_favorited ? 'fas fa-heart' : 'far fa-heart'"></i>
+            </button>
           </td>
         </tr>
       }

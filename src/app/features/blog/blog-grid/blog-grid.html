@@ -23,7 +23,19 @@
           {{ getExcerpt(post).length > 140 ? '...' : '' }}
         </p>
 
-        <span class="read-more" (click)="goToPost(post.slug)"> Leer más → </span>
+        <div class="card-footer">
+          <span class="read-more" (click)="goToPost(post.slug)"> Leer más → </span>
+
+          <!-- Botón de like -->
+          <button
+            class="like-btn"
+            [class.liked]="post.is_favorited"
+            [disabled]="favoriteLoading[post.id]"
+            (click)="onToggleFavorite(post, $event)"
+          >
+            <i [class]="post.is_favorited ? 'fas fa-heart' : 'far fa-heart'"></i>
+          </button>
+        </div>
       </div>
     </article>
   }

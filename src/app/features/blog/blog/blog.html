@@ -4,21 +4,29 @@
     <h1>Blog</h1>
     <p>Explora artículos en modo Grid o Tabla</p>
 
-    <!-- TOGGLE -->
     <div class="toggle">
       <button (click)="setView('grid')" [class.active]="viewMode === 'grid'">Grid</button>
-
       <button (click)="setView('table')" [class.active]="viewMode === 'table'">Table</button>
     </div>
   </div>
 
   <!-- VISTAS -->
   @if (viewMode === 'grid') {
-    <app-blog-grid [posts]="posts" [currentPage]="currentPage"> </app-blog-grid>
+    <app-blog-grid
+      [posts]="posts"
+      [favoriteLoading]="favoriteLoading"
+      (toggleFavorite)="onToggleFavorite($event)"
+    >
+    </app-blog-grid>
   }
 
   @if (viewMode === 'table') {
-    <app-blog-table [posts]="posts"></app-blog-table>
+    <app-blog-table
+      [posts]="posts"
+      [favoriteLoading]="favoriteLoading"
+      (toggleFavorite)="onToggleFavorite($event)"
+    >
+    </app-blog-table>
   }
 
   <!-- PAGINATION -->
@@ -27,4 +35,32 @@
     [lastPage]="lastPage"
     (pageChange)="onPageChange($event)"
   />
+
+  <!-- MODAL CONFIRMACIÓN (integrado) -->
+  @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Quitar de favoritos</h3>
+          <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <i class="fa-regular fa-circle-question"></i>
+          <p>¿Estás seguro de que quieres quitar este post de tus favoritos?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button class="btn-confirm" (click)="confirmRemove()">Sí, quitar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- TOAST LOGIN -->
+  @if (showLoginToast) {
+    <div class="login-toast">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>Inicia sesión para guardar favoritos</span>
+    </div>
+  }
 </div>

@@ -4,7 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import { Auth } from '../../../core/services/auth'; // ajusta ruta si hace falta
+import { Auth } from '../../../core/services/auth';
 
 interface Post {
   id: number;
@@ -15,7 +15,7 @@ interface Post {
   created_at: string;
   title_en?: string;
   content_en?: string;
-  is_favorited?: boolean;
+  is_favorited?: boolean; // ✅ Estado real del backend
   user?: {
     name: string;
     surname: string;
@@ -33,13 +33,10 @@ export class BlogDetail implements OnInit {
   private route = inject(ActivatedRoute);
   private http = inject(HttpClient);
   private sanitizer = inject(DomSanitizer);
-
   private router = inject(Router);
-
   private apiUrl = environment.apiUrl;
 
   post: Post | null = null;
-
   auth = inject(Auth);
 
   // =========================
@@ -47,10 +44,7 @@ export class BlogDetail implements OnInit {
   // =========================
   lang: 'es' | 'en' = 'es';
 
-  // =========================
-  // LIKE
-  // =========================
-  liked = false;
+  // ✅ Eliminamos 'liked' y usamos directamente post.is_favorited
   likeLoading = false;
 
   // =========================
@@ -74,10 +68,29 @@ export class BlogDetail implements OnInit {
   }
 
   private loadPost(slug: string) {
-    this.http.get<Post>(`${this.apiUrl}/posts/slug/${slug}`).subscribe((res) => {
-      this.post = res ?? null;
-      this.liked = !!res?.is_favorited;
+    // Construir headers con token si existe
+    let headers = {};
+    if (this.auth.isLoggedIn()) {
+      const token = this.auth.getToken(); // Ajusta según tu servicio Auth
+      headers = { Authorization: `Bearer ${token}` };
+    }
+
+    this.http.get<Post>(`${this.apiUrl}/posts/slug/${slug}`, { headers }).subscribe({
+      next: (res) => {
+        console.log('is_favorited:', res?.is_favorited);
+        this.post = res ?? null;
+      },
+      error: (error) => {
+        console.error('Error loading post:', error);
+      },
     });
+  }
+
+  // =========================
+  // GETTERS para estado de favorito
+  // =========================
+  get isFavorited(): boolean {
+    return this.post?.is_favorited ?? false;
   }
 
   // =========================
@@ -113,38 +126,45 @@ export class BlogDetail implements OnInit {
   }
 
   // =========================
-  // LIKE (CON CONTROL DE AUTH)
+  // LIKE (FAVORITE) - CORREGIDO
   // =========================
   toggleLike(): void {
     if (!this.post || this.likeLoading) return;
 
-    //  bloquear si no logueado
+    // Bloquear si no logueado
     if (!this.auth.isLoggedIn()) {
       this.showLoginMessage = true;
       setTimeout(() => (this.showLoginMessage = false), 3000);
       return;
     }
 
-    //  bloquear doble click / requests simultáneas
     this.likeLoading = true;
 
-    const previous = this.liked;
+    // Guardar estado anterior para rollback
+    const previousState = this.post.is_favorited;
 
-    // UI optimista
-    this.liked = !previous;
+    // ✅ UI optimista - actualizar directamente el post
+    this.post.is_favorited = !previousState;
 
-    this.http.post(`${this.apiUrl}/posts/${this.post.id}/favorite`, {}).subscribe({
-      next: (res: any) => {
-        // sincronización backend
-        this.liked = res.favorited;
-        this.likeLoading = false;
-      },
-      error: () => {
-        // rollback seguro
-        this.liked = previous;
-        this.likeLoading = false;
-      },
-    });
+    this.http
+      .post<{ favorited: boolean }>(`${this.apiUrl}/posts/${this.post.id}/favorite`, {})
+      .subscribe({
+        next: (res) => {
+          // ✅ Sincronizar con la respuesta del backend
+          if (this.post) {
+            this.post.is_favorited = res.favorited;
+          }
+          this.likeLoading = false;
+        },
+        error: (error) => {
+          console.error('Error toggling favorite:', error);
+          // ✅ Rollback en caso de error
+          if (this.post) {
+            this.post.is_favorited = previousState;
+          }
+          this.likeLoading = false;
+        },
+      });
   }
 
   // =========================
@@ -166,6 +186,7 @@ export class BlogDetail implements OnInit {
       setTimeout(() => (this.copied = false), 2000);
     });
   }
+
   printPost(): void {
     if (!this.post) return;
 
@@ -177,46 +198,40 @@ export class BlogDetail implements OnInit {
     if (!printWindow) return;
 
     printWindow.document.write(`
-    <html>
-      <head>
-        <title>Imprimir</title>
-        <style>
-          body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            color: #000;
-          }
-
-          .header {
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
-          }
-
-          h1 {
-            font-size: 26px;
-            margin-bottom: 20px;
-          }
-
-          .content {
-            font-size: 14px;
-            line-height: 1.7;
-            white-space: pre-line; /* 👈 clave para saltos de línea */
-          }
-        </style>
-      </head>
-
-      <body>
-        <div class="header">English Maximizer School</div>
-
-        <h1>${title}</h1>
-
-        <div class="content">${content}</div>
-      </body>
-    </html>
-  `);
+      <html>
+        <head>
+          <title>Imprimir</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 40px;
+              color: #000;
+            }
+            .header {
+              text-align: center;
+              font-weight: bold;
+              font-size: 18px;
+              margin-bottom: 30px;
+              letter-spacing: 1px;
+            }
+            h1 {
+              font-size: 26px;
+              margin-bottom: 20px;
+            }
+            .content {
+              font-size: 14px;
+              line-height: 1.7;
+              white-space: pre-line;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">English Maximizer School</div>
+          <h1>${this.escapeHtml(title)}</h1>
+          <div class="content">${this.escapeHtml(content)}</div>
+        </body>
+      </html>
+    `);
 
     printWindow.document.close();
 
@@ -225,5 +240,26 @@ export class BlogDetail implements OnInit {
       printWindow.print();
       printWindow.close();
     };
+  }
+
+  //  Método de seguridad para evitar XSS en impresión
+  private escapeHtml(str: string): string {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  goBack(): void {
+    window.history.back();
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 }

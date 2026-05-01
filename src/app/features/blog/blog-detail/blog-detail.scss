@@ -122,7 +122,7 @@
     }
   }
 
-  /* ================= HEART ================= */
+  /* ================= HEART (CORREGIDO) ================= */
   .icon-btn.heart {
     i {
       font-size: 18px;
@@ -134,7 +134,7 @@
       background: #ffe6ee;
 
       i {
-        color: red;
+        color: red !important; // ← ÚNICO CAMBIO: !important
         transform: scale(1.15);
       }
     }
@@ -209,17 +209,28 @@
     left: 50%;
     transform: translateX(-50%);
 
-    background: #111;
+    background: rgba(20, 20, 20, 0.92);
     color: #fff;
-    padding: 10px 14px;
-    border-radius: 10px;
-    font-size: 0.9rem;
 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    border-radius: 12px;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
 
     z-index: 9999;
 
-    animation: toastIn 0.2s ease;
+    animation: toastIn 0.25s ease;
+    i {
+      color: rgb(250, 228, 32);
+    }
   }
 
   @keyframes toastIn {
@@ -232,43 +243,62 @@
       transform: translate(-50%, 0);
     }
   }
+
+  /* ================= PRINT BUTTONS ================= */
+  .print-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .icon-btn--flat {
+    width: auto;
+    height: auto;
+    background: transparent;
+    border: 1px solid #eee;
+    border-radius: 30px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 14px;
+
+    color: #333;
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #f5f5f5;
+      transform: translateY(-1px);
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  /* ================= OTROS ICONOS (no heart) ================= */
+  .icon-btn:not(.heart) {
+    i {
+      font-size: 16px;
+      color: #555;
+      transition: all 0.2s ease;
+    }
+
+    &:hover i {
+      color: #000;
+      transform: scale(1.1);
+    }
+  }
 }
 
 @media (max-width: 768px) {
   .blog-detail .container {
     padding: 1rem;
-  }
-}
-
-.print-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 2rem;
-}
-.icon-btn--flat {
-  width: auto;
-  height: auto;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 10px;
-
-  color: #333;
-  cursor: pointer;
-
-  transition: opacity 0.2s ease;
-
-  &:hover {
-    opacity: 0.7;
-    transform: none;
-  }
-
-  i {
-    font-size: 23px;
   }
 }

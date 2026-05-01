@@ -26,7 +26,7 @@ export const routes: Routes = [
     path: 'students',
     loadComponent: () =>
       import('./features/students-home/students-home').then((m) => m.StudentsHome),
-    data: { breadcrumb: 'Estudiantes' },
+    data: { breadcrumb: 'Recursos' },
   },
 
   {
@@ -47,6 +47,11 @@ export const routes: Routes = [
     resolve: {
       post: postResolver,
     },
+  },
+
+  {
+    path: 'contact',
+    loadComponent: () => import('./features/contact-form/contact-form').then((m) => m.ContactForm),
   },
 
   // =========================
@@ -158,6 +163,13 @@ export const routes: Routes = [
     canActivate: [roleGuard(['user', 'admin', 'teacher'])],
     canDeactivate: [canDeactivateGuard],
     data: { breadcrumb: 'Configuración' },
+  },
+  {
+    path: 'user/favorite-posts',
+    loadComponent: () =>
+      import('./features/dashboard/user/favorite-posts/favorite-posts').then(
+        (m) => m.FavoritePosts,
+      ),
   },
 
   // =========================

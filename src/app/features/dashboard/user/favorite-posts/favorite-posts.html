@@ -1,0 +1,119 @@
+<div class="favorite-posts">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Mis artículos favoritos</h1>
+    <p>Todos los posts que has guardado como favoritos</p>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Cargando tus favoritos...</span>
+    </div>
+  }
+
+  <!-- ERROR -->
+  @if (error && !loading) {
+    <div class="error">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <p>Error al cargar tus favoritos</p>
+      <button (click)="loadFavorites()" class="retry-btn">
+        <i class="fa-solid fa-rotate"></i>
+        Reintentar
+      </button>
+    </div>
+  }
+
+  <!-- EMPTY STATE -->
+  @if (!loading && !error && posts.length === 0) {
+    <div class="empty-state">
+      <i class="fa-regular fa-heart"></i>
+      <h3>No tienes artículos favoritos</h3>
+      <p>Explora el blog y guarda tus posts favoritos</p>
+      <a routerLink="/blog" class="explore-btn">
+        Explorar blog
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  }
+
+  <!-- TABLE POSTS LIST -->
+  @if (!loading && !error && posts.length > 0) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Cover</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Fecha</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (post of posts; track post.id) {
+            <tr>
+              <td class="cover-cell" (click)="goToPost(post.slug)">
+                <img [src]="post.cover" [alt]="post.title" class="cover-img" />
+              </td>
+              <td class="title-cell" (click)="goToPost(post.slug)">
+                {{ post.title }}
+              </td>
+              <td class="author-cell" (click)="goToPost(post.slug)">
+                {{ post.user?.name || 'Anónimo' }}
+              </td>
+              <td class="date-cell" (click)="goToPost(post.slug)">
+                {{ post.created_at | date: 'dd MMM yyyy' }}
+              </td>
+              <td class="actions-cell">
+                <button
+                  class="remove-btn"
+                  [disabled]="removingLoading[post.id]"
+                  (click)="openModal(post, $event)"
+                  title="Quitar de favoritos"
+                >
+                  @if (removingLoading[post.id]) {
+                    <i class="fas fa-spinner fa-spin"></i>
+                  } @else {
+                    <i class="fa-regular fa-trash-can"></i>
+                  }
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <app-pagination
+      [currentPage]="currentPage"
+      [lastPage]="lastPage"
+      (pageChange)="onPageChange($event)"
+    >
+    </app-pagination>
+  }
+
+  <!-- En el template -->
+  <app-back-button></app-back-button>
+  <!-- MODAL CONFIRMACIÓN -->
+  @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Quitar de favoritos</h3>
+          <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <i class="fa-regular fa-circle-question"></i>
+          <p>¿Estás seguro de que quieres quitar "{{ modalPost?.title }}" de tus favoritos?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button class="btn-confirm" (click)="confirmRemove()">Sí, quitar</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

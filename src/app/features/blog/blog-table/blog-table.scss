@@ -103,3 +103,80 @@ tbody tr:hover {
     display: none;
   }
 }
+
+.like-cell {
+  text-align: center;
+  width: 70px;
+}
+
+.like-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  position: relative;
+
+  i {
+    font-size: 20px;
+    transition: all 0.2s ease;
+    color: #ccc;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+
+    i {
+      color: #ff6b6b;
+    }
+
+    .like-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  &.liked i {
+    color: #ff0000;
+
+    &:hover {
+      color: #cc0000;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+
+    transform: none;
+  }
+}
+
+.like-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.8);
+  }
+}

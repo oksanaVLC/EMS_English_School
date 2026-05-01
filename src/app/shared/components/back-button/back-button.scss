@@ -1,0 +1,37 @@
+/* BACK */
+
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: fit-content;
+  margin: 2rem auto 1.5rem;
+  padding: 0.8rem 2rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 50px;
+  color: #555;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateX(-4px);
+    box-shadow: 0 4px 16px rgba(1, 209, 164, 0.2);
+  }
+
+  &:active {
+    transform: translateX(-2px);
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-config {
+    padding: 0 1rem;
+  }
+}
