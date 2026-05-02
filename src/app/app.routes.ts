@@ -47,11 +47,13 @@ export const routes: Routes = [
     resolve: {
       post: postResolver,
     },
+    data: { breadcrumb: 'Artículo' },
   },
 
   {
     path: 'contact',
     loadComponent: () => import('./features/contact-form/contact-form').then((m) => m.ContactForm),
+    data: { breadcrumb: 'Contacto' },
   },
 
   // =========================
@@ -75,13 +77,6 @@ export const routes: Routes = [
     path: 'level-test',
     component: LevelTest,
     data: { breadcrumb: 'Test de nivel' },
-  },
-  {
-    path: 'level-test/run',
-    loadComponent: () =>
-      import('./features/level-test/test-runner/test-runner').then((m) => m.TestRunner),
-    canActivate: [roleGuard(['admin', 'teacher', 'user'])],
-    canDeactivate: [canDeactivateGuard],
   },
 
   // =========================
@@ -138,23 +133,13 @@ export const routes: Routes = [
   },
 
   // =========================
-  //  TEACHER
-  // =========================
-  {
-    path: 'teacher',
-    loadComponent: () => import('./features/dashboard/teacher/teacher').then((m) => m.Teacher),
-    canActivate: [roleGuard(['teacher'])],
-    data: { breadcrumb: 'Profesor' },
-  },
-
-  // =========================
   //  USER
   // =========================
   {
     path: 'user',
     loadComponent: () => import('./features/dashboard/user/user').then((m) => m.User),
     canActivate: [roleGuard(['user'])],
-    data: { breadcrumb: 'Panel usuario' },
+    data: { breadcrumb: 'Panel del usuario' },
   },
   {
     path: 'user/settings',
@@ -170,6 +155,7 @@ export const routes: Routes = [
       import('./features/dashboard/user/favorite-posts/favorite-posts').then(
         (m) => m.FavoritePosts,
       ),
+    data: { breadcrumb: 'Articulos guardados' },
   },
 
   // =========================

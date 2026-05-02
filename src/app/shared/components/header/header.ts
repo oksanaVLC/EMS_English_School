@@ -31,13 +31,8 @@ export class Header {
         break;
 
       case '/student':
-        this.title.set('Zona Estudiante');
-        this.subtitle.set('Aprende a tu ritmo');
-        break;
-
-      case '/teacher':
-        this.title.set('Zona Profesor');
-        this.subtitle.set('Comparte tu conocimiento');
+        this.title.set('English Maximizer School');
+        this.subtitle.set('Espacio para aprende a tu ritmo');
         break;
 
       case '/blog':
@@ -46,8 +41,8 @@ export class Header {
         break;
 
       case '/contact':
-        this.title.set('Contacto');
-        this.subtitle.set('Estoy aquí para ayudarte');
+        this.title.set('English Maximizer School');
+        this.subtitle.set('Lleva tu inglés al máximo nivel');
         break;
 
       case '/about':

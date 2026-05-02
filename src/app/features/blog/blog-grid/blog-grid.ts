@@ -13,8 +13,8 @@ export class BlogGrid {
   private router = inject(Router);
   @Input() posts: any[] = [];
   @Input() currentPage!: number;
-  @Input() favoriteLoading: { [key: number]: boolean } = {}; // ✅ NUEVO
-  @Output() toggleFavorite = new EventEmitter<any>(); // ✅ NUEVO
+  @Input() favoriteLoading: { [key: number]: boolean } = {};
+  @Output() toggleFavorite = new EventEmitter<any>();
 
   getExcerpt(post: any): string {
     return post?.short_description || post?.content || '';
@@ -31,7 +31,6 @@ export class BlogGrid {
     this.router.navigate(['/blog', slug]);
   }
 
-  // ✅ NUEVO MÉTODO
   onToggleFavorite(post: any, event: Event) {
     event.stopPropagation();
     this.toggleFavorite.emit({ post, event });

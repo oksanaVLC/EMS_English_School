@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -17,6 +17,7 @@ export class ContactForm {
     message: '',
   };
 
+  @ViewChild('card') card!: ElementRef;
   submitted = false;
   submitting = false;
   error = false;
@@ -49,17 +50,17 @@ export class ContactForm {
         this.submitted = true;
         this.submitting = false;
 
-        /* Reset como ya hacías
         setTimeout(() => {
-          this.submitted = false;
-          this.formData = {
-            name: '',
-            email: '',
-            subject: '',
-            message: '',
-          };
-          form.resetForm();
-        }, 9000);*/
+          const element = this.card.nativeElement;
+
+          const yOffset = -120; // ajusta según altura de tu header
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+          window.scrollTo({
+            top: y,
+            behavior: 'smooth',
+          });
+        });
       })
       .catch((error) => {
         console.error(error);

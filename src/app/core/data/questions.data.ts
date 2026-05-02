@@ -25,7 +25,7 @@ export const LEVEL_TEST_QUESTIONS: Question[] = [
     ],
     explanation: 'En inglés usamos "do" para formar preguntas en presente simple.',
   },
-  {
+  /* {
     id: 3,
     level: 'A1',
     question: '¿Cuál es la forma negativa correcta?',
@@ -593,5 +593,5 @@ export const LEVEL_TEST_QUESTIONS: Question[] = [
       { id: 3, text: 'I’ve done all I can; now the ball is on your side.', correct: false },
     ],
     explanation: '"The ball is in your court" significa: ahora te toca a ti actuar o decidir.',
-  },
+  },*/
 ];

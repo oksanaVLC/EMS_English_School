@@ -1,9 +1,9 @@
 <div class="contact-page">
-  <div class="contact-container">
+  <div class="contact-container" #card>
     <!-- HEADER -->
     <div class="header">
       <h1>Contacto</h1>
-      <p>¿Tienes alguna pregunta? Estamos aquí para ayudarte</p>
+      <p>¿Tienes alguna pregunta? Estamos aquí para ayudarte.</p>
     </div>
 
     <!-- FORM -->
@@ -113,15 +113,30 @@
             #message="ngModel"
             required
             minlength="10"
+            maxlength="1000"
             rows="5"
             placeholder="Escribe tu mensaje aquí..."
             class="form-control"
             [class.invalid]="message.invalid && message.touched"
           ></textarea>
-          @if (message.invalid && message.touched) {
+          @if (message.errors?.['required'] && message.touched) {
+            <div class="error-message">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              El mensaje es obligatorio
+            </div>
+          }
+
+          @if (message.errors?.['minlength'] && message.touched) {
             <div class="error-message">
               <i class="fa-solid fa-circle-exclamation"></i>
               El mensaje debe tener al menos 10 caracteres
+            </div>
+          }
+
+          @if (message.errors?.['maxlength'] && message.touched) {
+            <div class="error-message">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              Máximo de 1000 caracteres alcanzado
             </div>
           }
         </div>
@@ -172,16 +187,15 @@
 
     <!-- INFORMACIÓN DE CONTACTO -->
     <div class="contact-info">
-      <div class="info-card">
+      <a class="info-card" href="mailto:languagejourney777@gmail.com">
         <i class="fa-regular fa-envelope"></i>
         <h4>Email</h4>
-        <p>info@englishmaximizer.com</p>
-      </div>
-      <div class="info-card">
-        <i class="fa-brands fa-instagram"></i>
-        <h4>Instagram</h4>
-        <p>@englishmaximizer</p>
-      </div>
+      </a>
+
+      <a class="info-card" href="https://www.youtube.com/@oksanagolubeva4690" target="_blank">
+        <i class="fa-brands fa-youtube"></i>
+        <h4>YouTube</h4>
+      </a>
     </div>
   </div>
 </div>
