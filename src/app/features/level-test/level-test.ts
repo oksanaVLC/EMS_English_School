@@ -99,7 +99,9 @@ export class LevelTest implements OnInit {
       this.finished = true;
 
       //  SCROLL ARRIBA CUANDO TERMINA
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        this.scrollToElement('final-title', 80);
+      });
 
       this.animateScore();
 
@@ -225,6 +227,17 @@ export class LevelTest implements OnInit {
       startVelocity: 40,
       ticks: 100,
       origin: { y: 0.6 },
+    });
+  }
+  scrollToElement(elementId: string, offset = 60, behavior: ScrollBehavior = 'auto') {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: y,
+      behavior,
     });
   }
 }
