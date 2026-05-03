@@ -22,8 +22,7 @@ export class LevelTest implements OnInit {
   answers: { questionId: number; optionId: number; correct: boolean }[] = [];
 
   started = false;
-  finished = false; // 👈 NUEVO
-
+  finished = false;
   loading = true;
   error: string | null = null;
 
@@ -98,6 +97,9 @@ export class LevelTest implements OnInit {
     if (this.currentIndex >= this.questions.length) {
       this.started = false;
       this.finished = true;
+
+      //  SCROLL ARRIBA CUANDO TERMINA
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       this.animateScore();
 
