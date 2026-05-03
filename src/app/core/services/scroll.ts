@@ -35,9 +35,9 @@ export class ScrollService {
     window.scrollTo({ top: 0, behavior });
   }
 
-  scrollToElement(elementId: string, behavior: ScrollBehavior = 'smooth') {
+  /*  scrollToElement(elementId: string, behavior: ScrollBehavior = 'smooth') {
     document.getElementById(elementId)?.scrollIntoView({ behavior });
-  }
+  }*/
 
   savePosition(key: string) {
     sessionStorage.setItem(`scroll_${key}`, window.scrollY.toString());
@@ -50,7 +50,19 @@ export class ScrollService {
       sessionStorage.removeItem(`scroll_${key}`);
     }
   }
-  scrollTo(id: string) {
+  /* scrollTo(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }*/
+
+  scrollToElement(id: string, offset = 80, behavior: ScrollBehavior = 'auto') {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: y,
+      behavior,
+    });
   }
 }

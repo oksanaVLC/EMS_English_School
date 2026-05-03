@@ -6,20 +6,21 @@
   justify-content: center;
 }
 
-.pills button {
+.pills a {
   background: #e5e9ed;
-  border: none;
   border-radius: 20px;
   padding: 0.5rem 1rem;
   cursor: pointer;
 
   font-size: 0.85rem;
   color: #555;
+  text-decoration: none;
 
   transition: all 0.2s ease;
+  display: inline-block;
 }
 
-.pills button:hover {
+.pills a:hover {
   background: var(--color-accent);
   color: white;
   transform: translateY(-2px);
