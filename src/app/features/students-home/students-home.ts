@@ -8,4 +8,17 @@ import { Button } from '../../shared/components/button/button';
   templateUrl: './students-home.html',
   styleUrl: './students-home.scss',
 })
-export class StudentsHome {}
+export class StudentsHome {
+  scrollToElement(elementId: string, offset = 60, behavior: ScrollBehavior = 'auto') {
+    const el = document.getElementById(elementId);
+
+    if (!el) return;
+
+    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    window.scrollTo({
+      top: y,
+      behavior,
+    });
+  }
+}

@@ -50,4 +50,7 @@ export class ScrollService {
       sessionStorage.removeItem(`scroll_${key}`);
     }
   }
+  scrollTo(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  }
 }

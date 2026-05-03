@@ -85,8 +85,8 @@
   padding: 1rem 1rem;
   border-radius: 40px;
 
-  border: none;
-  border-style: dotted;
+  border: 5px dotted white;
+
   cursor: pointer;
   transition: all 0.25s ease;
   font-size: clamp(1.1rem, 2vw, 1.4rem);

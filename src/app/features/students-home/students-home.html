@@ -12,12 +12,12 @@
     <h2>Elige el nivel que te interesa</h2>
     <!-- LEVEL BUTTONS -->
     <div class="levels">
-      <button class="level a1">A1</button>
-      <button class="level a2">A2</button>
-      <button class="level b1">B1</button>
-      <button class="level b2">B2</button>
-      <button class="level c1">C1</button>
-      <button class="level c2">C2</button>
+      <button class="level a1" routerLink="/students/a1">A1</button>
+      <button class="level a2" routerLink="/students/a2">A2</button>
+      <button class="level b1" routerLink="/students/b1">B1</button>
+      <button class="level b2" routerLink="/students/b2">B2</button>
+      <button class="level c1" routerLink="/students/c1">C1</button>
+      <button class="level c2" routerLink="/students/c2">C2</button>
     </div>
 
     <p class="hero-info">
@@ -50,7 +50,7 @@
 
     <div class="grid">
       <!-- CARD -->
-      <div class="card" routerLink="/students/describimosr">
+      <div class="card" (click)="scrollToElement('grammar')">
         <div class="card-top">
           <ul class="card-topics">
             <li>Patrones de verbos</li>
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <div class="card" routerLink="/students/vocabulary">
+      <div class="card" (click)="scrollToElement('vocabulary')">
         <div class="card-top">
           <ul class="card-topics">
             <li>Vacabulario activo</li>
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <div class="card" routerLink="/students/pronunciation">
+      <div class="card" (click)="scrollToElement('pronunciation')">
         <div class="card-top">
           <ul class="card-topics">
             <li>Sonidos que confunden</li>
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <div class="card" routerLink="/students/listening">
+      <div class="card" (click)="scrollToElement('listening')">
         <div class="card-top">
           <ul class="card-topics">
             <li>Multiple choice</li>
@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <div class="card" routerLink="/students/writing">
+      <div class="card" (click)="scrollToElement('writing')">
         <div class="card-top">
           <ul class="card-topics">
             <li>Descripción</li>
@@ -130,7 +130,7 @@
         </div>
       </div>
 
-      <div class="card" routerLink="/students/speaking">
+      <div class="card" (click)="scrollToElement('speaking')">
         <div class="card-top">
           <ul class="card-topics">
             <li>· Describimos una foto</li>
@@ -149,7 +149,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="grammar" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Grammar</h2>
@@ -245,7 +245,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="vocabulary" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Vocabulario</h2>
@@ -341,7 +341,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="pronunciation" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Pronunciación</h2>
@@ -437,7 +437,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="listening" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Listening</h2>
@@ -533,7 +533,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="writing" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Writing</h2>
@@ -629,7 +629,7 @@
 </section>
 
 <!-- ================= HEADER ================= -->
-<div class="full-header">
+<div id="speaking" class="full-header">
   <div class="header-content">
     <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
     <h2>Speaking</h2>

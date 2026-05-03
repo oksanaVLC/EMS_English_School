@@ -24,9 +24,56 @@ export const routes: Routes = [
 
   {
     path: 'students',
-    loadComponent: () =>
-      import('./features/students-home/students-home').then((m) => m.StudentsHome),
     data: { breadcrumb: 'Recursos' },
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/students-home/students-home').then((m) => m.StudentsHome),
+      },
+
+      // =========================
+      // LEVELS
+      // =========================
+      {
+        path: 'a1',
+        loadComponent: () =>
+          import('./features/levels/beginner-a1/beginner-a1').then((m) => m.BeginnerA1),
+        data: { breadcrumb: 'Nivel A1' },
+      },
+      {
+        path: 'a2',
+        loadComponent: () =>
+          import('./features/levels/elementary-a2/elementary-a2').then((m) => m.ElementaryA2),
+        data: { breadcrumb: 'Nivel A2' },
+      },
+      {
+        path: 'b1',
+        loadComponent: () =>
+          import('./features/levels/intermediate-b1/intermediate-b1').then((m) => m.IntermediateB1),
+        data: { breadcrumb: 'Nivel B1' },
+      },
+      {
+        path: 'b2',
+        loadComponent: () =>
+          import('./features/levels/upper-intermediate-b2/upper-intermediate-b2').then(
+            (m) => m.UpperIntermediateB2,
+          ),
+        data: { breadcrumb: 'Nivel B2' },
+      },
+      {
+        path: 'c1',
+        loadComponent: () =>
+          import('./features/levels/advanced-c1/advanced-c1').then((m) => m.AdvancedC1),
+        data: { breadcrumb: 'Nivel C1' },
+      },
+      {
+        path: 'c2',
+        loadComponent: () =>
+          import('./features/levels/proficiency-c2/proficiency-c2').then((m) => m.ProficiencyC2),
+        data: { breadcrumb: 'Nivel C2' },
+      },
+    ],
   },
 
   {
