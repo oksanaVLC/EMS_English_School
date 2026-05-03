@@ -1,7 +1,7 @@
 .students-home {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0.8rem;
+  margin-bottom: 3rem;
 }
 
 /* =========================
@@ -13,7 +13,6 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .line {
@@ -45,6 +44,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0.8rem;
 }
 
 .hero-text,
@@ -53,8 +53,10 @@
   text-align: center;
   max-width: 800px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1rem auto;
+  h2 {
+    color: var(--color-accent);
+  }
 }
 
 .level-info {
@@ -84,9 +86,10 @@
   border-radius: 40px;
 
   border: none;
+  border-style: dotted;
   cursor: pointer;
   transition: all 0.25s ease;
-  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   position: relative;
   overflow: hidden;
@@ -164,7 +167,7 @@
 }
 
 .c2 {
-  background: linear-gradient(135deg, #3498db, #005299);
+  background: linear-gradient(135deg, #a855f7, #6d28d9);
   box-shadow: 0 4px 12px rgba(0, 82, 153, 0.3);
 
   &:hover {
@@ -205,7 +208,7 @@
 
 .sections {
   text-align: center;
-  margin-top: 2rem;
+  margin: 2rem auto;
 }
 
 .sections h3 {
@@ -244,10 +247,11 @@
 @media (max-width: 767px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 0 0.5rem;
   }
 }
 
-/* TOP AREA */
 /* =========================
    CARD STYLES
 ========================= */
@@ -255,8 +259,8 @@
 .card {
   background: var(--main-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
   border-radius: 20px;
-  height: auto; /* CAMBIADO: de 200px a auto */
-  min-height: 200px; /* Altura mínima en lugar de fija */
+  height: auto;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -318,9 +322,11 @@
   justify-content: space-between;
   position: relative;
   min-height: 60px;
+
   span {
     font-size: 1.5rem;
     font-weight: bold;
+    z-index: 1;
   }
 }
 
@@ -340,11 +346,6 @@
   justify-content: center;
   transition: transform 0.2s ease;
 
-  /* Sombra blanca con blur 
-  box-shadow:
-    0 0 20px 5px rgba(255, 255, 255, 0.8),
-    0 0 40px 10px rgba(255, 255, 255, 0.5),
-    0 0 60px 15px rgba(255, 255, 255, 0.3);*/
   /* Sombra base */
   box-shadow:
     0 0 20px 8px rgba(255, 255, 255, 0.6),
@@ -391,10 +392,6 @@
     gap: 0.5rem;
   }
 
-  .level {
-    font-size: 0.75rem;
-  }
-
   .icon-circle {
     width: 35px;
     height: 35px;
@@ -410,4 +407,97 @@
   .card-bottom span {
     font-size: 0.85rem;
   }
+}
+
+/* ================= FULL HEADER ================= */
+
+.full-header {
+  width: 100%;
+  height: clamp(70px, 10vw, 87px);
+  padding: 0 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--main-gradient);
+  color: white;
+
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+  display: flex; /* CAMBIO CLAVE */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1400px;
+  gap: 2rem; /* espacio entre texto e icono */
+}
+.levels-img {
+  width: clamp(230px, 60%, 300px);
+  display: block;
+}
+
+/* NUEVA clase SOLO para header */
+.header-icon-circle {
+  width: clamp(40px, 6vw, 60px);
+  height: clamp(40px, 6vw, 60px);
+  border-radius: 50%;
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* sin absolute */
+  position: static;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-icon-circle img {
+  width: 60%;
+  height: auto;
+}
+
+.level-letter {
+  font-size: 5rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.first-levels-img {
+  width: clamp(230px, 60%, 300px);
+  display: block;
+  margin: 0.5rem auto;
+}
+
+@media (max-width: 768px) {
+  .levels-img {
+    display: none;
+  }
+  .card-top .level-letter {
+    font-size: 4rem;
+  }
+}
+
+.pink {
+  background: linear-gradient(135deg, #ff65a2, #ff3b7f);
+}
+.orange {
+  background: linear-gradient(135deg, #ff8c42, #ff6f37);
+}
+.yellow {
+  background: linear-gradient(135deg, #f5d742, #fdbd28);
+}
+
+.green {
+  background: linear-gradient(135deg, #2ecc71, #00a83d);
+}
+.blue {
+  background: linear-gradient(135deg, #4ecdc4, #02b2dd);
+}
+.purple {
+  background: linear-gradient(135deg, #c084fc, #7e22ce);
 }
