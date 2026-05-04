@@ -64,7 +64,7 @@ export class PostsForm implements OnInit {
           short_description_en: post.short_description_en || '',
         });
 
-        this.preview = post.cover || post.cover_url || null;
+        this.preview = post.cover_url ?? null;
 
         this.loading = false;
       },
