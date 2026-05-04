@@ -15,7 +15,6 @@ export class Tags {
   constructor(private scroll: ScrollService) {}
 
   goToSection(id: string) {
-    // scroll interno con offset (evita header cortado)
     this.scroll.scrollToElement(id, 80, 'auto');
   }
 }

@@ -321,10 +321,10 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  min-height: 60px;
+  min-height: 40px;
 
   span {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     z-index: 1;
   }
@@ -393,19 +393,21 @@
   }
 
   .icon-circle {
-    width: 35px;
-    height: 35px;
-    right: -2px;
+    width: 45px;
+    height: 45px;
+    right: 5px;
     top: -18px;
   }
-
+  .card {
+    min-height: 80px;
+  }
   .category-icon {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
   }
 
   .card-bottom span {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
   }
 }
 
