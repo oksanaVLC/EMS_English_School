@@ -2,6 +2,9 @@
   max-width: 1400px;
   margin: 0 auto;
   margin-bottom: 3rem;
+  h2 {
+    color: var(--color-accent);
+  }
 }
 
 /* =========================
@@ -54,16 +57,12 @@
   max-width: 800px;
   width: 100%;
   margin: 1rem auto;
-  h2 {
-    color: var(--color-accent);
-  }
 }
 
 .level-info {
   margin-top: 1rem;
 }
 .hero-info {
-  margin: 1rem auto;
   color: #666;
 }
 
@@ -208,7 +207,7 @@
 
 .sections {
   text-align: center;
-  margin: 2rem auto;
+  margin: 2rem auto 4rem;
 }
 
 .sections h3 {
@@ -433,7 +432,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   gap: 2rem; /* espacio entre texto e icono */
 }
 .levels-img {

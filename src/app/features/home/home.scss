@@ -620,3 +620,31 @@
 .reviews-slider.dragging {
   cursor: grabbing;
 }
+
+/***SVG drawing**********/
+.heart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.animated-svg {
+  width: 300px;
+  height: auto;
+}
+
+.animated-path {
+  fill: none;
+  stroke: #1c1c1c;
+  stroke-width: 3;
+  stroke-dasharray: 1500;
+  stroke-dashoffset: 1500;
+  animation: draw 3s ease forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
