@@ -51,7 +51,6 @@ export class Login {
 
     this.auth.login({ email, password }).subscribe({
       next: (response: any) => {
-        console.log('Respuesta login:', response);
         const user = response.user;
         const role = user.role;
 
