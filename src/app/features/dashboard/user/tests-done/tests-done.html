@@ -1,0 +1,31 @@
+<div class="tests-container">
+  <h2>Tests realizados</h2>
+
+  <table class="tests-table" *ngIf="tests.length; else empty">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Resultado</th>
+        <th>Intentos</th>
+        <th>Fecha</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let test of tests">
+        <td>{{ test.name }}</td>
+        <td>{{ test.score }}%</td>
+        <td>{{ test.attempts }}</td>
+        <td>{{ test.date | date: 'short' }}</td>
+        <td>
+          <button (click)="repeatTest(test)">Repetir</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #empty>
+    <p>No has realizado tests todavía.</p>
+  </ng-template>
+</div>

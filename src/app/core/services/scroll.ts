@@ -1,68 +1,74 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+/* import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ScrollService {
-  private renderer: Renderer2;
+  //  memoria por URL
+  private scrollPositions = new Map<string, number>();
 
-  constructor(
-    rendererFactory: RendererFactory2,
-    private router: Router,
-  ) {
-    this.renderer = rendererFactory.createRenderer(null, null);
-    this.initAutoScroll();
-  }
+  // =========================
+  // 1. SCROLL GLOBAL (HEADER)
+  // =========================
+  scrollBelowHeader(behavior: ScrollBehavior = 'smooth') {
+    const header = document.querySelector('app-header') as HTMLElement;
 
-  // Scroll automático al cambiar de página
-  private initAutoScroll() {
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      this.scrollToTop('smooth');
-    });
-  }
+    const offset = header?.getBoundingClientRect().height ?? 180;
 
-  // Activar scroll instantáneo
-  enableInstantScroll() {
-    this.renderer.addClass(document.documentElement, 'no-smooth-scroll');
-  }
-
-  // Activar scroll suave
-  enableSmoothScroll() {
-    this.renderer.removeClass(document.documentElement, 'no-smooth-scroll');
-  }
-
-  scrollToTop(behavior: ScrollBehavior = 'smooth') {
     window.scrollTo({ top: 0, behavior });
-  }
 
-  /*  scrollToElement(elementId: string, behavior: ScrollBehavior = 'smooth') {
-    document.getElementById(elementId)?.scrollIntoView({ behavior });
-  }*/
-
-  savePosition(key: string) {
-    sessionStorage.setItem(`scroll_${key}`, window.scrollY.toString());
-  }
-
-  restorePosition(key: string) {
-    const position = sessionStorage.getItem(`scroll_${key}`);
-    if (position) {
-      window.scrollTo({ top: parseInt(position), behavior: 'auto' });
-      sessionStorage.removeItem(`scroll_${key}`);
-    }
-  }
-  /* scrollTo(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  }*/
-
-  scrollToElement(id: string, offset = 80, behavior: ScrollBehavior = 'auto') {
-    const el = document.getElementById(id);
-    if (!el) return;
-
-    const y = el.getBoundingClientRect().top + window.pageYOffset - offset;
-
-    window.scrollTo({
-      top: y,
+    window.scrollBy({
+      top: offset,
       behavior,
     });
   }
+
+  // =========================
+  // 2. SCROLL INTERNO CON OFFSET
+  // =========================
+  scrollToElement(id: string, offset = 80, behavior: ScrollBehavior = 'smooth') {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    const elementTop = el.getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top: elementTop - offset,
+      behavior,
+    });
+  }
+
+  // =========================
+  // 3. GUARDAR SCROLL ACTUAL
+  // =========================
+  saveScroll(url: string = this.getUrl()): void {
+    this.scrollPositions.set(url, window.scrollY);
+  }
+
+  // =========================
+  // 4. RESTAURAR SCROLL
+  // =========================
+  restoreScroll(url: string = this.getUrl(), behavior: ScrollBehavior = 'auto'): void {
+    const y = this.scrollPositions.get(url);
+
+    if (y !== undefined) {
+      window.scrollTo({
+        top: y,
+        behavior,
+      });
+    }
+  }
+
+  // =========================
+  // 5. UTILIDAD URL
+  // =========================
+  private getUrl(): string {
+    return window.location.pathname + window.location.search;
+  }
+
+  // =========================
+  // 6. LIMPIAR (opcional)
+  // =========================
+  clearScroll(url: string = this.getUrl()): void {
+    this.scrollPositions.delete(url);
+  }
 }
+*/

@@ -1,0 +1,19 @@
+<div class="lessons-container">
+  <h2>Lecciones guardadas</h2>
+
+  <div *ngIf="lessons.length; else empty" class="lessons-grid">
+    <div class="lesson-card" *ngFor="let lesson of lessons">
+      <div class="lesson-info" (click)="openLesson(lesson)">
+        <h3>{{ lesson.title }}</h3>
+        <p class="level">{{ lesson.level }}</p>
+        <p class="date">Guardado: {{ lesson.savedAt | date: 'short' }}</p>
+      </div>
+
+      <button class="remove-btn" (click)="removeFromFavorites(lesson)">Quitar</button>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <p>No tienes lecciones guardadas.</p>
+  </ng-template>
+</div>

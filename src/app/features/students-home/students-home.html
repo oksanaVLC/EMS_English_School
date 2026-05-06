@@ -50,7 +50,7 @@
 
     <div class="grid">
       <!-- CARD -->
-      <div class="card" (click)="scrollToElement('grammar')">
+      <div class="card" [routerLink]="['/students']" fragment="grammar">
         <div class="card-top">
           <ul class="card-topics">
             <li>Patrones de verbos</li>
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <div class="card" (click)="scrollToElement('vocabulary')">
+      <div class="card" [routerLink]="['/students']" fragment="vocabulary">
         <div class="card-top">
           <ul class="card-topics">
             <li>Vacabulario activo</li>
@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <div class="card" (click)="scrollToElement('pronunciation')">
+      <div class="card" [routerLink]="['/students']" fragment="pronunciation">
         <div class="card-top">
           <ul class="card-topics">
             <li>Sonidos que confunden</li>
@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <div class="card" (click)="scrollToElement('listening')">
+      <div class="card" [routerLink]="['/students']" fragment="listening">
         <div class="card-top">
           <ul class="card-topics">
             <li>Multiple choice</li>
@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <div class="card" (click)="scrollToElement('writing')">
+      <div class="card" [routerLink]="['/students']" fragment="writing">
         <div class="card-top">
           <ul class="card-topics">
             <li>Descripción</li>
@@ -130,7 +130,7 @@
         </div>
       </div>
 
-      <div class="card" (click)="scrollToElement('speaking')">
+      <div class="card" [routerLink]="['/students']" fragment="speaking">
         <div class="card-top">
           <ul class="card-topics">
             <li>· Describimos una foto</li>
@@ -172,7 +172,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -182,7 +182,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -194,7 +194,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -206,7 +206,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -218,7 +218,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -230,7 +230,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>
@@ -268,7 +268,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -278,7 +278,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -290,7 +290,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -302,7 +302,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -314,7 +314,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -326,7 +326,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>
@@ -364,7 +364,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -374,7 +374,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -386,7 +386,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -398,7 +398,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -410,7 +410,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -422,7 +422,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>
@@ -460,7 +460,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -470,7 +470,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -482,7 +482,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -494,7 +494,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -506,7 +506,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -518,7 +518,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>
@@ -556,7 +556,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -566,7 +566,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -578,7 +578,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -590,7 +590,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -602,7 +602,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -614,7 +614,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>
@@ -652,7 +652,7 @@
 
   <div class="grid">
     <!-- CARD -->
-    <div class="card" routerLink="/students/describimosr">
+    <div class="card" routerLink="/students/a1">
       <div class="card-top pink"><span class="level-letter">A1</span></div>
       <div class="card-bottom">
         <span>Beginner</span>
@@ -662,7 +662,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/vocabulary">
+    <div class="card" routerLink="/students/a2">
       <div class="card-top orange">
         <span class="level-letter">A2</span>
       </div>
@@ -674,7 +674,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/pronunciation">
+    <div class="card" routerLink="/students/b1">
       <div class="card-top yellow">
         <span class="level-letter">B1</span>
       </div>
@@ -686,7 +686,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/listening">
+    <div class="card" routerLink="/students/b2">
       <div class="card-top green">
         <span class="level-letter">B2</span>
       </div>
@@ -698,7 +698,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/writing">
+    <div class="card" routerLink="/students/c1">
       <div class="card-top blue">
         <span class="level-letter">C1</span>
       </div>
@@ -710,7 +710,7 @@
       </div>
     </div>
 
-    <div class="card" routerLink="/students/speaking">
+    <div class="card" routerLink="/students/c2">
       <div class="card-top purple">
         <span class="level-letter">C2</span>
       </div>

@@ -29,7 +29,7 @@ export class Register {
   targetCount = 120;
   hasAnimated = false;
 
-  // 🔥 VALIDADOR PASSWORD MATCH
+  //  VALIDADOR PASSWORD MATCH
   passwordMatchValidator(control: AbstractControl) {
     const password = control.get('password')?.value;
     const confirm = control.get('confirmPassword')?.value;
@@ -78,7 +78,7 @@ export class Register {
           }, 2000);
         },
         error: (err) => {
-          // 🔥 ERROR EMAIL DUPLICADO
+          //  ERROR EMAIL DUPLICADO
           if (err?.error?.errors?.email) {
             this.form.get('email')?.setErrors({ taken: true });
             this.form.get('email')?.markAsTouched();

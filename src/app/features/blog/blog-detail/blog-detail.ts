@@ -253,7 +253,7 @@ export class BlogDetail implements OnInit {
   }
 
   goBack(): void {
-    window.history.back();
+    this.router.navigate(['/blog']);
   }
 
   scrollToTop(): void {

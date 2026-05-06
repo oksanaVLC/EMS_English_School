@@ -34,7 +34,7 @@ export class PostsForm implements OnInit {
     content_en: [''],
 
     short_description: [''],
-    short_description_en: [''], // 👈 OK si existe en backend
+    short_description_en: [''],
   });
 
   ngOnInit() {

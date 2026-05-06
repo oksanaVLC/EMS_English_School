@@ -1,0 +1,36 @@
+<div class="notes-page">
+  <!-- HEADER -->
+  <div class="notes-header">
+    <h2>Mis notas</h2>
+    <p>Guarda ideas rápidas, recordatorios o vocabulario</p>
+  </div>
+
+  <!-- INPUT -->
+  <div class="note-input">
+    <textarea [(ngModel)]="newNote" placeholder="Escribe tu nota..." rows="3"></textarea>
+
+    <button (click)="addNote()">Añadir nota</button>
+  </div>
+
+  <!-- NOTES GRID -->
+  <div class="notes-grid" *ngIf="notes.length; else empty">
+    <div class="note-card" *ngFor="let note of notes; trackBy: trackById">
+      <div class="note-content">
+        {{ note.content }}
+      </div>
+
+      <div class="note-footer">
+        <span>{{ note.createdAt | date: 'short' }}</span>
+
+        <button (click)="deleteNote(note.id)">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <ng-template #empty>
+    <div class="empty-state">
+      <p>No tienes notas todavía</p>
+    </div>
+  </ng-template>
+</div>

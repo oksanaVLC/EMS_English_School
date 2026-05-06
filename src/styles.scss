@@ -31,6 +31,8 @@ body {
   --main-gradient: linear-gradient(135deg, #26ee76, #01c2d1);
   --text-shadow-3d:
     1px 1px 0 rgba(0, 0, 0, 0.2), 2px 2px 0 rgba(0, 0, 0, 0.15), 3px 3px 5px rgba(0, 0, 0, 0.2);
+
+  // --header-height: clamp(180px, 30vh, 260px);
 }
 
 h1,
@@ -61,21 +63,12 @@ a {
   text-decoration: none;
 }
 
-/* styles.scss - estilos globales */
-
-/* Scroll suave para toda la aplicación */
 html {
   scroll-behavior: smooth;
 }
 
-/* Para elementos específicos con scroll interno */
-* {
-  scroll-margin-top: 20px; /* Espacio adicional para elementos anclados */
-}
-
-/* Clase para deshabilitar scroll suave (cuando sea necesario) */
-html.no-smooth-scroll {
-  scroll-behavior: auto;
+section {
+  scroll-margin-top: 60px;
 }
 
 /* original mío de RECETAS ANGULAR 

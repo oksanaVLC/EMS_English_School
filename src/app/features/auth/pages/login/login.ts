@@ -39,11 +39,11 @@ export class Login {
   login() {
     if (this.form.invalid) return;
 
-    // ✅ CORRECCIÓN: Extraer valores y validar que no sean null/undefined
+    // CORRECCIÓN: Extraer valores y validar que no sean null/undefined
     const email = this.form.get('email')?.value;
     const password = this.form.get('password')?.value;
 
-    // ✅ Validación imprescindible para TypeScript
+    //  Validación imprescindible para TypeScript
     if (!email || !password) {
       this.errorMessage.set('Email y contraseña son obligatorios');
       return;

@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import confetti from 'canvas-confetti';
 import { LEVEL_TEST_QUESTIONS } from '../../core/data/questions.data';
 import { Question } from '../../core/models/question.model';
-import { ScrollService } from '../../core/services/scroll';
+
 import { Button } from '../../shared/components/button/button';
 
 @Component({
@@ -28,8 +28,6 @@ export class LevelTest implements OnInit {
   error: string | null = null;
 
   animatedScore = 0;
-
-  constructor(private scrollService: ScrollService) {}
 
   ngOnInit() {
     this.loadTest();
@@ -101,10 +99,10 @@ export class LevelTest implements OnInit {
       this.started = false;
       this.finished = true;
 
-      //  SCROLL ARRIBA CUANDO TERMINA
+      /*  SCROLL ARRIBA CUANDO TERMINA
       setTimeout(() => {
         this.scrollService.scrollToElement('final-title', 80, 'auto');
-      }, 0);
+      }, 0);*/
 
       this.animateScore();
 

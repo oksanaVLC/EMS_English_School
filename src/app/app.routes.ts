@@ -77,12 +77,6 @@ export const routes: Routes = [
   },
 
   {
-    path: 'teachers',
-    loadComponent: () =>
-      import('./features/teachers-home/teachers-home').then((m) => m.TeachersHome),
-    data: { breadcrumb: 'Profesores' },
-  },
-  {
     path: 'blog',
     loadComponent: () => import('./features/blog/blog/blog').then((m) => m.Blog),
     data: { breadcrumb: 'Blog' },
@@ -178,6 +172,14 @@ export const routes: Routes = [
       ),
     data: { breadcrumb: 'Ver post' },
   },
+  {
+    path: 'admin/created-lessons',
+    loadComponent: () =>
+      import('./features/dashboard/admin/created-lessons/created-lessons').then(
+        (m) => m.CreatedLessons,
+      ),
+    data: { breadcrumb: 'Lecciones creadas' },
+  },
 
   // =========================
   //  USER
@@ -203,6 +205,25 @@ export const routes: Routes = [
         (m) => m.FavoritePosts,
       ),
     data: { breadcrumb: 'Articulos guardados' },
+  },
+  {
+    path: 'user/tests-done',
+    loadComponent: () =>
+      import('./features/dashboard/user/tests-done/tests-done').then((m) => m.TestsDone),
+    data: { breadcrumb: 'Tests realizados' },
+  },
+  {
+    path: 'user/favorite-lessons',
+    loadComponent: () =>
+      import('./features/dashboard/user/favorite-lessons/favorite-lessons').then(
+        (m) => m.FavoriteLessons,
+      ),
+    data: { breadcrumb: 'Lecciones guardadas' },
+  },
+  {
+    path: 'user/notes',
+    loadComponent: () => import('./features/dashboard/user/notes/notes').then((m) => m.Notes),
+    data: { breadcrumb: 'Notas' },
   },
 
   // =========================
