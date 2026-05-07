@@ -60,7 +60,7 @@ export class Navbar implements OnInit {
         setTimeout(() => {
           this.cookieState.set('inactive');
         }, 2500);
-      }, 300); // ⬅️ duración animación navbar
+      }, 300); //  duración animación navbar
     }
   }
 

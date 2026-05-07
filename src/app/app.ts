@@ -19,7 +19,7 @@ export class App {
   protected readonly title = signal('EMS_Frontend_Angular');
 
   private router = inject(Router);
-  private offset = 220;
+  private offset = 100;
 
   constructor() {
     this.router.events
@@ -32,8 +32,15 @@ export class App {
   private handleScroll() {
     const url = this.router.url;
 
-    // 👇 si estás en home, NO aplicas offset
+    const hasFragment = url.includes('#');
+
+    // Home sin offset
     if (url === '/' || url.startsWith('/home')) {
+      return;
+    }
+
+    //  SI hay fragmento, NO toques el scroll
+    if (hasFragment) {
       return;
     }
 
