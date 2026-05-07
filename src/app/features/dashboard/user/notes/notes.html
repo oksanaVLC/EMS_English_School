@@ -1,36 +1,82 @@
 <div class="notes-page">
-  <!-- HEADER -->
-  <div class="notes-header">
-    <h2>Mis notas</h2>
-    <p>Guarda ideas rápidas, recordatorios o vocabulario</p>
-  </div>
-
-  <!-- INPUT -->
-  <div class="note-input">
-    <textarea [(ngModel)]="newNote" placeholder="Escribe tu nota..." rows="3"></textarea>
-
-    <button (click)="addNote()">Añadir nota</button>
-  </div>
-
-  <!-- NOTES GRID -->
-  <div class="notes-grid" *ngIf="notes.length; else empty">
-    <div class="note-card" *ngFor="let note of notes; trackBy: trackById">
-      <div class="note-content">
-        {{ note.content }}
-      </div>
-
-      <div class="note-footer">
-        <span>{{ note.createdAt | date: 'short' }}</span>
-
-        <button (click)="deleteNote(note.id)">✕</button>
-      </div>
+  <div class="notes-container">
+    <!-- HEADER -->
+    <div class="notes-header">
+      <h1>Mis notas</h1>
+      <p>Guarda vocabulario, ideas rápidas o recordatorios importantes.</p>
     </div>
-  </div>
 
-  <!-- EMPTY STATE -->
-  <ng-template #empty>
-    <div class="empty-state">
-      <p>No tienes notas todavía</p>
+    <!-- INPUT -->
+    <div class="note-input-card">
+      <label for="note">
+        <i class="fa-regular fa-note-sticky"></i>
+        Nueva nota
+      </label>
+
+      <input
+        type="text"
+        [(ngModel)]="newTitle"
+        placeholder="Título de la nota..."
+        class="note-title-input"
+      />
+      <textarea
+        id="note"
+        [(ngModel)]="newNote"
+        placeholder="Escribe aquí tu nota..."
+        rows="4"
+      ></textarea>
+
+      <button class="btn-add" (click)="addNote()">
+        <i class="fa-solid fa-plus"></i>
+        Añadir nota
+      </button>
     </div>
-  </ng-template>
+
+    <!-- NOTES -->
+    @if (notes.length) {
+      <div class="notes-grid">
+        @for (note of notes; track note.id) {
+          <div class="note-card">
+            <!-- TOP -->
+            <div class="note-top">
+              <i class="fa-regular fa-lightbulb"></i>
+
+              <button class="delete-btn" (click)="deleteNote(note.id)">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <!-- CONTENT -->
+            <h3 class="note-title">
+              {{ note.title }}
+            </h3>
+            <div class="note-content">
+              {{ note.content }}
+            </div>
+
+            <!-- FOOTER -->
+            <div class="note-footer">
+              <span>
+                <i class="fa-regular fa-clock"></i>
+                {{ note.createdAt | date: 'short' }}
+              </span>
+
+              <button class="print-btn" (click)="printNote(note)">
+                <i class="fa-solid fa-print"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <!-- EMPTY -->
+      <div class="empty-state">
+        <i class="fa-regular fa-note-sticky"></i>
+
+        <h3>No tienes notas todavía</h3>
+
+        <p>Empieza guardando vocabulario, ideas o ejercicios importantes.</p>
+      </div>
+    }
+  </div>
 </div>
