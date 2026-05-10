@@ -1,0 +1,58 @@
+<div class="page-container">
+  @for (page of paginatedVerbs; track $index) {
+    <section class="printable-page">
+      <header class="header">
+        <div>
+          <span class="gold-gradient school-name"> English Maximizer School </span>
+
+          <h1>Tabla de Verbos Irregulares</h1>
+        </div>
+
+        <div class="header-right">
+          <p class="label">STUDENT RESOURCE</p>
+
+          <p>Página {{ $index + 1 }}</p>
+        </div>
+      </header>
+
+      <table class="verbs-table">
+        <thead>
+          <tr>
+            <th>Base Form</th>
+            <th>Past Simple</th>
+            <th>Past Participle</th>
+            <th>Traducción</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (verb of page; track verb.base) {
+            <tr>
+              <td class="base">{{ verb.base }}</td>
+              <td>{{ verb.past }}</td>
+              <td>{{ verb.participle }}</td>
+              <td class="translation">{{ verb.translation }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if ($last) {
+        <div class="study-note">
+          <h3>Nota de estudio</h3>
+
+          <p>
+            Recuerda que los verbos irregulares no siguen una regla fija de conjugación. La práctica
+            constante y la lectura son las mejores herramientas para memorizarlos.
+          </p>
+        </div>
+      }
+    </section>
+  }
+
+  <button class="print-btn" (click)="printPage()">
+    <span class="material-symbols-outlined"> print </span>
+
+    Print PDF
+  </button>
+</div>

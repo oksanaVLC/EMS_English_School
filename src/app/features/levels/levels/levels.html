@@ -1,0 +1,25 @@
+<div class="level-header" [ngClass]="getLevelColorClass(level)">
+  <i class="fa-solid fa-graduation-cap"></i>
+  {{ level | uppercase }}: {{ getLevelName(level) }}
+</div>
+
+<div class="grid">
+  @for (lesson of lessons; track lesson.id) {
+    <div
+      class="topic-card"
+      [ngClass]="getLevelColorClass(level) + '-card'"
+      (click)="goToLesson(lesson.slug)"
+    >
+      <i class="fa-solid fa-book topic-icon"></i>
+
+      <h3>{{ lesson.title }}</h3>
+      <p>{{ lesson.type }}</p>
+
+      <div class="tags">
+        @for (tag of lesson.tags; track tag) {
+          <span>{{ tag }}</span>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -255,3 +255,25 @@ section {
     opacity: 0;
   }
 }
+
+@media print {
+  app-header,
+  app-navbar,
+  app-breadcrumbs,
+  app-tags,
+  app-footer,
+  app-spinner {
+    display: none !important;
+  }
+
+  app-navbar {
+    visibility: hidden !important;
+    position: absolute !important;
+  }
+
+  body {
+    background: white !important;
+    padding-top: 0 !important;
+    background-image: none !important;
+  }
+}

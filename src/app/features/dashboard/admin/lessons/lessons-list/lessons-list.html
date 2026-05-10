@@ -1,0 +1,61 @@
+<div class="lessons">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Lecciones creadas</h1>
+    <p>Gestiona el contenido educativo</p>
+
+    <button class="btn-create" routerLink="/admin/lessons/create">+ Crear lección</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <!--  <th>Cover</th> -->
+            <th>Título</th>
+            <th>Nivel</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (lesson of lessons; track lesson.id) {
+            <tr>
+              <!-- <td>
+                @if (lesson.cover_url) {
+                  <img class="cover" [src]="lesson.cover_url" alt="cover" />
+                }
+              </td>-->
+
+              <td>{{ lesson.title }}</td>
+
+              <td>{{ lesson.level }}</td>
+
+              <td>{{ lesson.type }}</td>
+
+              <td>
+                <span class="status" [class.published]="lesson.status === 'published'">
+                  {{ lesson.status }}
+                </span>
+              </td>
+
+              <td class="actions">
+                <button class="icon-btn" [routerLink]="['/admin/lessons/edit', lesson.id]">
+                  ✏️ Editar
+                </button>
+
+                <button class="icon-btn danger" (click)="deleteLesson(lesson.id)">
+                  🗑 Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

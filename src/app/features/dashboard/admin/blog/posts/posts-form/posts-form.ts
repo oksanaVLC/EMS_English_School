@@ -115,7 +115,7 @@ export class PostsForm implements OnInit {
       const title = this.form.value.title || '';
       const content = this.form.value.content || '';
 
-      // 👉 CASO CON IMAGEN
+      //  CASO CON IMAGEN
       if (this.file) {
         const formData = new FormData();
 
@@ -135,7 +135,7 @@ export class PostsForm implements OnInit {
           error: (err) => this.handleError(err),
         });
       } else {
-        // 👉 CASO SIN IMAGEN (JSON NORMAL)
+        //  CASO SIN IMAGEN (JSON NORMAL)
         const data = {
           title,
           content,

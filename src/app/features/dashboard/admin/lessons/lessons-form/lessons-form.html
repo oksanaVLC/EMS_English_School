@@ -1,0 +1,94 @@
+<div class="lesson-form-page">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>
+      {{ isEdit ? 'Editar lección' : 'Crear nueva lección' }}
+    </h1>
+
+    <p>
+      {{ isEdit ? 'Modifica la lección existente' : 'Crea una nueva lección de inglés' }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save('published')" class="form">
+    <!-- TITLE -->
+    <div class="form-group">
+      <label>Título *</label>
+      <input type="text" formControlName="title" />
+    </div>
+
+    <!-- SLUG -->
+    <div class="form-group">
+      <label>Slug *</label>
+      <input type="text" formControlName="slug" placeholder="present-simple" />
+    </div>
+
+    <!-- LEVEL -->
+    <div class="form-group">
+      <label>Nivel</label>
+      <select formControlName="level">
+        <option value="A1">A1</option>
+        <option value="A2">A2</option>
+        <option value="B1">B1</option>
+        <option value="B2">B2</option>
+        <option value="C1">C1</option>
+        <option value="C2">C2</option>
+      </select>
+    </div>
+
+    <!-- TYPE -->
+    <div class="form-group">
+      <label>Tipo</label>
+      <select formControlName="type">
+        <option value="grammar">Grammar</option>
+        <option value="vocabulary">Vocabulary</option>
+        <option value="reading">Reading</option>
+        <option value="listening">Listening</option>
+        <option value="speaking">Speaking</option>
+        <option value="writing">Writing</option>
+        <option value="pronunciation">Pronunciation</option>
+      </select>
+    </div>
+
+    <!-- TAGS -->
+    <div class="form-group">
+      <label>Tags (separadas por coma)</label>
+      <input type="text" formControlName="tags" placeholder="grammar, verbs, beginner" />
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="form-group">
+      <label>Explicación</label>
+      <textarea rows="12" formControlName="explanation"></textarea>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="form-group">
+      <label>Video URL</label>
+      <input type="text" formControlName="video_url" />
+    </div>
+
+    <!-- PDF -->
+    <div class="form-group">
+      <label>PDF URL</label>
+      <input type="text" formControlName="pdf_url" />
+    </div>
+
+    <!-- COVER -->
+    <div class="form-group">
+      <label>Cover URL (opcional)</label>
+      <input type="text" formControlName="cover_url" />
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button type="button" class="btn-secondary" routerLink="/admin/lessons">Cancelar</button>
+
+      <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
+
+      <button type="submit" class="btn-primary">
+        {{ isEdit ? 'Actualizar' : 'Publicar' }}
+      </button>
+    </div>
+  </form>
+</div>

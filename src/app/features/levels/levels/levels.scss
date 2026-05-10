@@ -1,0 +1,211 @@
+/* =========================
+   LEVEL HEADER
+========================= */
+
+.level-header {
+  position: sticky;
+  top: 58px;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto;
+  color: white;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Clases de colores por nivel */
+.pink {
+  background: linear-gradient(135deg, #ff65a2, #faccdc);
+}
+
+.orange {
+  background: linear-gradient(135deg, #ff8c42, #ffd1b3);
+}
+
+.yellow {
+  background: linear-gradient(135deg, #f5d742, #fff1a8);
+}
+
+.green {
+  background: linear-gradient(135deg, #2ecc71, #bff3d2);
+}
+
+.blue {
+  background: linear-gradient(135deg, #4ecdc4, #c9f4f1);
+}
+
+.purple {
+  background: linear-gradient(135deg, #c084fc, #e9d5ff);
+}
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 600px) {
+  .grid {
+    gap: 1rem;
+    padding: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================
+   CARD
+========================= */
+
+.topic-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 4px solid transparent; /* Base para todas las tarjetas */
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  h3 {
+    margin-top: 0.5rem;
+    color: var(--color-accent);
+  }
+
+  p {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  /* Nivel A1 - Pink */
+  &.pink-card {
+    border-top-color: #ff65a2;
+
+    .topic-icon {
+      color: #ff65a2;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(255, 101, 162, 0.2);
+    }
+  }
+
+  /* Nivel A2 - Orange */
+  &.orange-card {
+    border-top-color: #ff8c42;
+
+    .topic-icon {
+      color: #ff8c42;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(255, 140, 66, 0.2);
+    }
+  }
+
+  /* Nivel B1 - Yellow */
+  &.yellow-card {
+    border-top-color: #f5d742;
+
+    .topic-icon {
+      color: #f5d742;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(245, 215, 66, 0.2);
+    }
+  }
+
+  /* Nivel B2 - Green */
+  &.green-card {
+    border-top-color: #2ecc71;
+
+    .topic-icon {
+      color: #2ecc71;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(46, 204, 113, 0.2);
+    }
+  }
+
+  /* Nivel C1 - Blue */
+  &.blue-card {
+    border-top-color: #4ecdc4;
+
+    .topic-icon {
+      color: #4ecdc4;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(78, 205, 196, 0.2);
+    }
+  }
+
+  /* Nivel C2 - Purple */
+  &.purple-card {
+    border-top-color: #c084fc;
+
+    .topic-icon {
+      color: #c084fc;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 25px rgba(192, 132, 252, 0.2);
+    }
+  }
+}
+
+/* ICON */
+.topic-icon {
+  font-size: 1.4rem;
+  color: #01d1a4;
+}
+
+/* =========================
+   TAGS
+========================= */
+
+.tags {
+  margin-top: 0.5rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  span {
+    font-size: 0.75rem;
+
+    background: #f1f5f9;
+    padding: 4px 10px;
+
+    border-radius: 999px;
+    color: #444;
+  }
+}

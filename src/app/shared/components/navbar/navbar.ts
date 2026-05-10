@@ -26,6 +26,11 @@ export class Navbar implements OnInit {
   isOpen = signal(false);
   isLoggedIn = computed(() => this.auth.isLoggedIn());
 
+  // Estados para el menú móvil
+  isMobileResourcesOpen = signal(false);
+  isDestrezasOpen = signal(false);
+  isNivelesOpen = signal(false);
+
   // Estado para la animación de la galleta
   cookieState = signal<'inactive' | 'active'>('inactive');
 
@@ -60,13 +65,40 @@ export class Navbar implements OnInit {
         setTimeout(() => {
           this.cookieState.set('inactive');
         }, 2500);
-      }, 300); //  duración animación navbar
+      }, 300); // duración animación navbar
     }
   }
 
+  // Toggle para Recursos (menú principal móvil)
+  toggleMobileResources(event: Event): void {
+    event.stopPropagation(); // Evita cerrar el menú principal
+    this.isMobileResourcesOpen.update((value) => !value);
+
+    // Opcional: cerrar los submenús al colapsar Recursos
+    if (!this.isMobileResourcesOpen()) {
+      this.isDestrezasOpen.set(false);
+      this.isNivelesOpen.set(false);
+    }
+  }
+
+  // Toggle para Destrezas
+  toggleDestrezas(event: Event): void {
+    event.stopPropagation();
+    this.isDestrezasOpen.update((value) => !value);
+  }
+
+  // Toggle para Niveles
+  toggleNiveles(event: Event): void {
+    event.stopPropagation();
+    this.isNivelesOpen.update((value) => !value);
+  }
+
+  // Cierra el menú completo y resetea todos los estados
   closeMenu(): void {
     this.isOpen.set(false);
-    // No resetear cookieState aquí para que no interfiera
+    this.isMobileResourcesOpen.set(false);
+    this.isDestrezasOpen.set(false);
+    this.isNivelesOpen.set(false);
   }
 
   logout() {
