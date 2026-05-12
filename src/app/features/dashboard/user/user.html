@@ -13,7 +13,7 @@
   <div class="profile-card">
     <!-- FOTO -->
     <div class="avatar">
-      <img [src]="user()?.avatar_url || 'images/user.webp'" alt="avatar" />
+      <img [src]="avatarUrl()" (error)="onAvatarError($event)" alt="avatar" />
     </div>
 
     <!-- CONTENIDO -->

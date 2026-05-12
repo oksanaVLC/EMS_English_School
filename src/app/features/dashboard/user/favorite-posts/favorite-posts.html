@@ -55,7 +55,7 @@
           @for (post of posts; track post.id) {
             <tr>
               <td class="cover-cell" (click)="goToPost(post.slug)">
-                <img [src]="post.cover" [alt]="post.title" class="cover-img" />
+                <img [src]="post.cover_url" [alt]="post.title" class="cover-img" />
               </td>
               <td class="title-cell" (click)="goToPost(post.slug)">
                 {{ post.title }}

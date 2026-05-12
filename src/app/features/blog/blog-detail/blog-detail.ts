@@ -6,21 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { Auth } from '../../../core/services/auth';
 
-interface Post {
-  id: number;
-  title: string;
-  slug: string;
-  content: string;
-  cover?: string;
-  created_at: string;
-  title_en?: string;
-  content_en?: string;
-  is_favorited?: boolean; // ✅ Estado real del backend
-  user?: {
-    name: string;
-    surname: string;
-  };
-}
+import { PostModel } from '../../../core/models/post.model';
 
 @Component({
   selector: 'app-blog-detail',
@@ -36,7 +22,7 @@ export class BlogDetail implements OnInit {
   private router = inject(Router);
   private apiUrl = environment.apiUrl;
 
-  post: Post | null = null;
+  post: PostModel | null = null;
   auth = inject(Auth);
 
   // =========================
@@ -75,7 +61,7 @@ export class BlogDetail implements OnInit {
       headers = { Authorization: `Bearer ${token}` };
     }
 
-    this.http.get<Post>(`${this.apiUrl}/posts/slug/${slug}`, { headers }).subscribe({
+    this.http.get<PostModel>(`${this.apiUrl}/posts/slug/${slug}`, { headers }).subscribe({
       next: (res) => {
         console.log('is_favorited:', res?.is_favorited);
         this.post = res ?? null;

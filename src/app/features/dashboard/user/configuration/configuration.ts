@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { CanComponentDeactivate } from '../../../../core/guards/can-deactivate-guard';
 import { Auth } from '../../../../core/services/auth';
+import { CloudinaryService } from '../../../../core/services/cloudinary.service';
 
 @Component({
   selector: 'app-user-config',
@@ -18,6 +19,7 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
   private router = inject(Router);
+  private cloudinary = inject(CloudinaryService);
 
   deletePassword = '';
   showDeleteModal = false;
@@ -101,29 +103,16 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
   }
 
   save() {
-    const formData = new FormData();
+    const file = this.selectedFile;
 
-    formData.append('_method', 'PUT');
-    formData.append('name', this.form.value.name ?? '');
-    formData.append('surname', this.form.value.surname ?? '');
-    formData.append('email', this.form.value.email ?? '');
-
-    if (this.selectedFile) {
-      formData.append('avatar', this.selectedFile);
+    if (!file) {
+      this.updateProfile(null);
+      return;
     }
 
-    this.http.post(`${environment.apiUrl}/user/profile`, formData).subscribe({
-      next: (res: any) => {
-        this.auth.setUser(res.user);
-        this.originalFormValues = { ...this.form.value };
-        this.selectedFile = null;
-        this.previewUrl = null;
-
-        this.router.navigate(['/user']);
-      },
-      error: (err) => {
-        console.error(err);
-      },
+    this.cloudinary.uploadImage(file).subscribe({
+      next: (res) => this.updateProfile(res.secure_url),
+      error: console.error,
     });
   }
   onFileSelected(event: Event) {
@@ -178,5 +167,39 @@ export class Configuration implements OnInit, OnDestroy, CanComponentDeactivate 
           alert('Contraseña incorrecta o error al eliminar la cuenta');
         },
       });
+  }
+  private updateProfile(avatarUrl: string | null) {
+    const payload: any = {
+      name: this.form.value.name,
+      surname: this.form.value.surname,
+      email: this.form.value.email,
+    };
+
+    if (avatarUrl) {
+      payload.avatar_url = avatarUrl;
+    }
+
+    this.http.post(`${environment.apiUrl}/user/profile`, payload).subscribe({
+      next: (res: any) => {
+        this.auth.setUser({
+          ...this.auth.user(),
+          ...res.user,
+        });
+
+        this.selectedFile = null;
+        this.previewUrl = null;
+
+        this.router.navigate(['/user']);
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  // avatar base (BD o Cloudinary)
+  avatarUrl = computed(() => this.user()?.avatar_url || '/images/user.webp');
+
+  // fallback si imagen falla
+  onAvatarError(event: Event) {
+    (event.target as HTMLImageElement).src = '/images/user.webp';
   }
 }

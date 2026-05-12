@@ -7,32 +7,29 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
   const router = inject(Router);
 
-  // Solo añadir el token si existe
+  //  EXCLUIR CLOUDINARY ANTES DE TODO
+  if (req.url.includes('api.cloudinary.com')) {
+    return next(req);
+  }
+
+  let authReq = req;
+
   if (token) {
-    // Clonar la petición y añadir solo el header Authorization
-    const authReq = req.clone({
+    authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    return next(authReq).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          router.navigate(['/login']);
-        }
-        return throwError(() => error);
-      }),
-    );
   }
 
-  return next(req).pipe(
+  return next(authReq).pipe(
     catchError((error) => {
       if (error.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         router.navigate(['/login']);
       }
+
       return throwError(() => error);
     }),
   );

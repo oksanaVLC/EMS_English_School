@@ -24,20 +24,31 @@ export class PostsList implements OnInit {
   currentPage = 1;
   lastPage = 1;
   filterStatus: PostStatus = '';
+
   showDeleteModal = false;
   deleteId: number | null = null;
 
   currentLang: 'es' | 'en' = 'es';
+
   isLoading = false;
 
   ngOnInit() {
     this.loadPosts();
   }
 
+  /*
+  |-----------------------------------------
+  | LOAD POSTS
+  |-----------------------------------------
+  */
   loadPosts(page = 1, status: PostStatus = this.filterStatus) {
+    this.isLoading = true;
+
     let params = new HttpParams().set('page', page);
 
-    if (status) params = params.set('status', status);
+    if (status) {
+      params = params.set('status', status);
+    }
 
     this.http
       .get<any>(`${this.apiUrl}/posts`, {
@@ -47,13 +58,26 @@ export class PostsList implements OnInit {
       .subscribe({
         next: (res) => {
           this.posts = res.data || [];
+
           this.currentPage = res.current_page || 1;
           this.lastPage = res.last_page || 1;
+
+          this.isLoading = false;
+
+          console.log('📸 Posts cargados:', this.posts);
         },
-        error: (err) => console.error(err),
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+        },
       });
   }
 
+  /*
+  |-----------------------------------------
+  | LANGUAGE HELPERS
+  |-----------------------------------------
+  */
   getPostTitle(post: PostModel): string {
     return (this.currentLang === 'en' ? post.title_en : post.title) || post.title || 'Sin título';
   }
@@ -66,6 +90,11 @@ export class PostsList implements OnInit {
     this.currentLang = this.currentLang === 'es' ? 'en' : 'es';
   }
 
+  /*
+  |-----------------------------------------
+  | DELETE
+  |-----------------------------------------
+  */
   openDeleteModal(id: number) {
     this.deleteId = id;
     this.showDeleteModal = true;
@@ -81,20 +110,30 @@ export class PostsList implements OnInit {
 
     this.http.delete(`${this.apiUrl}/posts/${this.deleteId}`).subscribe({
       next: () => {
-        this.closeDeleteModal(); //  cerrar modal
-        this.loadPosts(this.currentPage, this.filterStatus); // refrescar lista
+        this.closeDeleteModal();
+        this.loadPosts(this.currentPage, this.filterStatus);
       },
       error: console.error,
     });
   }
 
+  /*
+  |-----------------------------------------
+  | FILTERS
+  |-----------------------------------------
+  */
   filter(status: PostStatus) {
     this.filterStatus = status;
     this.currentPage = 1;
     this.loadPosts(1, status);
   }
 
+  /*
+  |-----------------------------------------
+  | UTILS
+  |-----------------------------------------
+  */
   truncate(text: string, len = 60): string {
-    return text.length > len ? text.slice(0, len) + '...' : text;
+    return text?.length > len ? text.slice(0, len) + '...' : text;
   }
 }

@@ -16,5 +16,14 @@ export class User {
   user = computed(() => this.auth.user());
 
   //  solo nombre derivado
+  // nombre
   userName = computed(() => this.auth.user()?.name ?? 'usuario');
+
+  // avatar reactivo (SIN función)
+  avatarUrl = computed(() => this.auth.user()?.avatar_url || '/images/user.webp');
+
+  // fallback si falla la imagen
+  onAvatarError(event: Event) {
+    (event.target as HTMLImageElement).src = '/images/user.webp';
+  }
 }

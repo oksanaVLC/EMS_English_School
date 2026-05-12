@@ -3,32 +3,66 @@
     <h1>
       {{ isEdit ? 'Editar post' : 'Crear nuevo post' }}
     </h1>
+
     <p>
       {{ isEdit ? 'Modifica el contenido del artículo' : 'Rellena los datos del nuevo artículo' }}
     </p>
   </div>
 
   <form [formGroup]="form" class="form" (ngSubmit)="save('published')">
-    <!-- COVER -->
+    <!-- IMAGE UPLOAD -->
     <div class="form-group">
-      <label>Imagen de portada</label>
-      <input type="file" (change)="onFileChange($event)" accept="image/*" />
-    </div>
+      <label>Imagen del post</label>
 
-    <!-- PREVIEW -->
-    @if (preview) {
-      <div class="form-group">
-        <img [src]="preview" class="image-preview" />
+      <div
+        class="upload-box"
+        (drop)="onDrop($event)"
+        (dragover)="onDragOver($event)"
+        (click)="triggerFileInput()"
+      >
+        <input
+          type="file"
+          id="fileInput"
+          hidden
+          accept="image/*"
+          (change)="onFileSelected($event)"
+        />
+
+        @if (!preview) {
+          <div class="upload-placeholder">
+            <p>Arrastra una imagen o haz click para subirla</p>
+            <small>JPG, PNG o WEBP · máximo 5MB</small>
+          </div>
+        }
+
+        @if (preview) {
+          <div class="preview-container">
+            <img [src]="preview" alt="Preview" class="image-preview" />
+
+            <button
+              type="button"
+              class="remove-image"
+              (click)="removeImage(); $event.stopPropagation()"
+            >
+              ✕
+            </button>
+          </div>
+        }
       </div>
-    }
+
+      @if (loading) {
+        <small class="help-text">Subiendo imagen...</small>
+      }
+
+      @if (uploadError) {
+        <small class="error">{{ uploadError }}</small>
+      }
+    </div>
 
     <!-- TITLE ES -->
     <div class="form-group">
       <label>Título (ES) *</label>
       <input type="text" formControlName="title" />
-      @if (form.get('title')?.invalid && form.get('title')?.touched) {
-        <small class="error">El título es requerido</small>
-      }
     </div>
 
     <!-- SHORT ES -->
@@ -41,9 +75,6 @@
     <div class="form-group">
       <label>Contenido (ES) *</label>
       <textarea rows="10" formControlName="content"></textarea>
-      @if (form.get('content')?.invalid && form.get('content')?.touched) {
-        <small class="error">El contenido es requerido</small>
-      }
     </div>
 
     <!-- TITLE EN -->
@@ -51,6 +82,7 @@
       <label>Título (EN)</label>
       <input type="text" formControlName="title_en" />
     </div>
+
     <!-- SHORT EN -->
     <div class="form-group">
       <label>Short description (EN)</label>
@@ -66,9 +98,11 @@
     <!-- ACTIONS -->
     <div class="actions">
       <button type="button" class="btn-secondary" routerLink="/admin/posts">Cancelar</button>
+
       <button type="button" class="btn-draft" (click)="save('draft')" [disabled]="loading">
         {{ loading ? 'Guardando...' : 'Guardar borrador' }}
       </button>
+
       <button type="submit" class="btn-primary" [disabled]="loading">
         {{ loading ? 'Procesando...' : isEdit ? 'Actualizar' : 'Publicar' }}
       </button>

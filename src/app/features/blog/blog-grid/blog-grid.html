@@ -2,7 +2,7 @@
   @for (post of posts; track post.id) {
     <article class="card">
       <div class="image-wrapper" (click)="goToPost(post.slug)">
-        <img [src]="post.cover" alt="cover" />
+        <img [src]="post.cover_url" alt="cover" />
       </div>
 
       <div class="content">

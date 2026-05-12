@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { PostModel } from '../../../../../../core/models/post.model';
-import { AdminPostService } from '../../../../../../core/services/admin-post.service';
+
+import { environment } from '../../../../../../../environments/environment';
+import { CloudinaryService } from '../../../../../../core/services/cloudinary.service';
 
 @Component({
   selector: 'app-posts-form',
@@ -13,167 +15,283 @@ import { AdminPostService } from '../../../../../../core/services/admin-post.ser
   styleUrls: ['./posts-form.scss'],
 })
 export class PostsForm implements OnInit {
-  private fb = inject(FormBuilder);
-  private postService = inject(AdminPostService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  form!: FormGroup;
 
-  isEdit = false;
-  postId: number | null = null;
   loading = false;
+  isEdit = false;
+  postId?: number;
 
-  file: File | null = null;
-  preview: string | ArrayBuffer | null = null;
+  preview: string | null = null;
+  selectedFile: File | null = null;
+  uploadProgress: number | null = null;
+  uploadError: string | null = null;
 
-  // FORM limpio
-  form = this.fb.group({
-    title: ['', Validators.required],
-    content: ['', Validators.required],
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private cloudinaryService: CloudinaryService,
+  ) {}
 
-    title_en: [''],
-    content_en: [''],
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      content: ['', Validators.required],
+      short_description: [''],
+      title_en: [''],
+      content_en: [''],
+      short_description_en: [''],
+      status: ['draft', Validators.required],
+      cover_url: [''], // Este campo guardará la URL de Cloudinary
+    });
 
-    short_description: [''],
-    short_description_en: [''],
-  });
-
-  ngOnInit() {
+    // Verificar si es edición
     const id = this.route.snapshot.paramMap.get('id');
-
-    this.isEdit = !!id;
-    this.postId = id ? Number(id) : null;
-
-    if (this.isEdit && this.postId) {
-      this.loadPost();
+    if (id) {
+      this.isEdit = true;
+      this.postId = Number(id);
+      this.loadPost(this.postId);
     }
+
+    // Actualizar preview cuando cambie cover_url
+    this.form.get('cover_url')?.valueChanges.subscribe((value) => {
+      this.preview = value || null;
+    });
   }
 
-  loadPost() {
+  /*
+  |-----------------------------------------
+  | LOAD POST
+  |-----------------------------------------
+  */
+  loadPost(id: number): void {
     this.loading = true;
 
-    this.postService.getPost(this.postId!).subscribe({
-      next: (post: PostModel) => {
+    // Asegúrate que la URL sea correcta
+    const url = `${environment.apiUrl}/posts/${id}`;
+    console.log('🔍 Cargando post desde:', url);
+
+    this.http.get<any>(url).subscribe({
+      next: (post) => {
+        console.log('📦 Post cargado:', post);
+
+        // Mapear correctamente los campos
         this.form.patchValue({
           title: post.title || '',
           content: post.content || '',
-
+          short_description: post.short_description || '',
           title_en: post.title_en || '',
           content_en: post.content_en || '',
-
-          short_description: post.short_description || '',
           short_description_en: post.short_description_en || '',
+          status: post.status || 'draft',
+          cover_url: post.cover_url || post.cover || '', // Compatibilidad con ambos nombres
         });
 
-        this.preview = post.cover_url ?? null;
-
+        this.preview = post.cover_url || post.cover || null;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar post:', err);
+        console.error('❌ Error cargando post:', err);
+        console.error('❌ URL:', url);
         this.loading = false;
       },
     });
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    this.file = file;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.preview = reader.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  save(status: 'draft' | 'published' = 'draft') {
-    if (this.form.invalid) return;
-
-    const formData = new FormData();
-
-    formData.append('title', this.form.value.title || '');
-    formData.append('content', this.form.value.content || '');
-
-    formData.append('title_en', this.form.value.title_en || '');
-    formData.append('content_en', this.form.value.content_en || '');
-
-    formData.append('short_description', this.form.value.short_description || '');
-    formData.append('short_description_en', this.form.value.short_description_en || '');
-
-    formData.append('status', status);
-
-    if (this.file) {
-      formData.append('cover', this.file);
-    }
-
-    // =========================
-    // EDIT
-    // =========================
-    if (this.isEdit && this.postId) {
-      const title = this.form.value.title || '';
-      const content = this.form.value.content || '';
-
-      //  CASO CON IMAGEN
-      if (this.file) {
-        const formData = new FormData();
-
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('title_en', this.form.value.title_en || '');
-        formData.append('content_en', this.form.value.content_en || '');
-        formData.append('short_description', this.form.value.short_description || '');
-        formData.append('short_description_en', this.form.value.short_description_en || '');
-        formData.append('status', status);
-
-        formData.append('cover', this.file);
-        formData.append('_method', 'PUT');
-
-        this.postService.updatePostWithImage(this.postId, formData).subscribe({
-          next: () => this.router.navigate(['/admin/posts']),
-          error: (err) => this.handleError(err),
-        });
-      } else {
-        //  CASO SIN IMAGEN (JSON NORMAL)
-        const data = {
-          title,
-          content,
-          title_en: this.form.value.title_en || '',
-          content_en: this.form.value.content_en || '',
-          short_description: this.form.value.short_description || '',
-          short_description_en: this.form.value.short_description_en || '',
-          status,
-        };
-
-        this.postService.updatePost(this.postId, data).subscribe({
-          next: () => this.router.navigate(['/admin/posts']),
-          error: (err) => this.handleError(err),
-        });
-      }
-
+  /*
+  |-----------------------------------------
+  | SAVE POST
+  |-----------------------------------------
+  */
+  save(status: 'draft' | 'published'): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      console.warn('⚠️ Formulario inválido:', this.form.errors);
       return;
     }
 
-    // =========================
-    // CREATE
-    // =========================
-    this.postService.createPost(formData).subscribe({
-      next: () => this.router.navigate(['/admin/posts']),
-      error: (err) => console.error('Error al crear:', err),
+    this.loading = true;
+
+    // Construir payload - Asegurar que los campos coincidan con el backend
+    const payload = {
+      title: this.form.value.title?.trim() || '',
+      content: this.form.value.content?.trim() || '',
+      short_description: this.form.value.short_description || '',
+      title_en: this.form.value.title_en || '',
+      content_en: this.form.value.content_en || '',
+      short_description_en: this.form.value.short_description_en || '',
+      status: status,
+      cover_url: this.form.value.cover_url || null, // Enviar null si no hay imagen
+    };
+    console.log('🔍 VALOR DE COVER_URL:', this.form.value.cover_url);
+    console.log('🔍 PAYLOAD COMPLETO:', JSON.stringify(payload, null, 2));
+    console.log('📤 Enviando payload:', payload);
+    console.log('📤 Es edición:', this.isEdit);
+    console.log('📤 ID:', this.postId);
+
+    const url = `${environment.apiUrl}/posts${this.isEdit ? `/${this.postId}` : ''}`;
+    const method = this.isEdit ? 'PUT' : 'POST';
+
+    console.log(`📤 ${method} a:`, url);
+
+    const request = this.isEdit ? this.http.put(url, payload) : this.http.post(url, payload);
+
+    request.subscribe({
+      next: (response) => {
+        console.log('✅ Guardado exitoso:', response);
+        this.loading = false;
+        this.router.navigate(['/admin/posts']);
+      },
+      error: (err) => {
+        console.error('❌ Error guardando:');
+        console.error('❌ Status:', err.status);
+        console.error('❌ Message:', err.message);
+        console.error('❌ Error Body:', err.error);
+
+        // Mostrar mensaje de error específico
+        if (err.status === 422) {
+          console.error('❌ Errores de validación:', err.error.errors);
+          alert('Error de validación. Revisa los campos del formulario.');
+        } else if (err.status === 500) {
+          alert('Error en el servidor. Contacta al administrador.');
+        } else {
+          alert(`Error: ${err.message || 'No se pudo guardar el post'}`);
+        }
+
+        this.loading = false;
+      },
     });
   }
 
-  private handleError(err: any) {
-    console.error('Error completo:', err);
+  /*
+  |-----------------------------------------
+  | CLOUDINARY UPLOAD
+  |-----------------------------------------
+  */
+  uploadFile(file: File): void {
+    // Validaciones
+    if (!file.type.startsWith('image/')) {
+      this.uploadError = 'Por favor, selecciona solo imágenes';
+      alert(this.uploadError);
+      return;
+    }
 
-    if (err?.error?.errors) {
-      const firstError = Object.values(err.error.errors)[0];
-      alert(Array.isArray(firstError) ? firstError[0] : firstError);
-    } else if (err?.error?.message) {
-      alert(err.error.message);
-    } else {
-      alert('Error en el servidor');
+    if (file.size > 5 * 1024 * 1024) {
+      this.uploadError = 'La imagen no debe superar los 5MB';
+      alert(this.uploadError);
+      return;
+    }
+
+    this.loading = true;
+    this.uploadProgress = 0;
+    this.uploadError = null;
+    this.selectedFile = file;
+
+    console.log('📸 Subiendo imagen a Cloudinary...');
+    console.log('📸 Nombre:', file.name);
+    console.log('📸 Tamaño:', (file.size / 1024 / 1024).toFixed(2), 'MB');
+    console.log('📸 Tipo:', file.type);
+
+    this.cloudinaryService.uploadImage(file).subscribe({
+      next: (res) => {
+        console.log('✅ Respuesta Cloudinary:', res);
+        console.log('✅ URL de la imagen:', res.secure_url);
+
+        this.form.patchValue({
+          cover_url: res.secure_url,
+        });
+
+        this.preview = res.secure_url;
+        this.loading = false;
+        this.uploadProgress = null;
+        this.selectedFile = null;
+        this.uploadError = null;
+
+        // Limpiar el input file
+        this.clearFileInput();
+
+        // Pequeño mensaje de éxito
+        console.log('✨ Imagen asignada al campo cover_url');
+      },
+      error: (err) => {
+        console.error('❌ Error en Cloudinary:');
+        console.error('❌ Status:', err.status);
+        console.error('❌ Error:', err.error);
+
+        this.uploadError = 'Error al subir la imagen. Por favor, intenta de nuevo.';
+        alert(this.uploadError);
+        this.loading = false;
+        this.uploadProgress = null;
+        this.selectedFile = null;
+      },
+    });
+  }
+
+  /*
+  |-----------------------------------------
+  | CLEAR FILE INPUT
+  |-----------------------------------------
+  */
+  private clearFileInput(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
+  /*
+  |-----------------------------------------
+  | FILE INPUT
+  |-----------------------------------------
+  */
+  onFileSelected(event: any): void {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    this.uploadFile(file);
+  }
+
+  /*
+  |-----------------------------------------
+  | DRAG & DROP
+  |-----------------------------------------
+  */
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    const file = event.dataTransfer?.files?.[0];
+    if (!file) return;
+    console.log('📦 Archivo soltado:', file.name);
+    this.uploadFile(file);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  /*
+  |-----------------------------------------
+  | REMOVE IMAGE
+  |-----------------------------------------
+  */
+  removeImage(): void {
+    this.form.patchValue({
+      cover_url: '',
+    });
+    this.preview = null;
+    this.uploadError = null;
+    this.clearFileInput();
+    console.log('🗑️ Imagen removida');
+  }
+
+  /*
+  |-----------------------------------------
+  | TRIGGER FILE INPUT
+  |-----------------------------------------
+  */
+  triggerFileInput(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
     }
   }
 }

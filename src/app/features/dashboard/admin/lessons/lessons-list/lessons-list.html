@@ -31,7 +31,11 @@
                 }
               </td>-->
 
-              <td>{{ lesson.title }}</td>
+              <td>
+                <a class="lesson-link" [routerLink]="['/lesson', lesson.slug]">
+                  {{ lesson.title }}
+                </a>
+              </td>
 
               <td>{{ lesson.level }}</td>
 

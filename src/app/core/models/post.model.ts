@@ -12,8 +12,7 @@ export interface PostModel {
   short_description?: string;
   short_description_en?: string;
 
-  cover?: string;
-  cover_url?: string;
+  cover_url?: string | null;
 
   created_at?: string;
 

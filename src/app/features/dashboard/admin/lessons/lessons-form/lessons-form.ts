@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { QuillModule } from 'ngx-quill';
 import { environment } from '../../../../../../environments/environment';
 import { LessonModel } from '../../../../../core/models/lesson-model';
 
 @Component({
   selector: 'app-lessons-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, QuillModule],
   templateUrl: './lessons-form.html',
   styleUrl: './lessons-form.scss',
 })
@@ -112,4 +113,32 @@ export class LessonsForm implements OnInit {
       });
     }
   }
+  quillConfig = {
+    toolbar: [
+      // TEXTO BÁSICO
+      ['bold', 'italic', 'underline', 'strike'],
+
+      // TITULOS
+      [{ header: [1, 2, 3, false] }],
+
+      // COLOR + BACKGROUND
+      [{ color: [] }, { background: [] }],
+
+      // BLOQUES IMPORTANTES
+      ['blockquote'],
+
+      // LISTAS
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+
+      // ALINEACIÓN
+      [{ align: [] }],
+
+      // MEDIA
+      ['link', 'image', 'video'],
+
+      // LIMPIAR
+      ['clean'],
+    ],
+  };
 }

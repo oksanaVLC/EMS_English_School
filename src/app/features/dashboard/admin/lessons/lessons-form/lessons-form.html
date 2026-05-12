@@ -59,7 +59,8 @@
     <!-- EXPLANATION -->
     <div class="form-group">
       <label>Explicación</label>
-      <textarea rows="12" formControlName="explanation"></textarea>
+      <quill-editor formControlName="explanation" [modules]="quillConfig" theme="snow">
+      </quill-editor>
     </div>
 
     <!-- VIDEO -->

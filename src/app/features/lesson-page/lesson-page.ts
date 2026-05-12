@@ -16,6 +16,11 @@ export class LessonPage implements OnInit {
   lesson: any = null;
 
   viewMode: 'learn' | 'video' | 'pdf' | 'test' = 'learn';
+  videoLoaded = false;
+
+  videoThumb = '';
+
+  safeVideoUrl!: SafeResourceUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,21 +34,53 @@ export class LessonPage implements OnInit {
 
     this.http.get(`${environment.apiUrl}/lessons/slug/${slug}`).subscribe((response: any) => {
       this.lesson = response;
+
+      if (this.lesson.video_url) {
+        const videoId = this.extractYoutubeId(this.lesson.video_url);
+
+        this.videoThumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      }
     });
   }
 
   setMode(mode: 'learn' | 'video' | 'pdf' | 'test') {
     this.viewMode = mode;
   }
+  loadVideo() {
+    if (!this.videoLoaded && this.lesson?.video_url) {
+      const embedUrl = this.convertYoutubeUrl(this.lesson.video_url);
 
-  getSafeVideoUrl(url: string): SafeResourceUrl {
-    const embedUrl = this.convertYoutubeUrl(url);
+      this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `${embedUrl}?autoplay=1&rel=0&controls=1`,
+      );
 
-    console.log('Original URL:', url);
-    console.log('Embed URL:', embedUrl);
-
-    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+      this.videoLoaded = true;
+    }
   }
+  extractYoutubeId(url: string): string {
+    try {
+      const parsed = new URL(url);
+
+      const videoId = parsed.searchParams.get('v');
+
+      if (videoId) return videoId;
+
+      // soporte para youtu.be
+      if (parsed.hostname.includes('youtu.be')) {
+        return parsed.pathname.replace('/', '');
+      }
+
+      // soporte embed
+      if (url.includes('/embed/')) {
+        return url.split('/embed/')[1];
+      }
+
+      return '';
+    } catch {
+      return '';
+    }
+  }
+
   goBack() {
     this.location.back();
   }

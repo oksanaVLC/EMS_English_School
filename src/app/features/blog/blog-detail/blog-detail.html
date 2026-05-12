@@ -1,9 +1,9 @@
 @if (post) {
   <article class="blog-detail">
     <!-- HERO -->
-    @if (post.cover) {
+    @if (post.cover_url) {
       <div class="hero">
-        <img [src]="post.cover" alt="cover" />
+        <img [src]="post.cover_url" alt="cover" />
       </div>
     }
 

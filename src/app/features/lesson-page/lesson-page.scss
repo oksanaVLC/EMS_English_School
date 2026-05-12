@@ -245,19 +245,125 @@
    VIDEO
 ========================= */
 
+/* =========================
+   VIDEO
+========================= */
+
 .video-wrapper {
   margin-top: 1rem;
+}
 
-  iframe {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-width: 800px;
-    display: block;
-    margin: 0 auto;
+/* VIDEO CONTAINER */
 
-    border: none;
-    border-radius: 24px;
-  }
+.iframe-item {
+  position: relative;
+
+  aspect-ratio: 16 / 9;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  background: #000;
+
+  width: 100%;
+
+  max-width: 800px;
+
+  margin: 0 auto;
+}
+
+/* THUMB */
+
+.youtube-facade {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+/* IFRAME */
+
+.iframe-item iframe {
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+
+  display: block;
+}
+
+/* PLAY BUTTON */
+
+.play-button {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+/* CIRCLE */
+
+.play-button::after {
+  content: '';
+
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  background: var(--main-gradient);
+
+  opacity: 0.92;
+
+  position: relative;
+
+  z-index: 1;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* TRIANGLE */
+
+.play-button::before {
+  content: '';
+
+  position: absolute;
+
+  z-index: 2;
+
+  border-style: solid;
+
+  border-width: 10px 0 10px 16px;
+
+  border-color: transparent transparent transparent #fff;
+
+  transform: translateX(2px);
+}
+
+/* HOVER */
+
+.iframe-item:hover .play-button::after {
+  transform: scale(1.15);
+
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.iframe-item:hover .play-button::before {
+  transform: translateX(4px) scale(1.1);
 }
 
 /* =========================
@@ -286,22 +392,16 @@
 
   margin-top: 1rem;
 
-  padding: 12px 18px;
-
-  border-radius: 999px;
-
-  background: var(--main-gradient);
-  color: white !important;
+  color: var(--color-accent);
 
   font-weight: 700;
   text-decoration: none;
-
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 
   transition: 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
+    opacity: 0.8;
   }
 
   i {
@@ -359,4 +459,155 @@
   justify-content: center;
   gap: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/***Styles for Quill*******/
+/* =========================================
+   LESSON CONTENT BASE
+========================================= */
+
+.lesson-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #222;
+
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* =========================================
+   HEADINGS (Quill content)
+========================================= */
+
+:host ::ng-deep .lesson-content h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 1.5rem 0;
+}
+
+:host ::ng-deep .lesson-content h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+}
+
+:host ::ng-deep .lesson-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem;
+}
+
+/* =========================================
+   PARAGRAPHS
+========================================= */
+
+:host ::ng-deep .lesson-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+
+/* =========================================
+   LISTS (IMPORTANT in Quill)
+========================================= */
+
+:host ::ng-deep .lesson-content ul,
+:host ::ng-deep .lesson-content ol {
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+:host ::ng-deep .lesson-content li {
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
+}
+
+/* =========================================
+   ALIGNMENTS (Quill classes)
+========================================= */
+
+:host ::ng-deep .lesson-content .ql-align-center {
+  text-align: center;
+}
+
+:host ::ng-deep .lesson-content .ql-align-right {
+  text-align: right;
+}
+
+/* =========================================
+   BLOCKQUOTE (IMPORTANT FIXED VERSION)
+========================================= */
+
+:host ::ng-deep .lesson-content blockquote {
+  all: unset;
+
+  display: block;
+
+  background: linear-gradient(135deg, #fff8c5, #fafaf8);
+  border-left: 5px solid #facc15;
+
+  padding: 16px 18px;
+  margin: 24px 0;
+
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+/* =========================================
+   IMAGES
+========================================= */
+
+:host ::ng-deep .lesson-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* =========================================
+   TABLES
+========================================= */
+
+:host ::ng-deep .lesson-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  display: block;
+  overflow-x: auto;
+}
+
+:host ::ng-deep .lesson-content td,
+:host ::ng-deep .lesson-content th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .lesson-content {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  :host ::ng-deep .lesson-content h1 {
+    font-size: 1.6rem;
+  }
+
+  :host ::ng-deep .lesson-content h2 {
+    font-size: 1.4rem;
+  }
+
+  :host ::ng-deep .lesson-content h3 {
+    font-size: 1.2rem;
+  }
+
+  :host ::ng-deep .lesson-content ul,
+  :host ::ng-deep .lesson-content ol {
+    padding-left: 2rem;
+  }
 }

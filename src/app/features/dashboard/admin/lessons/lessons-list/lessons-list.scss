@@ -288,3 +288,27 @@ td {
 .btn.danger:hover {
   background: #c62828;
 }
+
+/* =========================
+   LESSON LINK
+========================= */
+
+.lesson-link {
+  color: #222;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-accent);
+
+    opacity: 0.9;
+  }
+}
