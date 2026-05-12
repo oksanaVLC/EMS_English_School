@@ -51,7 +51,7 @@ export class PostsList implements OnInit {
     }
 
     this.http
-      .get<any>(`${this.apiUrl}/posts`, {
+      .get<any>(`${this.apiUrl}/admin/posts`, {
         params,
         headers: { 'X-Skip-Loading': 'true' },
       })

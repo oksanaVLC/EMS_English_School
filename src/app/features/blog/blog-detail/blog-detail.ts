@@ -30,7 +30,7 @@ export class BlogDetail implements OnInit {
   // =========================
   lang: 'es' | 'en' = 'es';
 
-  // ✅ Eliminamos 'liked' y usamos directamente post.is_favorited
+  //  Eliminamos 'liked' y usamos directamente post.is_favorited
   likeLoading = false;
 
   // =========================
