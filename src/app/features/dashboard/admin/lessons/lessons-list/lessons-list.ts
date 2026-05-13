@@ -14,7 +14,7 @@ import { LessonModel } from '../../../../../core/models/lesson-model';
 })
 export class LessonsList implements OnInit {
   private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/admin`;
 
   lessons: LessonModel[] = [];
 

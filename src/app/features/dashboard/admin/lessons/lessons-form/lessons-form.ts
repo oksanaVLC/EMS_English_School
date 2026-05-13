@@ -20,7 +20,7 @@ export class LessonsForm implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/admin`;
 
   isEdit = false;
   lessonId: number | null = null;
