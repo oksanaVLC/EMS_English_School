@@ -20,7 +20,7 @@ export class LessonsForm implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
-  private apiUrl = `${environment.apiUrl}/admin`;
+  private apiUrl = `${environment.apiUrl}`;
 
   isEdit = false;
   lessonId: number | null = null;
@@ -102,12 +102,12 @@ export class LessonsForm implements OnInit {
     };
 
     if (this.isEdit && this.lessonId) {
-      this.http.put(`${this.apiUrl}/lessons/${this.lessonId}`, payload).subscribe({
+      this.http.put(`${this.apiUrl}/admin/lessons/${this.lessonId}`, payload).subscribe({
         next: () => this.router.navigate(['/admin/lessons']),
         error: (err) => console.error(err),
       });
     } else {
-      this.http.post(`${this.apiUrl}/lessons`, payload).subscribe({
+      this.http.post(`${this.apiUrl}/admin/lessons`, payload).subscribe({
         next: () => this.router.navigate(['/admin/lessons']),
         error: (err) => console.error(err),
       });

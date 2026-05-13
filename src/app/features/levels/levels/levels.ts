@@ -40,7 +40,7 @@ export class Levels implements OnInit {
   }
 
   goToLesson(slug: string) {
-    this.router.navigate(['/lesson', slug]);
+    this.router.navigate(['/levels', this.level, slug]);
   }
 
   trackById(index: number, item: Lesson) {

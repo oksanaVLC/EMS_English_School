@@ -6,7 +6,51 @@
 
     <button class="btn-create" routerLink="/admin/lessons/create">+ Crear lección</button>
   </div>
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar lecciones..."
+      [(ngModel)]="search"
+      (input)="onSearch()"
+    />
+  </div>
+  <div class="filters">
+    <div class="filters-group">
+      <span class="filters-label">Nivel:</span>
 
+      <button (click)="setLevel(null)" [class.active]="!selectedLevel">Todos</button>
+      <button (click)="setLevel('A1')" [class.active]="selectedLevel === 'A1'">A1</button>
+      <button (click)="setLevel('A2')" [class.active]="selectedLevel === 'A2'">A2</button>
+      <button (click)="setLevel('B1')" [class.active]="selectedLevel === 'B1'">B1</button>
+      <button (click)="setLevel('B2')" [class.active]="selectedLevel === 'B2'">B2</button>
+      <button (click)="setLevel('C1')" [class.active]="selectedLevel === 'C1'">C1</button>
+      <button (click)="setLevel('C2')" [class.active]="selectedLevel === 'C2'">C2</button>
+    </div>
+
+    <div class="filters-group">
+      <span class="filters-label">Skill:</span>
+
+      <button (click)="setType(null)" [class.active]="!selectedType">Todos</button>
+      <button (click)="setType('grammar')" [class.active]="selectedType === 'grammar'">
+        Grammar
+      </button>
+      <button (click)="setType('vocabulary')" [class.active]="selectedType === 'vocabulary'">
+        Vocabulary
+      </button>
+      <button (click)="setType('reading')" [class.active]="selectedType === 'reading'">
+        Reading
+      </button>
+      <button (click)="setType('listening')" [class.active]="selectedType === 'listening'">
+        Listening
+      </button>
+      <button (click)="setType('speaking')" [class.active]="selectedType === 'speaking'">
+        Speaking
+      </button>
+      <button (click)="setType('writing')" [class.active]="selectedType === 'writing'">
+        Writing
+      </button>
+    </div>
+  </div>
   <!-- TABLE -->
   <div class="card">
     <div class="table-wrapper">

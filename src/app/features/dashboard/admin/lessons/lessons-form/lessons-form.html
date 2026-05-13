@@ -13,19 +13,19 @@
   <form [formGroup]="form" (ngSubmit)="save('published')" class="form">
     <!-- TITLE -->
     <div class="form-group">
-      <label>Título *</label>
+      <label>Título <span class="required">*</span> </label>
       <input type="text" formControlName="title" />
     </div>
 
     <!-- SLUG -->
     <div class="form-group">
-      <label>Slug *</label>
+      <label>Slug <span class="required">*</span> </label>
       <input type="text" formControlName="slug" placeholder="present-simple" />
     </div>
 
     <!-- LEVEL -->
     <div class="form-group">
-      <label>Nivel</label>
+      <label>Nivel <span class="required">*</span> </label>
       <select formControlName="level">
         <option value="A1">A1</option>
         <option value="A2">A2</option>
@@ -38,7 +38,7 @@
 
     <!-- TYPE -->
     <div class="form-group">
-      <label>Tipo</label>
+      <label>Tipo <span class="required">*</span> </label>
       <select formControlName="type">
         <option value="grammar">Grammar</option>
         <option value="vocabulary">Vocabulary</option>
@@ -58,7 +58,7 @@
 
     <!-- EXPLANATION -->
     <div class="form-group">
-      <label>Explicación</label>
+      <label> Explicación <span class="required">*</span> </label>
       <quill-editor formControlName="explanation" [modules]="quillConfig" theme="snow">
       </quill-editor>
     </div>

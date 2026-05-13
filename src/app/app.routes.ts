@@ -27,7 +27,7 @@ export const routes: Routes = [
   // LESSON DETAIL (slug)
   // =========================
   {
-    path: 'lesson/:slug',
+    path: 'levels/:level/:slug',
     component: LessonPage,
   },
 

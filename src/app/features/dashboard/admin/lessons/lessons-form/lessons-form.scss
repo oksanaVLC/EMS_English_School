@@ -52,29 +52,60 @@
 /* ACTIONS */
 .actions {
   display: flex;
-  gap: 1rem;
+  justify-content: space-between;
   margin-top: 1.5rem;
+  gap: 1rem;
+}
 
-  button {
-    padding: 0.8rem 1.2rem;
-    border-radius: 12px;
-    cursor: pointer;
-    border: none;
-    font-weight: 600;
+/* PRIMARY */
+.btn-primary {
+  background: var(--main-gradient);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+/* SECONDARY */
+.btn-secondary {
+  background: #888;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+/* DRAFT (igual que post-form, más limpio) */
+.btn-draft {
+  background: #fff4e6;
+  color: #d97706;
+  border: 1px solid #fcd9b6;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: #ffe9cc;
+    border-color: #fbbf24;
   }
 
-  .btn-primary {
-    background: #4f46e5;
-    color: white;
-  }
-
-  .btn-secondary {
-    background: #eee;
-  }
-
-  .btn-draft {
-    background: #111;
-    color: white;
+  &:active {
+    transform: scale(0.98);
   }
 }
 
@@ -88,4 +119,9 @@
 
 ::ng-deep .ql-container {
   border-radius: 0 0 10px 10px;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 4px;
 }
