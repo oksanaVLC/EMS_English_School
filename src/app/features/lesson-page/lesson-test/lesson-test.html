@@ -24,8 +24,9 @@
   <!-- QUIZ MODE -->
   @if (!loading && questions.length > 0 && !result && !reviewMode) {
     <div class="test-header">
-      <h2 class="title">{{ test?.title }}</h2>
-      <div class="progress">Pregunta {{ answeredCount() }} de {{ questions.length }}</div>
+      <div class="progress">
+        Responde a las preguntas y obtén tu resultado al instante, ¡sin registrarte!
+      </div>
     </div>
 
     <ol class="questions-list">
@@ -51,6 +52,9 @@
         </li>
       }
     </ol>
+    <div class="test-header">
+      <div class="progress">Pregunta {{ answeredCount() }} de {{ questions.length }}</div>
+    </div>
 
     <div class="submit-row">
       <button class="submit-btn" (click)="submitTest()">Enviar respuestas</button>
