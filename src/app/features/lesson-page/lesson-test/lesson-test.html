@@ -1,0 +1,154 @@
+<div class="test-wrapper">
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="state-card">
+      <div class="state-icon">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      </div>
+      <h3>Cargando contenido</h3>
+      <p>Estamos preparando todo para ti.</p>
+    </div>
+  }
+
+  <!-- EMPTY TEST -->
+  @if (!loading && questions.length === 0) {
+    <div class="state-card">
+      <div class="state-icon">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+      </div>
+      <h3>Test en desarrollo</h3>
+      <p>Estamos preparando este test para que puedas practicar muy pronto.</p>
+    </div>
+  }
+
+  <!-- QUIZ MODE -->
+  @if (!loading && questions.length > 0 && !result && !reviewMode) {
+    <div class="test-header">
+      <h2 class="title">{{ test?.title }}</h2>
+      <div class="progress">Pregunta {{ answeredCount() }} de {{ questions.length }}</div>
+    </div>
+
+    <ol class="questions-list">
+      @for (q of questions; track q.id; let idx = $index) {
+        <li class="question-card">
+          <div class="question-header">
+            <span class="question-number">{{ idx + 1 }}</span>
+            <h3 class="question">{{ q.question_text }}</h3>
+          </div>
+          <div class="options">
+            @for (opt of q.options; track opt.id; let i = $index) {
+              <button
+                type="button"
+                class="option"
+                (click)="selectOption(q.id, i)"
+                [class.selected]="answers[q.id] === i"
+              >
+                <span class="letter">{{ letters[i] }}</span>
+                <span class="text">{{ opt.option_text }}</span>
+              </button>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+
+    <div class="submit-row">
+      <button class="submit-btn" (click)="submitTest()">Enviar respuestas</button>
+    </div>
+  }
+
+  <!-- RESULT -->
+  @if (result && !reviewMode) {
+    <div class="result-card">
+      <div class="result-score">
+        <div class="score">{{ result.correct }} / {{ result.total }}</div>
+        <div class="label">Respuestas correctas</div>
+      </div>
+
+      <div class="comment">
+        {{ result.comment }}
+      </div>
+
+      <div class="actions">
+        <button class="btn-secondary" (click)="retry()">Intentar de nuevo</button>
+        <button class="btn-primary" (click)="review()">Revisar respuestas</button>
+      </div>
+    </div>
+
+    <!-- ANIMACIÓN DE ÉXITO (FUEGOS ARTIFICIALES) -->
+    @if (showSuccessAnimation) {
+      <div class="success-overlay">
+        <div class="success-message">
+          <div class="success-icon">🎉</div>
+          <h3>¡Felicidades!</h3>
+          <p>Has aprobado el test</p>
+        </div>
+      </div>
+    }
+
+    <!-- MENSAJE GRACIOSO POR SUSPENDER -->
+    @if (showFailMessage) {
+      <div class="fail-overlay">
+        <div class="fail-message">
+          <div class="fail-icon">🐶</div>
+          <h3>¡Ups!</h3>
+          <p>No te preocupes, ¡la práctica hace al maestro!</p>
+          <p class="fail-hint">Sigue estudiando y vuelve a intentarlo</p>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- REVIEW -->
+  @if (reviewMode) {
+    <div class="review-header">
+      <div>
+        <h2>Revisión</h2>
+        <p class="subtitle">Comprueba las respuestas correctas y las explicaciones</p>
+      </div>
+      <button class="btn-secondary" (click)="retry()">Intentar de nuevo</button>
+    </div>
+
+    <ol class="questions-list">
+      @for (q of questions; track q.id; let idx = $index) {
+        <li class="question-card">
+          <div class="question-header">
+            <span class="question-number">{{ idx + 1 }}</span>
+            <h3 class="question">{{ q.question_text }}</h3>
+          </div>
+
+          <div class="options">
+            @for (opt of q.options; track opt.id; let i = $index) {
+              <div
+                class="option review"
+                [class.correct]="isCorrect(q, i)"
+                [class.wrong]="isWrong(q, i)"
+              >
+                <span class="letter">{{ letters[i] }}</span>
+                <div class="text-block">
+                  <div class="text">{{ opt.option_text }}</div>
+                  @if (isCorrect(q, i)) {
+                    <div class="badge-correct">✓ Respuesta correcta</div>
+                  }
+                  @if (isWrong(q, i)) {
+                    <div class="badge-wrong">✗ Tu respuesta</div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- EXPLANATION DESPUÉS DE LAS OPCIONES -->
+          @if (q.explanation) {
+            <div class="explanation-box">
+              <div class="explanation-icon">💡</div>
+              <div class="explanation-content">
+                <strong>Explicación:</strong> {{ q.explanation }}
+              </div>
+            </div>
+          }
+        </li>
+      }
+    </ol>
+  }
+</div>

@@ -20,7 +20,7 @@ export class LessonsList implements OnInit {
   lessons: LessonModel[] = [];
 
   search: string = '';
-  searchTimeout: any; // Para no llamar API en cada tecla
+  searchTimeout: any;
 
   currentPage = 1;
   lastPage = 1;
@@ -30,6 +30,26 @@ export class LessonsList implements OnInit {
   selectedLevel: string | null = null;
   selectedType: string | null = null;
 
+  //  MAPA FRONT → BACKEND
+  private levelMap: Record<string, number> = {
+    A1: 1,
+    A2: 2,
+    B1: 3,
+    B2: 4,
+    C1: 5,
+    C2: 6,
+  };
+
+  //  MAPA BACK → UI (para mostrar en tabla)
+  private levelReverseMap: Record<number, string> = {
+    1: 'A1',
+    2: 'A2',
+    3: 'B1',
+    4: 'B2',
+    5: 'C1',
+    6: 'C2',
+  };
+
   ngOnInit() {
     this.loadLessons();
   }
@@ -37,10 +57,13 @@ export class LessonsList implements OnInit {
   loadLessons(page = 1) {
     this.isLoading = true;
 
-    let params = new HttpParams().set('page', page);
+    let params = new HttpParams();
+
+    params = params.set('page', page);
 
     if (this.selectedLevel) {
-      params = params.set('level', this.selectedLevel);
+      const levelId = this.levelMap[this.selectedLevel];
+      params = params.set('level_id', String(levelId));
     }
 
     if (this.selectedType) {
@@ -51,23 +74,18 @@ export class LessonsList implements OnInit {
       params = params.set('search', this.search);
     }
 
-    this.http
-      .get<any>(`${this.apiUrl}/lessons`, {
-        params,
-        headers: { 'X-Skip-Loading': 'true' },
-      })
-      .subscribe({
-        next: (res) => {
-          this.lessons = res.data || [];
-          this.currentPage = res.current_page || 1;
-          this.lastPage = res.last_page || 1;
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.isLoading = false;
-        },
-      });
+    console.log('📡 Params enviados:', params.toString());
+
+    this.http.get(`${this.apiUrl}/lessons`, { params }).subscribe({
+      next: (res: any) => {
+        this.lessons = res.data || [];
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      },
+    });
   }
 
   deleteLesson(id: number) {
@@ -95,5 +113,11 @@ export class LessonsList implements OnInit {
     this.searchTimeout = setTimeout(() => {
       this.loadLessons(1);
     }, 300);
+  }
+
+  //  helper para mostrar A1, B2...
+  getLevelCode(level_id: number | null): string {
+    if (!level_id) return '-';
+    return this.levelReverseMap[level_id] ?? '-';
   }
 }

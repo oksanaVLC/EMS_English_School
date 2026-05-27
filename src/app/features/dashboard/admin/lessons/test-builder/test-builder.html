@@ -1,0 +1,88 @@
+<form [formGroup]="form" (ngSubmit)="save('published')">
+  <!-- STATUS INDICATOR -->
+  <div class="status-indicator">
+    <span
+      class="status-badge"
+      [class.draft]="form.value.status === 'draft'"
+      [class.published]="form.value.status === 'published'"
+    >
+      Estado actual: {{ form.value.status === 'draft' ? 'Borrador' : 'Publicado' }}
+    </span>
+  </div>
+
+  <div formArrayName="questions">
+    @for (q of questions.controls; track $index; let i = $index) {
+      <div [formGroupName]="i" class="question-card">
+        <!-- QUESTION -->
+        <div class="form-group">
+          <label>Pregunta {{ i + 1 }} <span class="required">*</span></label>
+          <input
+            formControlName="question"
+            placeholder="Escribe la pregunta"
+            class="form-control"
+          />
+        </div>
+
+        <!-- EXPLANATION -->
+        <div class="form-group">
+          <label>Explicación <span class="required">*</span></label>
+          <textarea
+            formControlName="explanation"
+            placeholder="Explica cuál es la respuesta correcta y por qué"
+            rows="3"
+            class="form-control"
+          ></textarea>
+          <small class="help-text"
+            >Esta explicación se mostrará al usuario después de responder</small
+          >
+        </div>
+
+        <!-- OPTIONS -->
+        <div class="form-group">
+          <label>Opciones <span class="required">*</span></label>
+          <div formArrayName="options" class="options-container">
+            @for (opt of getOptions(i).controls; track $index; let j = $index) {
+              <div class="option-row" [class.correct]="questions.at(i).value.correct_answers === j">
+                <input
+                  [formControlName]="j"
+                  placeholder="Opción {{ letters[j] }}"
+                  class="option-input"
+                />
+
+                <label class="radio-label">
+                  <input
+                    type="radio"
+                    [name]="'correct-' + i"
+                    [checked]="questions.at(i).value.correct_answers === j"
+                    (change)="setCorrect(i, j)"
+                  />
+                  <span>Correcta</span>
+                </label>
+              </div>
+            }
+          </div>
+        </div>
+
+        <button type="button" class="btn-remove" (click)="removeQuestion(i)">
+          Eliminar pregunta
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-add" (click)="addQuestion()">+ Añadir pregunta</button>
+  </div>
+
+  <div class="form-buttons">
+    <button type="button" class="btn-back" (click)="goBack()">Volver</button>
+
+    <button type="button" class="btn-draft" (click)="save('draft')" [disabled]="saving">
+      {{ saving ? 'Guardando...' : 'Guardar borrador' }}
+    </button>
+
+    <button type="submit" class="btn-publish" [disabled]="saving">
+      {{ saving ? 'Publicando...' : 'Publicar test' }}
+    </button>
+  </div>
+</form>

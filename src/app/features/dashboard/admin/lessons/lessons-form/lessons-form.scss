@@ -125,3 +125,28 @@
   color: #ef4444;
   margin-left: 4px;
 }
+
+/*******TABS***************/
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    background: #eee;
+    border-radius: 8px;
+
+    &.active {
+      background: var(--color-accent);
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+}

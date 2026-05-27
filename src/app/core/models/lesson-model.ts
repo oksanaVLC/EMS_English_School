@@ -1,5 +1,3 @@
-export type LessonLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
-
 export type LessonType =
   | 'grammar'
   | 'vocabulary'
@@ -18,8 +16,16 @@ export interface LessonModel {
   title: string;
   slug: string;
 
-  // NIVEL Y TIPO
-  level: LessonLevel;
+  // RELACIONES
+  level_id: number;
+
+  // opcional si hago eager loading
+  level: {
+    id: number;
+    code: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+    name: string;
+  } | null;
+
   type: LessonType;
 
   // CONTENIDO
@@ -38,4 +44,9 @@ export interface LessonModel {
 
   // ESTADO CMS
   status: LessonStatus;
+
+  test?: {
+    id: number;
+    status: 'draft' | 'published';
+  } | null;
 }

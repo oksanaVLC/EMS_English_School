@@ -169,6 +169,9 @@
 
       @if (isLoggedIn()) {
         <li>
+          <a [routerLink]="getDashboardLink()" (click)="closeMenu()"> Mi perfil </a>
+        </li>
+        <li>
           <button class="menu-link" (click)="logout(); closeMenu()">Cerrar sesión</button>
         </li>
       }

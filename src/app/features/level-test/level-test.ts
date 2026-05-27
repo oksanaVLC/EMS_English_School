@@ -5,6 +5,7 @@ import confetti from 'canvas-confetti';
 import { LEVEL_TEST_QUESTIONS } from '../../core/data/questions.data';
 import { Question } from '../../core/models/question.model';
 
+import { HttpClient } from '@angular/common/http';
 import { Button } from '../../shared/components/button/button';
 
 @Component({
@@ -28,7 +29,12 @@ export class LevelTest implements OnInit {
   error: string | null = null;
 
   animatedScore = 0;
+  showLoginBanner = false;
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+  constructor(private http: HttpClient) {}
   ngOnInit() {
     this.loadTest();
   }
@@ -99,16 +105,13 @@ export class LevelTest implements OnInit {
       this.started = false;
       this.finished = true;
 
-      /*  SCROLL ARRIBA CUANDO TERMINA
-      setTimeout(() => {
-        this.scrollService.scrollToElement('final-title', 80, 'auto');
-      }, 0);*/
-
       this.animateScore();
 
       setTimeout(() => {
         this.showConfetti();
       }, 300);
+
+      this.finishTestFlow();
     }
   }
 
@@ -229,5 +232,24 @@ export class LevelTest implements OnInit {
       ticks: 100,
       origin: { y: 0.6 },
     });
+  }
+
+  saveResultToBackend() {
+    const payload = {
+      score: this.score,
+      level: this.levelResult().level,
+      answers: this.answers,
+      total: this.questions.length,
+    };
+
+    console.log('Guardando resultado en backend...', payload);
+  }
+
+  finishTestFlow() {
+    if (this.isLoggedIn()) {
+      this.saveResultToBackend();
+    } else {
+      this.showLoginBanner = true;
+    }
   }
 }

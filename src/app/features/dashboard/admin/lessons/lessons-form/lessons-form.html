@@ -10,86 +10,112 @@
     </p>
   </div>
 
-  <form [formGroup]="form" (ngSubmit)="save('published')" class="form">
-    <!-- TITLE -->
-    <div class="form-group">
-      <label>Título <span class="required">*</span> </label>
-      <input type="text" formControlName="title" />
-    </div>
+  <!-- TABS -->
+  <div class="tabs">
+    <button type="button" (click)="activeTab = 'content'" [class.active]="activeTab === 'content'">
+      Lesson Content
+    </button>
 
-    <!-- SLUG -->
-    <div class="form-group">
-      <label>Slug <span class="required">*</span> </label>
-      <input type="text" formControlName="slug" placeholder="present-simple" />
-    </div>
+    <button
+      type="button"
+      (click)="activeTab = 'test'"
+      [class.active]="activeTab === 'test'"
+      [disabled]="!isEdit"
+    >
+      Test
+    </button>
+  </div>
 
-    <!-- LEVEL -->
-    <div class="form-group">
-      <label>Nivel <span class="required">*</span> </label>
-      <select formControlName="level">
-        <option value="A1">A1</option>
-        <option value="A2">A2</option>
-        <option value="B1">B1</option>
-        <option value="B2">B2</option>
-        <option value="C1">C1</option>
-        <option value="C2">C2</option>
-      </select>
-    </div>
+  @if (activeTab === 'content') {
+    <form [formGroup]="form" (ngSubmit)="save('published')" class="form">
+      <!-- TITLE -->
+      <div class="form-group">
+        <label>Título <span class="required">*</span> </label>
+        <input type="text" formControlName="title" />
+      </div>
 
-    <!-- TYPE -->
-    <div class="form-group">
-      <label>Tipo <span class="required">*</span> </label>
-      <select formControlName="type">
-        <option value="grammar">Grammar</option>
-        <option value="vocabulary">Vocabulary</option>
-        <option value="reading">Reading</option>
-        <option value="listening">Listening</option>
-        <option value="speaking">Speaking</option>
-        <option value="writing">Writing</option>
-        <option value="pronunciation">Pronunciation</option>
-      </select>
-    </div>
+      <!-- SLUG -->
+      <div class="form-group">
+        <label>Slug <span class="required">*</span> </label>
+        <input type="text" formControlName="slug" placeholder="present-simple" />
+      </div>
 
-    <!-- TAGS -->
-    <div class="form-group">
-      <label>Tags (separadas por coma)</label>
-      <input type="text" formControlName="tags" placeholder="grammar, verbs, beginner" />
-    </div>
+      <!-- LEVEL -->
+      <div class="form-group">
+        <label>Nivel <span class="required">*</span> </label>
 
-    <!-- EXPLANATION -->
-    <div class="form-group">
-      <label> Explicación <span class="required">*</span> </label>
-      <quill-editor formControlName="explanation" [modules]="quillConfig" theme="snow">
-      </quill-editor>
-    </div>
+        <select formControlName="level_id">
+          @for (level of levels; track level.id) {
+            <option [value]="level.id">
+              {{ level.code }}
+            </option>
+          }
+        </select>
+      </div>
 
-    <!-- VIDEO -->
-    <div class="form-group">
-      <label>Video URL</label>
-      <input type="text" formControlName="video_url" />
-    </div>
+      <!-- TYPE -->
+      <div class="form-group">
+        <label>Tipo <span class="required">*</span> </label>
+        <select formControlName="type">
+          <option value="grammar">Grammar</option>
+          <option value="vocabulary">Vocabulary</option>
+          <option value="reading">Reading</option>
+          <option value="listening">Listening</option>
+          <option value="speaking">Speaking</option>
+          <option value="writing">Writing</option>
+          <option value="pronunciation">Pronunciation</option>
+        </select>
+      </div>
 
-    <!-- PDF -->
-    <div class="form-group">
-      <label>PDF URL</label>
-      <input type="text" formControlName="pdf_url" />
-    </div>
+      <!-- TAGS -->
+      <div class="form-group">
+        <label>Tags (separadas por coma)</label>
+        <input type="text" formControlName="tags" placeholder="grammar, verbs, beginner" />
+      </div>
 
-    <!-- COVER -->
-    <div class="form-group">
-      <label>Cover URL (opcional)</label>
-      <input type="text" formControlName="cover_url" />
-    </div>
+      <!-- EXPLANATION -->
+      <div class="form-group">
+        <label> Explicación <span class="required">*</span> </label>
+        <quill-editor
+          formControlName="explanation"
+          [modules]="quillConfig"
+          theme="snow"
+          (onEditorCreated)="onEditorCreated($event)"
+        >
+        </quill-editor>
+      </div>
 
-    <!-- ACTIONS -->
-    <div class="actions">
-      <button type="button" class="btn-secondary" routerLink="/admin/lessons">Cancelar</button>
+      <!-- VIDEO -->
+      <div class="form-group">
+        <label>Video URL</label>
+        <input type="text" formControlName="video_url" />
+      </div>
 
-      <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
+      <!-- PDF -->
+      <div class="form-group">
+        <label>PDF URL</label>
+        <input type="text" formControlName="pdf_url" />
+      </div>
 
-      <button type="submit" class="btn-primary">
-        {{ isEdit ? 'Actualizar' : 'Publicar' }}
-      </button>
-    </div>
-  </form>
+      <!-- COVER -->
+      <div class="form-group">
+        <label>Cover URL (opcional)</label>
+        <input type="text" formControlName="cover_url" />
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <button type="button" class="btn-secondary" routerLink="/admin/lessons">Cancelar</button>
+
+        <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
+
+        <button type="submit" class="btn-primary">
+          {{ isEdit ? 'Actualizar' : 'Publicar' }}
+        </button>
+      </div>
+    </form>
+  }
+  @if (activeTab === 'test' && lessonId) {
+    <app-test-builder [lessonId]="lessonId"></app-test-builder>
+  }
 </div>

@@ -341,3 +341,25 @@ td {
     }
   }
 }
+
+.test-status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.test-status.none {
+  background: #eee;
+  color: #666;
+}
+
+.test-status.draft {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.test-status.published {
+  background: #d4edda;
+  color: #155724;
+}

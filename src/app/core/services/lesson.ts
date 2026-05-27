@@ -11,7 +11,22 @@ export class LessonService {
   private apiUrl = `${environment.apiUrl}/lessons`;
 
   getLessons(level: string) {
-    return this.http.get(`${this.apiUrl}?level=${level}`);
+    const levelMap: Record<string, number> = {
+      a1: 1,
+      a2: 2,
+      b1: 3,
+      b2: 4,
+      c1: 5,
+      c2: 6,
+    };
+
+    const levelId = levelMap[level?.toLowerCase()];
+
+    if (!levelId) {
+      return this.http.get(`${this.apiUrl}`);
+    }
+
+    return this.http.get(`${this.apiUrl}?level_id=${levelId}`);
   }
 
   getLessonBySlug(slug: string) {

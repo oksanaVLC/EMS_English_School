@@ -167,6 +167,13 @@
   }
 }
 
+/***************WRAPPER*************/
+
+.wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 /* =========================
    CONTENT
 ========================= */
@@ -610,4 +617,86 @@
   :host ::ng-deep .lesson-content ol {
     padding-left: 2rem;
   }
+}
+
+.level-header {
+  &.a1 {
+    background: #fce7f3;
+  }
+  &.a2 {
+    background: #ffedd5;
+  }
+  &.b1 {
+    background: #fef9c3;
+  }
+  &.b2 {
+    background: #dcfce7;
+  }
+  &.c1 {
+    background: #dbeafe;
+  }
+  &.c2 {
+    background: #ede9fe;
+  }
+}
+
+/* =========================
+   UNIFIED STATE CARD
+========================= */
+.state-card {
+  width: 100%;
+  padding: 3rem 2rem;
+
+  border-radius: 24px;
+
+  background: linear-gradient(to bottom right, #ffffff, #f9fafb);
+
+  border: 1px solid #e5e7eb;
+
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.state-icon {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+
+  background: #f3f4f6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.6rem; /* 👈 clave para igualar el icono */
+
+  color: #111827;
+
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+.state-icon i {
+  font-size: 1.6rem; /* fuerza consistencia real con lesson-test */
+  color: #111827;
+}
+
+.state-card h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.state-card p {
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.6;
+  color: #6b7280;
+  font-size: 0.95rem;
 }

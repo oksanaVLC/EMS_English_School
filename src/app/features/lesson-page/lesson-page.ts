@@ -4,11 +4,12 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { LessonTest } from './lesson-test/lesson-test';
 
 @Component({
   selector: 'app-lesson-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LessonTest],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.scss',
 })

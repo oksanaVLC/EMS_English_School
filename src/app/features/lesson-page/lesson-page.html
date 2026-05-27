@@ -1,8 +1,10 @@
 @if (lesson) {
   <!-- LEVEL HEADER -->
-  <div class="level-header" [ngClass]="getLevelColorClass(lesson.level)">
+  <div class="level-header" [ngClass]="getLevelColorClass(lesson.level?.code)">
     <i class="fa-solid fa-graduation-cap"></i>
-    {{ lesson.level | uppercase }} - {{ getLevelName(lesson.level) }}
+
+    {{ lesson.level?.code ? (lesson.level.code | uppercase) : '' }}
+    - {{ lesson.level?.name }}
   </div>
 
   <!-- DETAIL -->
@@ -15,7 +17,7 @@
       </button>
 
       <div class="meta">
-        <span>{{ lesson.level | uppercase }}</span>
+        <span>{{ lesson.level?.code | uppercase }}</span>
         <span>{{ lesson.type }}</span>
       </div>
     </div>
@@ -50,60 +52,88 @@
 
     <!-- CONTENT -->
     <div class="content">
-      @if (viewMode === 'learn') {
-        <div class="lesson-content" [innerHTML]="lesson.explanation"></div>
-      }
+      <!-- ===================== LEARN ===================== -->
+      <div class="wrapper">
+        @if (viewMode === 'learn') {
+          @if (lesson?.explanation?.trim()) {
+            <div class="lesson-content" [innerHTML]="lesson.explanation"></div>
+          } @else {
+            <div class="state-card">
+              <div class="state-icon">
+                <i class="fa-solid fa-book-open"></i>
+              </div>
 
-      @if (viewMode === 'video') {
-        @if (lesson.video_url) {
-          <div class="video-wrapper">
-            <figure class="iframe-item" (click)="loadVideo()">
-              @if (!videoLoaded) {
-                <ng-container>
-                  <picture>
-                    <source [srcset]="videoThumb + '?avif'" type="image/avif" />
-
-                    <source [srcset]="videoThumb + '?webp'" type="image/webp" />
-
-                    <img
-                      class="youtube-facade"
-                      [src]="videoThumb"
-                      [alt]="lesson.title"
-                      loading="lazy"
-                    />
-                  </picture>
-
-                  <div class="play-button"></div>
-                </ng-container>
-              } @else {
-                <iframe
-                  [src]="safeVideoUrl"
-                  title="YouTube video player"
-                  allowfullscreen
-                  loading="lazy"
-                >
-                </iframe>
-              }
-            </figure>
-          </div>
-        } @else {
-          <p>No video available</p>
+              <h3>Lección en desarrollo</h3>
+              <p>Estamos preparando esta lección.</p>
+            </div>
+          }
         }
-      }
+      </div>
 
-      @if (viewMode === 'pdf') {
-        @if (lesson.pdf_url) {
-          <a [href]="lesson.pdf_url" target="_blank" class="pdf-link">
-            <i class="fa-solid fa-download"></i>
-            Download PDF
-          </a>
-        } @else {
-          <p>No PDF available</p>
+      <!-- ===================== VIDEO ===================== -->
+      <div class="wrapper">
+        @if (viewMode === 'video') {
+          @if (lesson.video_url) {
+            <div class="video-wrapper">
+              <figure class="iframe-item" (click)="loadVideo()">
+                @if (!videoLoaded) {
+                  <ng-container>
+                    <picture>
+                      <source [srcset]="videoThumb + '?avif'" type="image/avif" />
+                      <source [srcset]="videoThumb + '?webp'" type="image/webp" />
+                      <img class="youtube-facade" [src]="videoThumb" />
+                    </picture>
+                    <div class="play-button"></div>
+                  </ng-container>
+                } @else {
+                  <iframe [src]="safeVideoUrl" allowfullscreen></iframe>
+                }
+              </figure>
+            </div>
+          } @else {
+            <div class="state-card">
+              <div class="state-icon">
+                <i class="fa-solid fa-circle-play"></i>
+              </div>
+              <h3>Video en desarrollo</h3>
+              <p>No hay contenido de vídeo disponible todavía.</p>
+            </div>
+          }
         }
-      }
+      </div>
+      <!-- ===================== PDF ===================== -->
+      <div class="wrapper">
+        @if (viewMode === 'pdf') {
+          @if (lesson.pdf_url) {
+            <a [href]="lesson.pdf_url" target="_blank" class="pdf-link">
+              <i class="fa-solid fa-download"></i>
+              Download PDF
+            </a>
+          } @else {
+            <div class="state-card">
+              <div class="state-icon">
+                <i class="fa-solid fa-file-pdf"></i>
+              </div>
+              <h3>PDF en desarrollo</h3>
+              <p>El material descargable aún no está disponible.</p>
+            </div>
+          }
+        }
+      </div>
+      <!-- ===================== TEST ===================== -->
 
       @if (viewMode === 'test') {
-        <p>🧪 Test system coming soon</p>
+        @if (lesson.id) {
+          <app-lesson-test [lessonId]="lesson.id"></app-lesson-test>
+        } @else {
+          <div class="state-card">
+            <div class="state-icon">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <h3>Test en desarrollo</h3>
+            <p>Estamos preparando este test.</p>
+          </div>
+        }
       }
     </div>
   </div>
