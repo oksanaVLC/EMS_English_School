@@ -2,7 +2,6 @@
   <!-- LEVEL HEADER -->
   <div class="level-header" [ngClass]="getLevelColorClass(lesson.level?.code)">
     <i class="fa-solid fa-graduation-cap"></i>
-
     {{ lesson.level?.code ? (lesson.level.code | uppercase) : '' }}
     - {{ lesson.level?.name }}
   </div>
@@ -62,7 +61,6 @@
               <div class="state-icon">
                 <i class="fa-solid fa-book-open"></i>
               </div>
-
               <h3>Lección en desarrollo</h3>
               <p>Estamos preparando esta lección.</p>
             </div>
@@ -101,14 +99,48 @@
           }
         }
       </div>
+
       <!-- ===================== PDF ===================== -->
       <div class="wrapper">
         @if (viewMode === 'pdf') {
           @if (lesson.pdf_url) {
-            <a [href]="lesson.pdf_url" target="_blank" class="pdf-link">
-              <i class="fa-solid fa-download"></i>
-              Download PDF
-            </a>
+            <div class="pdf-container">
+              <!-- Tarjeta de información del PDF -->
+              <div class="pdf-card">
+                <div class="pdf-info">
+                  <h3>Material descargable</h3>
+                  <p>Visualiza el PDF online o descárgalo para estudiar sin conexión</p>
+                </div>
+
+                <button (click)="downloadPdf(lesson.pdf_url)" class="pdf-download-btn">
+                  <i class="fa-solid fa-download"></i>
+                  Descargar PDF
+                </button>
+              </div>
+
+              <!-- Vista previa del PDF con visor de Google Drive -->
+              <div class="pdf-preview">
+                <div class="preview-header">
+                  <i class="fa-solid fa-eye"></i>
+                  <span>Vista previa</span>
+                </div>
+
+                @if (safePdfViewerUrl) {
+                  <iframe
+                    [src]="safePdfViewerUrl"
+                    class="pdf-iframe"
+                    frameborder="0"
+                    allow="autoplay"
+                  >
+                  </iframe>
+                } @else {
+                  <div class="preview-loading">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <p>Cargando vista previa...</p>
+                  </div>
+                }
+              </div>
+            </div>
           } @else {
             <div class="state-card">
               <div class="state-icon">
@@ -120,20 +152,22 @@
           }
         }
       </div>
-      <!-- ===================== TEST ===================== -->
 
+      <!-- ===================== TEST ===================== -->
       @if (viewMode === 'test') {
-        @if (lesson.id) {
-          <app-lesson-test [lessonId]="lesson.id"></app-lesson-test>
-        } @else {
-          <div class="state-card">
-            <div class="state-icon">
-              <i class="fa-solid fa-pen-to-square"></i>
+        <div class="wrapper">
+          @if (lesson.id) {
+            <app-lesson-test [lessonId]="lesson.id"></app-lesson-test>
+          } @else {
+            <div class="state-card">
+              <div class="state-icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </div>
+              <h3>Test en desarrollo</h3>
+              <p>Estamos preparando este test.</p>
             </div>
-            <h3>Test en desarrollo</h3>
-            <p>Estamos preparando este test.</p>
-          </div>
-        }
+          }
+        </div>
       }
     </div>
   </div>

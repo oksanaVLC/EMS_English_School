@@ -22,6 +22,7 @@ export class LessonPage implements OnInit {
   videoThumb = '';
 
   safeVideoUrl!: SafeResourceUrl;
+  safePdfViewerUrl: SafeResourceUrl | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,8 +39,11 @@ export class LessonPage implements OnInit {
 
       if (this.lesson.video_url) {
         const videoId = this.extractYoutubeId(this.lesson.video_url);
-
         this.videoThumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      }
+
+      if (this.lesson.pdf_url) {
+        this.safePdfViewerUrl = this.getGoogleDriveViewerUrl(this.lesson.pdf_url);
       }
     });
   }
@@ -47,35 +51,28 @@ export class LessonPage implements OnInit {
   setMode(mode: 'learn' | 'video' | 'pdf' | 'test') {
     this.viewMode = mode;
   }
+
   loadVideo() {
     if (!this.videoLoaded && this.lesson?.video_url) {
       const embedUrl = this.convertYoutubeUrl(this.lesson.video_url);
-
       this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         `${embedUrl}?autoplay=1&rel=0&controls=1`,
       );
-
       this.videoLoaded = true;
     }
   }
+
   extractYoutubeId(url: string): string {
     try {
       const parsed = new URL(url);
-
       const videoId = parsed.searchParams.get('v');
-
       if (videoId) return videoId;
-
-      // soporte para youtu.be
       if (parsed.hostname.includes('youtu.be')) {
         return parsed.pathname.replace('/', '');
       }
-
-      // soporte embed
       if (url.includes('/embed/')) {
         return url.split('/embed/')[1];
       }
-
       return '';
     } catch {
       return '';
@@ -85,31 +82,26 @@ export class LessonPage implements OnInit {
   goBack() {
     this.location.back();
   }
+
   getLevelName(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':
         return 'Beginner Level';
-
       case 'a2':
         return 'Elementary Level';
-
       case 'b1':
         return 'Intermediate Level';
-
       case 'b2':
         return 'Upper Intermediate Level';
-
       case 'c1':
         return 'Advanced Level';
-
       case 'c2':
         return 'Proficiency Level';
-
       default:
         return 'English Level';
     }
   }
-  // En LessonPage component
+
   getLevelColorClass(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':
@@ -128,28 +120,60 @@ export class LessonPage implements OnInit {
         return 'pink';
     }
   }
+
   convertYoutubeUrl(url: string): string {
     if (!url) return '';
-
     try {
       const parsed = new URL(url);
-
-      // caso watch?v=
       const videoId = parsed.searchParams.get('v');
-
       if (videoId) {
         return `https://www.youtube.com/embed/${videoId}`;
       }
-
-      // caso ya embed
       if (url.includes('embed')) {
         return url;
       }
-
       return url;
     } catch (e) {
       console.log('Error parsing video URL:', url, e);
       return url;
     }
+  }
+
+  getGoogleDriveViewerUrl(url: string): SafeResourceUrl {
+    if (!url) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+
+    let fileId = '';
+
+    const matchFileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (matchFileId && matchFileId[1]) {
+      fileId = matchFileId[1];
+    }
+
+    const matchParamId = url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (matchParamId && matchParamId[1]) {
+      fileId = matchParamId[1];
+    }
+
+    const matchOpenId = url.match(/open\?id=([a-zA-Z0-9_-]+)/);
+    if (matchOpenId && matchOpenId[1]) {
+      fileId = matchOpenId[1];
+    }
+
+    if (fileId) {
+      const viewerUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(viewerUrl);
+    }
+
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  downloadPdf(url: string) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = '';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }

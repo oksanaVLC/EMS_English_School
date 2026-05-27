@@ -62,7 +62,11 @@
     <div class="result-card">
       <div class="result-score">
         <div class="score">{{ result.correct }} / {{ result.total }}</div>
-        <div class="label">Respuestas correctas</div>
+        <div class="label">
+          {{ result.correct }}
+          {{ result.correct === 1 ? 'pregunta correcta' : 'preguntas correctas' }} de
+          {{ result.total }}
+        </div>
       </div>
 
       <div class="comment">
@@ -81,7 +85,7 @@
         <div class="success-message">
           <div class="success-icon">🎉</div>
           <h3>¡Felicidades!</h3>
-          <p>Has aprobado el test</p>
+          <p>¡Has aprobado el test!</p>
         </div>
       </div>
     }
@@ -93,7 +97,7 @@
           <div class="fail-icon">🐶</div>
           <h3>¡Ups!</h3>
           <p>No te preocupes, ¡la práctica hace al maestro!</p>
-          <p class="fail-hint">Sigue estudiando y vuelve a intentarlo</p>
+          <p class="fail-hint">Sigue estudiando y vuelve a intentarlo.</p>
         </div>
       </div>
     }
