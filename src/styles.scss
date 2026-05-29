@@ -15,7 +15,10 @@
   margin: 0;
   padding: 0;
 }
-
+html,
+body {
+  overflow-x: hidden;
+}
 body {
   margin: 0;
 
@@ -145,6 +148,7 @@ section {
 .silver-shine {
   position: relative;
   display: flex;
+
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -154,6 +158,7 @@ section {
 /* Imagen base */
 .silver-shine img {
   display: block;
+  margin: 0.5rem;
   width: clamp(230px, 60%, 300px);
   height: auto;
   border-radius: 16px;

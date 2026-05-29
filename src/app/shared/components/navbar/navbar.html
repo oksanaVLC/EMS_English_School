@@ -14,18 +14,36 @@
           Inicio
         </a>
       </li>
-      <li><a routerLink="/about" routerLinkActive="active">Sobre</a></li>
+
+      <!-- Dropdown de Niveles -->
       <li class="resources-dropdown">
         <button class="resources-btn">
-          Recursos
+          Niveles
           <i class="fa-solid fa-caret-down"></i>
         </button>
 
         <div class="resources-menu">
-          <!-- DESTREZAS -->
+          <div class="submenu">
+            <a routerLink="/levels/a1">A1 - Beginner</a>
+            <a routerLink="/levels/a2">A2 - Elementary</a>
+            <a routerLink="/levels/b1">B1 - Intermediate</a>
+            <a routerLink="/levels/b2">B2 - Upper Intermediate</a>
+            <a routerLink="/levels/c1">C1 - Advanced</a>
+            <a routerLink="/levels/c2">C2 - Proficiency</a>
+          </div>
+        </div>
+      </li>
+      <li class="resources-dropdown">
+        <button class="resources-btn">
+          Destrezas
+          <i class="fa-solid fa-caret-down"></i>
+        </button>
+
+        <div class="resources-menu">
+          <!-- SOLO DESTREZAS -->
           <div class="menu-group">
             <div class="menu-title">
-              Destrezas
+              Elige un skill
               <i class="fa-solid fa-caret-right"></i>
             </div>
 
@@ -36,23 +54,6 @@
               <a routerLink="/levels">Writing</a>
               <a routerLink="/levels">Speaking</a>
               <a routerLink="/levels">Grammar</a>
-            </div>
-          </div>
-
-          <!-- NIVELES -->
-          <div class="menu-group">
-            <div class="menu-title">
-              Niveles
-              <i class="fa-solid fa-caret-right"></i>
-            </div>
-
-            <div class="submenu">
-              <a routerLink="/levels/a1">A1</a>
-              <a routerLink="/levels/a2">A2</a>
-              <a routerLink="/levels/b1">B1</a>
-              <a routerLink="/levels/b2">B2</a>
-              <a routerLink="/levels/c1">C1</a>
-              <a routerLink="/levels/c2">C2</a>
             </div>
           </div>
         </div>
@@ -104,79 +105,80 @@
 
     <!-- MENU MOBILE -->
     <ul class="navbar__menu">
+      <!-- Inicio -->
       <li><a routerLink="/" (click)="closeMenu()">Inicio</a></li>
-      <li><a routerLink="/about" (click)="closeMenu()">Sobre</a></li>
+
+      <!-- NIVELES (dropdown) -->
       <li class="mobile-resources">
-        <div class="mobile-resources-trigger" (click)="toggleMobileResources($event)">
-          <span>Recursos</span>
+        <div class="mobile-resources-trigger" (click)="toggleNiveles($event)">
+          <span>Niveles</span>
           <i
             class="fa-solid"
-            [class.fa-caret-down]="!isMobileResourcesOpen()"
-            [class.fa-caret-up]="isMobileResourcesOpen()"
+            [class.fa-caret-down]="!isNivelesOpen()"
+            [class.fa-caret-up]="isNivelesOpen()"
           ></i>
         </div>
 
-        <div class="mobile-submenu" [class.open]="isMobileResourcesOpen()">
-          <!-- DESTREZAS -->
-          <div class="mobile-group">
-            <div class="mobile-group-title" (click)="toggleDestrezas($event)">
-              <span>Destrezas</span>
-              <i
-                class="fa-solid"
-                [class.fa-caret-right]="!isDestrezasOpen()"
-                [class.fa-caret-down]="isDestrezasOpen()"
-              ></i>
-            </div>
-            <div class="mobile-group-items" [class.open]="isDestrezasOpen()">
-              <a routerLink="/levels" (click)="closeMenu()">Vocabulary</a>
-              <a routerLink="/levels" (click)="closeMenu()">Listening</a>
-              <a routerLink="/levels" (click)="closeMenu()">Reading</a>
-              <a routerLink="/levels" (click)="closeMenu()">Writing</a>
-              <a routerLink="/levels" (click)="closeMenu()">Speaking</a>
-              <a routerLink="/levels" (click)="closeMenu()">Grammar</a>
-            </div>
-          </div>
-
-          <!-- NIVELES -->
-          <div class="mobile-group">
-            <div class="mobile-group-title" (click)="toggleNiveles($event)">
-              <span>Niveles</span>
-              <i
-                class="fa-solid"
-                [class.fa-caret-right]="!isNivelesOpen()"
-                [class.fa-caret-down]="isNivelesOpen()"
-              ></i>
-            </div>
-            <div class="mobile-group-items" [class.open]="isNivelesOpen()">
-              <a routerLink="/levels/a1" (click)="closeMenu()">A1</a>
-              <a routerLink="/levels/a2" (click)="closeMenu()">A2</a>
-              <a routerLink="/levels/b1" (click)="closeMenu()">B1</a>
-              <a routerLink="/levels/b2" (click)="closeMenu()">B2</a>
-              <a routerLink="/levels/c1" (click)="closeMenu()">C1</a>
-              <a routerLink="/levels/c2" (click)="closeMenu()">C2</a>
-            </div>
+        <div class="mobile-submenu" [class.open]="isNivelesOpen()">
+          <div class="mobile-group-items">
+            <a routerLink="/levels/a1" (click)="closeMenu()">A1 - Beginner</a>
+            <a routerLink="/levels/a2" (click)="closeMenu()">A2 - Elementary</a>
+            <a routerLink="/levels/b1" (click)="closeMenu()">B1 - Intermediate</a>
+            <a routerLink="/levels/b2" (click)="closeMenu()">B2 - Upper Intermediate</a>
+            <a routerLink="/levels/c1" (click)="closeMenu()">C1 - Advanced</a>
+            <a routerLink="/levels/c2" (click)="closeMenu()">C2 - Proficiency</a>
           </div>
         </div>
       </li>
+
+      <!-- DESTREZAS (dropdown) -->
+      <li class="mobile-resources">
+        <div class="mobile-resources-trigger" (click)="toggleDestrezas($event)">
+          <span>Destrezas</span>
+          <i
+            class="fa-solid"
+            [class.fa-caret-down]="!isDestrezasOpen()"
+            [class.fa-caret-up]="isDestrezasOpen()"
+          ></i>
+        </div>
+
+        <div class="mobile-submenu" [class.open]="isDestrezasOpen()">
+          <div class="mobile-group-items">
+            <a routerLink="/levels" (click)="closeMenu()">Grammar</a>
+            <a routerLink="/levels" (click)="closeMenu()">Vocabulary</a>
+            <a routerLink="/levels" (click)="closeMenu()">Pronunciation</a>
+            <a routerLink="/levels" (click)="closeMenu()">Listening</a>
+            <a routerLink="/levels" (click)="closeMenu()">Writing</a>
+            <a routerLink="/levels" (click)="closeMenu()">Speaking</a>
+          </div>
+        </div>
+      </li>
+
+      <!-- Test de nivel -->
       <li><a routerLink="/level-test" (click)="closeMenu()">Test de nivel</a></li>
+
+      <!-- Blog -->
       <li><a routerLink="/blog" (click)="closeMenu()">Blog</a></li>
+
+      <!-- Contacto -->
       <li><a routerLink="/contact" (click)="closeMenu()">Contacto</a></li>
 
+      <!-- Usuario NO logueado -->
       @if (!isLoggedIn()) {
         <li><a routerLink="/login" (click)="closeMenu()">Iniciar sesión</a></li>
         <li><a routerLink="/register" (click)="closeMenu()">Registrarse</a></li>
       }
 
+      <!-- Usuario logueado -->
       @if (isLoggedIn()) {
         <li>
-          <a [routerLink]="getDashboardLink()" (click)="closeMenu()"> Mi perfil </a>
+          <a [routerLink]="getDashboardLink()" (click)="closeMenu()">Mi perfil</a>
         </li>
         <li>
           <button class="menu-link" (click)="logout(); closeMenu()">Cerrar sesión</button>
         </li>
       }
     </ul>
-
     <!-- SOCIAL -->
     <div class="navbar__social">
       <img src="images/instagram.webp" alt="Instagram" />

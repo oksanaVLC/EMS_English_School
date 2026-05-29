@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './button.scss',
 })
 export class Button {
-  @Input() variant: 'primary' | 'secondary' | 'outline' = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'outline' | 'accent' = 'primary';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() fullWidth: boolean = false;

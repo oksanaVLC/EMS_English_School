@@ -78,7 +78,7 @@ export class LessonTest implements OnInit {
 
     let comment = '';
     if (percentage < 0.5) {
-      comment = 'Sigue practicando, puedes hacerlo mejor';
+      comment = 'Sigue practicando, ¡puedes hacerlo mejor!';
     } else if (percentage < 0.8) {
       comment = 'Buen trabajo, sigue así';
     } else {

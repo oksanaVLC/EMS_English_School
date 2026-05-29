@@ -3,9 +3,12 @@
   border-radius: 28px;
   cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
   border: none;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 
   // Tamaños
   &.small {
@@ -30,7 +33,7 @@
     box-sizing: border-box;
   }
 
-  // ... resto de estilos
+  // Estilos de variantes
   &.primary {
     color: white;
     background: linear-gradient(135deg, #26ee76, #01c2d1);
@@ -47,19 +50,44 @@
     color: #26ee76;
   }
 
+  &.accent {
+    color: white;
+    background: linear-gradient(135deg, var(--color-accent), #01c2d1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+
+    // Efecto de brillo
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+      z-index: -1;
+    }
+  }
+
+  // HOVER - Sin translateY, solo efectos visuales bonitos
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+    &.accent::before {
+      left: 100%;
+    }
   }
 
   &:active {
-    transform: translateY(0);
-    box-shadow: none;
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   }
 
   &:disabled {
     opacity: 0.6;
-    cursor: pointer;
+    cursor: not-allowed;
     transform: none;
     box-shadow: none;
   }

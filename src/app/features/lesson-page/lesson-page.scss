@@ -67,6 +67,33 @@
 }
 
 /* =========================
+   RESPONSIVE - MÓVILES
+   ========================= */
+@media (max-width: 768px) {
+  .detail {
+    padding: 1rem; /* Reduce el padding general */
+    margin: 1rem;
+    border-radius: 20px;
+  }
+
+  .wrapper {
+    padding: 0; /* Elimina padding extra en móviles */
+  }
+
+  .content {
+    padding: 0; /* Elimina padding del contenido */
+  }
+}
+
+/* Para pantallas muy pequeñas (menos de 480px) */
+@media (max-width: 480px) {
+  .detail {
+    padding: 0.75rem; /* Padding mínimo */
+    margin: 0.5rem;
+  }
+}
+
+/* =========================
    HEADER TOP
 ========================= */
 
@@ -168,10 +195,11 @@
   ========================= */
 
 /* =========================
-   TABS - VERSIÓN MEJORADA
+   TABS 
    ========================= */
 .tabs {
   display: flex;
+  justify-content: center; /* Centra los botones horizontalmente */
   max-width: 900px;
   margin: 0 auto;
   gap: 8px;
@@ -210,7 +238,7 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease; /* Cambiado de 0.2s a all 0.2s ease */
     font-weight: 600;
     font-size: 0.85rem;
 
@@ -218,14 +246,35 @@
       font-size: 0.9rem;
     }
 
+    /* ELIMINA EL transform EN HOVER */
     &:hover {
-      transform: translateY(-2px);
+      background: #f8fafc;
+      border-color: #9ca3af;
+      /* transform: translateY(-2px);  ← ELIMINADO */
     }
 
     &.active {
       background: var(--main-gradient);
       color: white;
       border: none;
+    }
+  }
+}
+
+/* Media query específica para móviles */
+@media (max-width: 640px) {
+  .tabs {
+    gap: 6px;
+    margin-bottom: 1.5rem;
+    justify-content: flex-start; /* En móviles, alinear a la izquierda para mejor scroll */
+
+    button {
+      padding: 8px 14px;
+      font-size: 0.75rem;
+
+      i {
+        font-size: 0.8rem;
+      }
     }
   }
 }

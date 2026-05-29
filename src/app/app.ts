@@ -16,6 +16,7 @@ import { Tags } from './shared/components/tags/tags';
   styleUrl: './app.scss',
 })
 export class App {
+  showHeader = true;
   protected readonly title = signal('EMS_Frontend_Angular');
 
   private router = inject(Router);
@@ -24,7 +25,9 @@ export class App {
   constructor() {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-      .subscribe(() => {
+      .subscribe((event: NavigationEnd) => {
+        // Ocultar header solo en la ruta raíz (home)
+        this.showHeader = event.url !== '/' && event.url !== '';
         this.handleScroll();
       });
   }

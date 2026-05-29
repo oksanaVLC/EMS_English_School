@@ -603,3 +603,61 @@
     transform: translateX(0);
   }
 }
+
+// Estilos para los submenús móviles
+.mobile-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 1rem;
+  margin-top: 8px;
+
+  a {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 6px 0;
+    transition: all 0.25s ease;
+    display: inline-block;
+    white-space: nowrap; /* Evita que el texto se rompa */
+
+    &:hover {
+      transform: translateX(8px); /* Reduce el desplazamiento */
+      color: var(--color-accent);
+    }
+  }
+}
+
+// Animación de apertura/cierre
+.mobile-submenu {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.2s ease;
+
+  &.open {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 12px;
+  }
+}
+
+// Estilo para el botón de cerrar sesión
+.menu-link {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+
+  &:hover {
+    transform: scale(1.05);
+    color: #fff;
+  }
+}

@@ -38,14 +38,14 @@
         Video
       </button>
 
-      <button (click)="setMode('pdf')" [class.active]="viewMode === 'pdf'">
-        <i class="fa-solid fa-file-pdf"></i>
-        PDF
-      </button>
-
       <button (click)="setMode('test')" [class.active]="viewMode === 'test'">
         <i class="fa-solid fa-pen-to-square"></i>
         Test
+      </button>
+
+      <button (click)="setMode('pdf')" [class.active]="viewMode === 'pdf'">
+        <i class="fa-solid fa-file-pdf"></i>
+        PDF
       </button>
     </div>
 

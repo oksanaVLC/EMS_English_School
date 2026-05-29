@@ -1,126 +1,237 @@
-<!-- ================= INTRO ================= -->
+<!-- ================= INTRO / HERO ================= -->
 <div class="section-decor">
-  <section class="about-section">
-    <div class="about-text">
-      <div class="heart-container">
-        <svg class="animated-svg" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
-          <path
-            class="animated-path"
-            d="M495.075,238.765c-0.761-6.06-2.58-12.022-5.617-17.339c-2.992-5.332-7.237-9.977-12.373-13.309
-      l-0.327,0.503c5.027,3.309,9.166,7.898,12.073,13.158c2.951,5.245,4.701,11.122,5.411,17.085
-      c0.666,5.972,0.295,12.074-1.247,17.878c-1.501,5.816-4.26,11.26-7.736,16.148c-7.031,9.778-17.102,17.137-28.15,21.812
-      c-11.08,4.746-23.232,6.53-35.252,6.434c-12.055-0.124-24.039-2.143-35.73-5.125c-11.707-2.985-23.146-6.971-34.306-11.594
-      c-3.731-1.587-7.432-3.249-11.1-4.978c3.773-2.721,7.506-5.494,11.202-8.313c29.887-22.449,52.598-54.516,63.169-90.424
-      c2.648-8.967,4.527-18.161,5.601-27.451c0.499-4.654,0.894-9.296,0.967-14.01c0.074-4.7-0.127-9.406-0.634-14.086
-      c-1.03-9.347-3.226-18.652-7.157-27.33c-3.913-8.644-9.731-16.663-17.473-22.457c-3.845-2.903-8.114-5.24-12.601-6.945
-      c-4.487-1.711-9.179-2.796-13.898-3.374c-2.375-0.279-4.694-0.482-7.135-0.49c-2.415,0.006-4.833,0.151-7.214,0.529
-      c-4.766,0.73-9.392,2.183-13.733,4.196c-8.691,4.043-16.206,10.268-22.139,17.66c-4.821,5.986-8.546,12.808-11.121,20.034
-      c-1.907-4.003-4.172-7.843-6.866-11.389c-3.753-5.009-8.305-9.458-13.523-12.983c-5.205-3.528-11.065-6.159-17.237-7.507
-      c-6.164-1.37-12.582-1.497-18.79-0.497c-3.103,0.516-6.148,1.315-9.108,2.337c-1.46,0.505-2.986,1.074-4.413,1.8
-      c-1.447,0.688-2.816,1.506-4.146,2.372c-5.309,3.494-9.73,8.145-13.209,13.362c-3.501,5.216-5.986,11.057-7.568,17.085
-      c-1.6,6.035-2.204,12.279-2.167,18.47c0.212,12.417,3.222,24.552,7.622,35.979c4.428,11.449,10.408,22.251,17.406,32.27
-      c14.025,20.073,31.78,37.235,51.205,51.896c4.841,3.7,9.869,7.142,14.929,10.528c4.769,3.081,9.579,6.102,14.51,8.918
-      c-10.314-4.539-20.701-8.921-31.202-13.039c-8.578-3.37-17.225-6.577-25.966-9.529c-8.733-2.977-17.571-5.665-26.505-8.025
-      c-17.852-4.746-36.129-8.164-54.649-9.479c-9.244-0.706-18.692-0.612-27.977,0.71c-9.273,1.332-18.554,3.775-26.995,8.403
-      c-4.196,2.323-8.164,5.213-11.511,8.804c-3.349,3.575-6.025,7.866-7.673,12.526c-1.684,4.653-2.32,9.606-2.232,14.451
-      c0.047,2.429,0.268,4.83,0.644,7.215c0.367,2.391,0.907,4.763,1.636,7.08c2.836,9.328,8.673,17.583,15.901,23.874
-      c7.229,6.361,15.705,10.972,24.47,14.454c8.795,3.468,17.958,5.796,27.22,7.292c9.267,1.499,18.655,2.101,28.034,1.92"
-          />
-        </svg>
-      </div>
-      <p>
-        <b>¡Bienvenid@s a la escuela online </b>
+  <section class="hero-section">
+    <div class="hero-container">
+      <!-- LEFT CONTENT -->
+      <div class="hero-content animate-on-scroll animate-left">
+        <div class="hero-badge">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Online Language School</span>
+        </div>
 
-        <br />
+        <h1 class="hero-title">Habla inglés con confianza y alcanza tus metas</h1>
 
-        <strong class="gradient-text">English Maximizer School! </strong>
-      </p>
+        <p class="hero-description">
+          Una nueva dimensión de aprender inglés sin salir de casa o viajando por todo el mundo.
+        </p>
 
-      <div class="about-image">
-        <div class="gradient-frame">
-          <img src="images/portada.webp" alt="Oksana" class="profile-img" />
+        <!-- CTA PRINCIPAL -->
+        <div class="hero-actions">
+          <a href="#faq" class="btn-primary"> Empezar ahora </a>
+
+          <a routerLink="/levels" fragment="levels" class="btn-secondary"> Ver niveles </a>
         </div>
       </div>
-      <br />
-      <p>
-        Una nueva <b> dimensión </b> de aprender inglés sin salir de casa o viajando por todo el
-        mundo.
-      </p>
+
+      <!-- RIGHT IMAGE -->
+      <div class="hero-image animate-on-scroll animate-right">
+        <div class="image-frame">
+          <img src="images/portada.webp" alt="English Maximizer School" />
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STATS SECTION (UNIFICADA) ================= -->
+    <div class="stats-grid animate-on-scroll animate-up" id="statsSection">
+      <div class="stat-card">
+        <i class="fas fa-book-open"></i>
+        <div class="stat-number" data-target="587" data-suffix="+">0</div>
+        <div class="stat-label">Lecciones interactivas</div>
+      </div>
+
+      <div class="stat-card">
+        <i class="fas fa-chalkboard-user"></i>
+        <div class="stat-number" data-target="42" data-suffix="+">0</div>
+        <div class="stat-label">Profesores expertos</div>
+      </div>
+
+      <div class="stat-card">
+        <i class="fas fa-user-graduate"></i>
+        <div class="stat-number" data-target="12000" data-suffix="+">0</div>
+        <div class="stat-label">Estudiantes activos</div>
+      </div>
+    </div>
+
+    <!-- ================= LEVEL CTA ================= -->
+    <div class="level-cta animate-on-scroll animate-scale">
+      <div class="hero-badge">
+        <i class="fas fa-question-circle"></i>
+        <span> ¿Quieres descubrir tu nivel de inglés?</span>
+      </div>
+
+      <h3>Según el Marco Europeo Común de Referencia (CEFR)</h3>
+
+      <div class="silver-shine">
+        <img src="images/levels.webp" alt="Niveles CEFR" class="first-levels-img" />
+      </div>
+
+      <a href="#" class="btn-test">
+        Realizar prueba de nivel gratis
+        <i class="fas fa-arrow-right"></i>
+      </a>
     </div>
   </section>
 
-  <!-- ================= NIVEL ================= -->
-  <section class="level-section">
-    <div class="level-circles">
-      <span class="circle"></span>
-      <span class="circle"></span>
-      <span class="circle"></span>
+  <!-- ================= CEFR LEVELS SECTION ================= -->
+
+  <section class="cefr-section animate-on-scroll animate-up">
+    <div class="section-header">
+      <i class="fa-solid fa-layer-group"></i>
+      <h2>Elige tu nivel CEFR</h2>
     </div>
 
-    <p class="level-text">
-      ¿Quieres descubrir tu nivel de inglés según el <b>Marco Europeo Común de Referencia </b> para
-      las Lenguas (CEFR)?
-    </p>
-
-    <div class="silver-shine">
-      <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    </div>
-
-    <p>¡Haz la prueba de nivel!</p>
-
-    <div class="pointer-wrapper">
-      <a [routerLink]="['/level-test']">
-        <app-button variant="primary" size="large">Prueba de nivel</app-button>
+    <div class="levels-container">
+      <a routerLink="/levels/a1" class="level-card level-a1">
+        <i class="fa-solid fa-seedling level-icon"></i>
+        <span class="level-letter">A1</span>
+        <span class="level-name">Beginner</span>
+        <span class="level-desc">Principiante</span>
       </a>
 
-      <img src="images/pointer.webp" alt="" class="cursor-img" />
+      <a routerLink="/levels/a2" class="level-card level-a2">
+        <i class="fa-solid fa-book-open level-icon"></i>
+        <span class="level-letter">A2</span>
+        <span class="level-name">Elementary</span>
+        <span class="level-desc">Básico</span>
+      </a>
+
+      <a routerLink="/levels/b1" class="level-card level-b1">
+        <i class="fa-solid fa-chart-line level-icon"></i>
+        <span class="level-letter">B1</span>
+        <span class="level-name">Intermediate</span>
+        <span class="level-desc">Intermedio</span>
+      </a>
+
+      <a routerLink="/levels/b2" class="level-card level-b2">
+        <i class="fa-solid fa-rocket level-icon"></i>
+        <span class="level-letter">B2</span>
+        <span class="level-name">Upper Intermediate</span>
+        <span class="level-desc">Intermedio alto</span>
+      </a>
+
+      <a routerLink="/levels/c1" class="level-card level-c1">
+        <i class="fa-solid fa-trophy level-icon"></i>
+        <span class="level-letter">C1</span>
+        <span class="level-name">Advanced</span>
+        <span class="level-desc">Avanzado</span>
+      </a>
+
+      <a routerLink="/levels/c2" class="level-card level-c2">
+        <i class="fa-solid fa-crown level-icon"></i>
+        <span class="level-letter">C2</span>
+        <span class="level-name">Proficiency</span>
+        <span class="level-desc">Dominio</span>
+      </a>
     </div>
   </section>
-</div>
-<!-- ================= HEADER ================= -->
-<div class="full-header">
-  <div class="header-content">
+  <!-- ================= SKILLS SECTION ================= -->
+  <section class="skills-section animate-on-scroll animate-up">
+    <div class="section-header">
+      <i class="fa-solid fa-puzzle-piece"></i>
+      <h2>Todas las destrezas</h2>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card" [routerLink]="['/levels']" fragment="grammar">
+        <div class="skill-icon">
+          <i class="fa-solid fa-code-branch"></i>
+        </div>
+        <h3>Grammar</h3>
+        <p>Patrones verbales, tiempos, condicionales, modales</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+
+      <div class="skill-card" [routerLink]="['/levels']" fragment="vocabulary">
+        <div class="skill-icon">
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <h3>Vocabulary</h3>
+        <p>Vocabulario activo y pasivo por temas</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+
+      <div class="skill-card" [routerLink]="['/levels']" fragment="pronunciation">
+        <div class="skill-icon">
+          <i class="fa-solid fa-microphone-alt"></i>
+        </div>
+        <h3>Pronunciation</h3>
+        <p>Sonidos, reglas y entonación</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+
+      <div class="skill-card" [routerLink]="['/levels']" fragment="listening">
+        <div class="skill-icon">
+          <i class="fa-solid fa-headphones"></i>
+        </div>
+        <h3>Listening</h3>
+        <p>Multiple choice, dictations</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+
+      <div class="skill-card" [routerLink]="['/levels']" fragment="writing">
+        <div class="skill-icon">
+          <i class="fa-solid fa-pen-fancy"></i>
+        </div>
+        <h3>Writing</h3>
+        <p>Descripciones, cartas, mini-historias</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+
+      <div class="skill-card" [routerLink]="['/levels']" fragment="speaking">
+        <div class="skill-icon">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <h3>Speaking</h3>
+        <p>Preparación para entrevistas y conversación</p>
+        <span class="skill-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT SCHOOL SECTION ================= -->
+  <div class="section-header animate-on-scroll animate-down">
+    <i class="fa-solid fa-building-columns"></i>
     <h2>Conoce la escuela</h2>
-    <img src="images/cap.webp" alt="" class="header-icon" />
   </div>
-</div>
 
-<!-- ================= ABOUT VIDEO ================= -->
-<section class="about-section reverse">
-  <div class="about-video">
-    <div class="gradient-frame">
-      <img src="images/video.webp" alt="Video preview" />
+  <section class="about-grid animate-on-scroll animate-up">
+    <div class="about-media">
+      <div class="image-frame white-frame">
+        <img src="images/video.webp" alt="Academia online" />
+        <div class="play-overlay">
+          <i class="fa-solid fa-circle-play"></i>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="about-text">
-    <p>Te invitamos a que conozcas nuestra <b>academia online</b>.</p>
-    <p>
-      <b>EMS</b> es una plataforma educativa para el aprendizaje del <b>inglés</b> mediante recursos
-      digitales y herramientas para <b>estudiantes y profesores</b>.
-    </p>
-    <p>
-      Aquí encontrarás todo lo que necesitas para<b> subir tu nivel de inglés</b>. Todo el material
-      ha sido cuidadosamente elaborado por <b>profesionales</b>.
-    </p>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div class="section-decor">
-  <div class="full-header">
-    <div class="header-content">
-      <h2>Preguntas frecuentes</h2>
-      <img src="images/questions.webp" alt="" class="header-icon" />
+    <div class="about-content">
+      <p>
+        <b>EMS</b> es una plataforma educativa para el aprendizaje del <b>inglés</b> mediante
+        recursos digitales y herramientas para <b>estudiantes y profesores</b>.
+      </p>
+      <p>
+        Aquí encontrarás todo lo que necesitas para <b>subir tu nivel de inglés</b>. Todo el
+        material ha sido cuidadosamente elaborado por <b>profesionales</b>.
+      </p>
+      <div class="about-features">
+        <span><i class="fa-regular fa-circle-check"></i> Materiales gratuitos</span>
+        <span><i class="fa-regular fa-circle-check"></i> Profesionales certificados</span>
+        <span><i class="fa-regular fa-circle-check"></i> Acceso ilimitado</span>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- ================= FAQ SECTION ================= -->
-  <section class="faq-section">
+  <div id="faq" class="section-header animate-on-scroll animate-down">
+    <i class="fa-solid fa-circle-question"></i>
+    <h2>Preguntas frecuentes</h2>
+  </div>
+
+  <section class="faq-section animate-on-scroll animate-up">
     <div class="faq-item" [class.active]="activeIndex === 0">
       <button class="faq-question" (click)="toggleFAQ(0)">
-        1. ¿Por qué usar English Maximizer School?
+        <span>1. ¿Por qué usar English Maximizer School?</span>
+        <i class="fa-solid fa-chevron-down"></i>
       </button>
-
       <div class="faq-answer">
         <div>
           <ul>
@@ -136,13 +247,15 @@
     </div>
 
     <div class="faq-item" [class.active]="activeIndex === 1">
-      <button class="faq-question" (click)="toggleFAQ(1)">2. ¿Por dónde empiezo?</button>
-
+      <button class="faq-question" (click)="toggleFAQ(1)">
+        <span>2. ¿Por dónde empiezo?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
       <div class="faq-answer">
         <div>
           <p>
             Puedes empezar por la
-            <a [routerLink]="['/level-test']" class="faq-link"> prueba de nivel </a>. También puedes
+            <a [routerLink]="['/level-test']" class="faq-link">prueba de nivel</a>. También puedes
             entrar en el apartado Recursos y buscar la categoría que te interesa.
           </p>
         </div>
@@ -151,84 +264,157 @@
 
     <div class="faq-item" [class.active]="activeIndex === 2">
       <button class="faq-question" (click)="toggleFAQ(2)">
-        3. ¿Cómo busco un tema que me interesa?
+        <span>3. ¿Cómo busco un tema que me interesa?</span>
+        <i class="fa-solid fa-chevron-down"></i>
       </button>
-
       <div class="faq-answer">
         <div>
           <p>Entra en el apartado Recursos y usa el filtro por nivel o por tema.</p>
         </div>
       </div>
     </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 3">
+      <button class="faq-question" (click)="toggleFAQ(3)">
+        <span>4. ¿Cuánto tiempo necesito para ver resultados?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <div>
+          <p>
+            Con una dedicación de 2-3 horas semanales, nuestros estudiantes comienzan a notar
+            mejoras significativas en 2-3 meses. El ritmo de aprendizaje es personal y adaptable a
+            tus objetivos.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 4">
+      <button class="faq-question" (click)="toggleFAQ(4)">
+        <span>5. ¿Ofrecen certificados oficiales?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <div>
+          <p>
+            Sí, al completar cada nivel obtienes un certificado reconocido según el Marco Europeo
+            Común de Referencia (CEFR). También preparamos para exámenes oficiales como Cambridge,
+            TOEFL e IELTS.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 5">
+      <button class="faq-question" (click)="toggleFAQ(5)">
+        <span>6. ¿Hay clases en vivo o solo contenido grabado?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <div>
+          <p>
+            Nuestra plataforma es 100% online y está diseñada para el autoaprendizaje. No ofrecemos
+            clases en vivo con profesores, pero tienes acceso ilimitado a lecciones interactivas,
+            ejercicios y vídeos. y los profesores pueden usar nuestro contenido como recurso para
+            hacer sus clases más dinámicas y amenas.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 6">
+      <button class="faq-question" (click)="toggleFAQ(6)">
+        <span>7. ¿Puedo acceder desde cualquier dispositivo?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <div>
+          <p>
+            ¡Sí! Nuestra plataforma es completamente responsive y funciona en ordenadores, tablets y
+            móviles. Solo necesitas conexión a internet y un navegador actualizado.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item" [class.active]="activeIndex === 7">
+      <button class="faq-question" (click)="toggleFAQ(7)">
+        <span>8. ¿Hay soporte para resolver mis dudas?</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <div>
+          <p>
+            Por supuesto. Contamos con soporte técnico y académico disponible de lunes a viernes.
+            Además, puedes dejar tus preguntas en comentarios dentro de cada lección y nuestros
+            profesores te responderán en menos de 24 horas.
+          </p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- ================= HEADER ================= -->
-  <div class="full-header">
-    <div class="header-content">
-      <h2>También te puede interesar</h2>
-    </div>
+  <!-- ================= VIDEOS SECTION ================= -->
+  <div class="section-header animate-on-scroll animate-down">
+    <i class="fa-solid fa-play-circle"></i>
+    <h2>También te puede interesar</h2>
   </div>
-</div>
-<!-- closing tag de lateral decoration section-docor-->
 
-<section class="iframe-grid">
-  <figure class="iframe-item" *ngFor="let video of videos" (click)="loadVideo(video)">
-    <ng-container *ngIf="!video.loaded; else player">
-      <picture>
-        <source [srcset]="video.thumb + '?avif'" type="image/avif" />
+  <section class="iframe-grid animate-on-scroll animate-flip">
+    <figure class="iframe-item" *ngFor="let video of videos" (click)="loadVideo(video)">
+      <ng-container *ngIf="!video.loaded; else player">
+        <picture>
+          <source [srcset]="video.thumb + '?avif'" type="image/avif" />
+          <source [srcset]="video.thumb + '?webp'" type="image/webp" />
+          <img class="youtube-facade" [src]="video.thumb" [alt]="video.title" loading="lazy" />
+        </picture>
+        <div class="play-button"></div>
+      </ng-container>
+      <ng-template #player>
+        <iframe [src]="video.embedUrl" title="YouTube video player" allowfullscreen></iframe>
+      </ng-template>
+    </figure>
+  </section>
 
-        <source [srcset]="video.thumb + '?webp'" type="image/webp" />
-
-        <img class="youtube-facade" [src]="video.thumb" [alt]="video.title" loading="lazy" />
-      </picture>
-
-      <div class="play-button"></div>
-    </ng-container>
-
-    <ng-template #player>
-      <iframe [src]="video.embedUrl" title="YouTube video player" allowfullscreen> </iframe>
-    </ng-template>
-  </figure>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div class="full-header">
-  <div class="header-content">
+  <!-- ================= REVIEWS SECTION ================= -->
+  <div class="section-header animate-on-scroll animate-down">
+    <i class="fa-solid fa-star"></i>
     <h2>¿Qué dicen nuestros alumnos?</h2>
   </div>
-</div>
 
-<section class="reviews-section section-decor">
-  <h2 class="reviews-title">Reseñas de nuestros alumnos</h2>
-
-  <div class="reviews-slider" #reviewsSlider>
-    <div class="reviews-track">
-      <div class="review-card" *ngFor="let review of reviews">
-        <div class="stars">{{ review.stars }}</div>
-
-        <p class="review-text">
-          {{ review.text }}
-        </p>
-
-        <div class="review-author">
-          <img [src]="review.image" alt="Alumno" />
-          <div>
-            <strong>{{ review.name }}</strong>
-            <span>{{ review.country }}</span>
+  <section class="reviews-section animate-on-scroll animate-up">
+    <div class="reviews-slider" #reviewsSlider>
+      <div class="reviews-track">
+        <div class="review-card" *ngFor="let review of reviews">
+          <div class="stars">{{ review.stars }}</div>
+          <p class="review-text">{{ review.text }}</p>
+          <div class="review-author">
+            <img [src]="review.image" alt="Alumno" />
+            <div>
+              <strong>{{ review.name }}</strong>
+              <span>{{ review.country }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= HEADER ================= -->
-<div class="full-header">
-  <div class="header-content">
+  <!-- ================= INSPIRATION SECTION ================= -->
+  <div class="section-header animate-on-scroll animate-down">
+    <i class="fa-solid fa-lightbulb"></i>
     <h2>¿Necesitas inspiración?</h2>
+    <i class="fa-solid fa-lightbulb"></i>
   </div>
-</div>
 
-<div class="lemons-container">
-  <img src="/images/lemons.webp" alt="Lemons" />
+  <div class="inspiration-container animate-on-scroll animate-scale">
+    <div class="inspiration-text">
+      <i class="fa-solid fa-quote-left"></i>
+      <p>'When life gives you lemons, make lemonade.'</p>
+    </div>
+    <div class="lemons-wrapper">
+      <img src="/images/lemons.webp" alt="Lemons" />
+    </div>
+  </div>
 </div>

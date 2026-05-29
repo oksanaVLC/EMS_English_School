@@ -1,15 +1,4 @@
 <div class="test-wrapper">
-  <!-- LOADING -->
-  @if (loading) {
-    <div class="state-card">
-      <div class="state-icon">
-        <i class="fa-solid fa-spinner fa-spin"></i>
-      </div>
-      <h3>Cargando contenido</h3>
-      <p>Estamos preparando todo para ti.</p>
-    </div>
-  }
-
   <!-- EMPTY TEST -->
   @if (!loading && questions.length === 0) {
     <div class="state-card">
