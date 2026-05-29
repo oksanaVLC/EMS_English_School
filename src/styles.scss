@@ -144,6 +144,43 @@ section {
   }
 }
 
+.silver-gradient {
+  font-weight: bold;
+  text-align: center;
+  font-family: 'Clicker Script', cursive;
+  font-size: clamp(2rem, 2.5vw, 3rem);
+  background: linear-gradient(90deg, #9e9e9e, #e0e0e0, #ffffff, #e0e0e0, #9e9e9e);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: silverSlide 7s linear infinite;
+}
+
+// Para las estrellas en versión plateada (opcional)
+.stars-silver {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #9e9e9e, #e0e0e0, #ffffff, #e0e0e0, #9e9e9e);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: silverSlide 7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes silverSlide {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
 /************Silver Shine*******************/
 .silver-shine {
   position: relative;
