@@ -109,9 +109,7 @@
 .faq-question {
   width: 100%;
 
-  // font-family: inherit;
-  font-family: 'Nunito', sans-serif;
-  font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
 
   text-align: left;
   border: none;
@@ -128,7 +126,7 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   transition:
     grid-template-rows 0.35s ease,
     opacity 0.25s ease;
@@ -582,7 +580,7 @@
 }
 
 .hero-title {
-  font-size: clamp(1.5rem, 5vw, 3.5rem);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
   margin-bottom: 1rem;
   line-height: 1.2;
@@ -1057,7 +1055,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--color-accent);
 
     i {
