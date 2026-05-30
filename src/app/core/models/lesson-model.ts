@@ -49,4 +49,7 @@ export interface LessonModel {
     id: number;
     status: 'draft' | 'published';
   } | null;
+
+  created_at?: string;
+  is_favorited?: boolean;
 }

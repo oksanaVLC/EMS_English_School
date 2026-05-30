@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { Auth } from '../../../core/services/auth';
 import { LessonService } from '../../../core/services/lesson';
 
 interface Lesson {
@@ -9,6 +12,8 @@ interface Lesson {
   title: string;
   type: string;
   tags: string[];
+  is_favorited?: boolean;
+  level?: string;
 }
 
 @Component({
@@ -21,21 +26,51 @@ export class Levels implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private lessonService = inject(LessonService);
+  private http = inject(HttpClient);
+  private auth = inject(Auth);
+
+  private apiUrl = environment.apiUrl;
 
   level: string = '';
+
   lessons: Lesson[] = [];
+  filteredLessons: Lesson[] = [];
+
+  selectedType: string | null = null;
+
+  skills = [
+    { label: 'All', value: null },
+    { label: 'Grammar', value: 'grammar' },
+    { label: 'Vocabulary', value: 'vocabulary' },
+    { label: 'Reading', value: 'reading' },
+    { label: 'Listening', value: 'listening' },
+    { label: 'Speaking', value: 'speaking' },
+    { label: 'Writing', value: 'writing' },
+  ];
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const level = params.get('level');
-
       if (!level) return;
 
       this.level = level;
 
       this.lessonService.getLessons(level).subscribe((res: any) => {
-        this.lessons = res.data;
+        this.lessons = res.data ?? [];
+        this.applyFilters();
       });
+    });
+  }
+
+  setType(type: string | null) {
+    this.selectedType = type;
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    this.filteredLessons = this.lessons.filter((lesson) => {
+      if (!this.selectedType) return true;
+      return lesson.type?.toLowerCase() === this.selectedType;
     });
   }
 
@@ -43,10 +78,35 @@ export class Levels implements OnInit {
     this.router.navigate(['/levels', this.level, slug]);
   }
 
-  trackById(index: number, item: Lesson) {
+  trackById(_: number, item: Lesson) {
     return item.id;
   }
-  // En tu componente Levels
+
+  // =========================
+  // FAVORITE TOGGLE (igual que posts)
+  // =========================
+  toggleFavorite(event: Event, lesson: Lesson) {
+    event.stopPropagation();
+
+    if (!this.auth.isLoggedIn()) return;
+
+    const previous = lesson.is_favorited;
+
+    lesson.is_favorited = !previous;
+
+    this.http.post(`${this.apiUrl}/lessons/${lesson.id}/favorite`, {}).subscribe({
+      next: (res: any) => {
+        lesson.is_favorited = res.favorited;
+      },
+      error: () => {
+        lesson.is_favorited = previous;
+      },
+    });
+  }
+
+  // =========================
+  // UI helpers
+  // =========================
   getLevelColorClass(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':
@@ -65,22 +125,23 @@ export class Levels implements OnInit {
         return 'pink';
     }
   }
+
   getLevelName(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':
-        return 'Basic ';
+        return 'Basic';
       case 'a2':
-        return 'Elementary ';
+        return 'Elementary';
       case 'b1':
-        return 'Intermediate ';
+        return 'Intermediate';
       case 'b2':
-        return 'Upper-Intermediate ';
+        return 'Upper-Intermediate';
       case 'c1':
-        return 'Advanced ';
+        return 'Advanced';
       case 'c2':
-        return 'Proficiency ';
+        return 'Proficiency';
       default:
-        return ' Level';
+        return 'Level';
     }
   }
 }

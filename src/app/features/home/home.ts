@@ -156,9 +156,9 @@ export class Home implements AfterViewInit, OnDestroy {
   // VIDEOS
   // =========================
   videos = [
-    { id: 'O8zlczzKOF8', thumb: '', title: 'TEMA 1', embedUrl: null, loaded: false, reveal: 50 },
-    { id: 'Abjqc8LgUcI', thumb: '', title: 'TEMA 2', embedUrl: null, loaded: false, reveal: 50 },
-    { id: 'kQKbalJVjcA', thumb: '', title: 'TEMA 3', embedUrl: null, loaded: false, reveal: 50 },
+    { id: 'oI5ZpKrHk7w', thumb: '', title: 'TEMA 1', embedUrl: null, loaded: false, reveal: 50 },
+    { id: 'T79zpfKP5Fs', thumb: '', title: 'TEMA 2', embedUrl: null, loaded: false, reveal: 50 },
+    { id: 'WbQPJGSq-3M', thumb: '', title: 'TEMA 3', embedUrl: null, loaded: false, reveal: 50 },
     { id: '1I2wzSUIpDk', thumb: '', title: 'TEMA 4', embedUrl: null, loaded: false, reveal: 50 },
     { id: 'xxk2LwBt62U', thumb: '', title: 'TEMA 5', embedUrl: null, loaded: false, reveal: 50 },
     { id: '75MbeDqiyoQ', thumb: '', title: 'TEMA 6', embedUrl: null, loaded: false, reveal: 50 },

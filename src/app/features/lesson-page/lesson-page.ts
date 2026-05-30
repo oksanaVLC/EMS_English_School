@@ -15,6 +15,7 @@ import { LessonTest } from './lesson-test/lesson-test';
 })
 export class LessonPage implements OnInit {
   lesson: any = null;
+  isFavorited: boolean = false;
 
   viewMode: 'learn' | 'video' | 'pdf' | 'test' = 'learn';
   videoLoaded = false;
@@ -36,6 +37,7 @@ export class LessonPage implements OnInit {
 
     this.http.get(`${environment.apiUrl}/lessons/slug/${slug}`).subscribe((response: any) => {
       this.lesson = response;
+      this.isFavorited = response.is_favorited || false;
 
       if (this.lesson.video_url) {
         const videoId = this.extractYoutubeId(this.lesson.video_url);
@@ -175,5 +177,36 @@ export class LessonPage implements OnInit {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  toggleFavorite(): void {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      // Redirigir a login o mostrar mensaje
+      window.location.href = '/login';
+      return;
+    }
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    };
+
+    this.http
+      .post(`${environment.apiUrl}/lessons/${this.lesson.id}/favorite`, {}, { headers })
+      .subscribe({
+        next: (response: any) => {
+          this.isFavorited = response.favorited;
+
+          console.log(this.isFavorited ? '✅ Añadido a favoritos' : '❌ Eliminado de favoritos');
+        },
+        error: (err) => {
+          console.error('Error al cambiar favorito:', err);
+          if (err.status === 401) {
+            window.location.href = '/login';
+          }
+        },
+      });
   }
 }

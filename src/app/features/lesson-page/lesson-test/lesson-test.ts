@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import confetti from 'canvas-confetti';
 import { environment } from '../../../../environments/environment';
@@ -15,6 +15,7 @@ export class LessonTest implements OnInit {
   @Input() lessonId!: number;
 
   loading = false;
+  saving = false; // ✅ Añadir estado de guardado
 
   test: any;
   questions: any[] = [];
@@ -64,13 +65,26 @@ export class LessonTest implements OnInit {
   }
 
   submitTest() {
+    // Calcular resultados localmente primero
     let correct = 0;
+    const answersPayload: { question_id: number; option_id: number }[] = [];
 
     this.questions.forEach((q: any) => {
-      const user = this.answers[q.id];
-      const correctIndex = q.options.findIndex((o: any) => o.is_correct);
+      const userOptionIndex = this.answers[q.id];
+      const correctOptionIndex = q.options.findIndex((o: any) => o.is_correct);
+      const selectedOption = q.options[userOptionIndex];
 
-      if (user === correctIndex) correct++;
+      if (userOptionIndex === correctOptionIndex) {
+        correct++;
+      }
+
+      // Preparar payload para el backend
+      if (selectedOption) {
+        answersPayload.push({
+          question_id: q.id,
+          option_id: selectedOption.id,
+        });
+      }
     });
 
     const total = this.questions.length;
@@ -85,6 +99,7 @@ export class LessonTest implements OnInit {
       comment = '¡Excelente! Dominas este tema';
     }
 
+    // Mostrar resultado localmente
     this.result = {
       correct,
       total,
@@ -102,9 +117,43 @@ export class LessonTest implements OnInit {
     } else {
       this.showSadMessage();
     }
+
+    // ✅ GUARDAR RESULTADOS EN EL BACKEND
+    this.saveTestResults(this.test.id, answersPayload, correct, total);
   }
 
-  // Fuegos artificiales cuando aprueba
+  // ✅ Nuevo método para guardar resultados
+  saveTestResults(testId: number, answers: any[], correct: number, total: number) {
+    this.saving = true;
+
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders()
+      .set('Authorization', `Bearer ${token}`)
+      .set('Accept', 'application/json')
+      .set('X-Skip-Loading', 'true'); // Evitar loading global
+
+    const payload = { answers };
+
+    this.http.post(`${environment.apiUrl}/tests/${testId}/submit`, payload, { headers }).subscribe({
+      next: (response: any) => {
+        console.log('✅ Resultados guardados en el servidor:', response);
+        // Actualizar el resultado con los datos del servidor
+        this.result = {
+          ...this.result,
+          score_total: response.score_total,
+          saved_in_backend: true,
+        };
+        this.saving = false;
+      },
+      error: (err) => {
+        console.error('❌ Error al guardar resultados:', err);
+        this.saving = false;
+        // Mostrar mensaje pero no bloquear la experiencia del usuario
+        console.warn('Los resultados no se guardaron en el servidor, pero se muestran localmente');
+      },
+    });
+  }
+
   showConfetti() {
     confetti({
       particleCount: 150,
@@ -114,7 +163,6 @@ export class LessonTest implements OnInit {
       colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
     });
 
-    // Segunda ráfaga
     setTimeout(() => {
       confetti({
         particleCount: 100,
@@ -124,7 +172,6 @@ export class LessonTest implements OnInit {
       });
     }, 200);
 
-    // Tercera ráfaga
     setTimeout(() => {
       confetti({
         particleCount: 100,
@@ -135,7 +182,6 @@ export class LessonTest implements OnInit {
     }, 400);
   }
 
-  // Mensaje gracioso cuando suspende
   showSadMessage() {
     this.showFailMessage = true;
 

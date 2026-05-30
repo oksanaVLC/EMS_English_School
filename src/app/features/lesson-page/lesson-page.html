@@ -21,9 +21,18 @@
       </div>
     </div>
 
-    <!-- LESSON TITLE -->
+    <!-- LESSON TITLE CON FAVORITO -->
     <div class="lesson-title">
-      <h2>{{ lesson.title }}</h2>
+      <div class="title-wrapper">
+        <h2>{{ lesson.title }}</h2>
+        <button class="favorite-btn" (click)="toggleFavorite()" [class.favorited]="isFavorited">
+          @if (isFavorited) {
+            <i class="fa-solid fa-heart"></i>
+          } @else {
+            <i class="fa-regular fa-heart"></i>
+          }
+        </button>
+      </div>
     </div>
 
     <!-- TABS -->
@@ -49,7 +58,7 @@
       </button>
     </div>
 
-    <!-- CONTENT -->
+    <!-- CONTENT - Resto igual... -->
     <div class="content">
       <!-- ===================== LEARN ===================== -->
       <div class="wrapper">
@@ -105,26 +114,21 @@
         @if (viewMode === 'pdf') {
           @if (lesson.pdf_url) {
             <div class="pdf-container">
-              <!-- Tarjeta de información del PDF -->
               <div class="pdf-card">
                 <div class="pdf-info">
                   <h3>Material descargable</h3>
                   <p>Visualiza el PDF online o descárgalo para estudiar sin conexión</p>
                 </div>
-
                 <button (click)="downloadPdf(lesson.pdf_url)" class="pdf-download-btn">
                   <i class="fa-solid fa-download"></i>
                   Descargar PDF
                 </button>
               </div>
-
-              <!-- Vista previa del PDF con visor de Google Drive -->
               <div class="pdf-preview">
                 <div class="preview-header">
                   <i class="fa-solid fa-eye"></i>
                   <span>Vista previa</span>
                 </div>
-
                 @if (safePdfViewerUrl) {
                   <iframe
                     [src]="safePdfViewerUrl"

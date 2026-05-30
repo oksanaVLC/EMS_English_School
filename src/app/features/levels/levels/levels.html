@@ -3,13 +3,41 @@
   {{ level | uppercase }}: {{ getLevelName(level) }}
 </div>
 
+<!-- Skill Filter -->
+<div class="skill-filter">
+  @for (skill of skills; track skill.label) {
+    <button
+      type="button"
+      (click)="setType(skill.value)"
+      [class.active]="selectedType === skill.value"
+    >
+      {{ skill.label }}
+    </button>
+  }
+</div>
+
+<!-- GRID -->
 <div class="grid">
-  @for (lesson of lessons; track lesson.id) {
+  @for (lesson of filteredLessons; track lesson.id) {
     <div
       class="topic-card"
       [ngClass]="getLevelColorClass(level) + '-card'"
       (click)="goToLesson(lesson.slug)"
     >
+      <!-- TOP RIGHT LEVEL BADGE -->
+      <span class="level-badge">
+        {{ level | uppercase }}
+      </span>
+
+      <!-- HEART -->
+      <button
+        class="heart-btn"
+        [class.active]="lesson.is_favorited"
+        (click)="toggleFavorite($event, lesson)"
+      >
+        <i class="fa-heart" [ngClass]="lesson.is_favorited ? 'fa-solid' : 'fa-regular'"></i>
+      </button>
+
       <i class="fa-solid fa-book topic-icon"></i>
 
       <h3>{{ lesson.title }}</h3>
@@ -20,6 +48,15 @@
           <span>{{ tag }}</span>
         }
       </div>
+    </div>
+  } @empty {
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+
+      <h3>No lessons found</h3>
+      <p>No lessons available for this skill at {{ level | uppercase }} level.</p>
     </div>
   }
 </div>

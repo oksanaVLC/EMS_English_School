@@ -1,19 +1,137 @@
-<div class="lessons-container">
-  <h2>Lecciones guardadas</h2>
-
-  <div *ngIf="lessons.length; else empty" class="lessons-grid">
-    <div class="lesson-card" *ngFor="let lesson of lessons">
-      <div class="lesson-info" (click)="openLesson(lesson)">
-        <h3>{{ lesson.title }}</h3>
-        <p class="level">{{ lesson.level }}</p>
-        <p class="date">Guardado: {{ lesson.savedAt | date: 'short' }}</p>
-      </div>
-
-      <button class="remove-btn" (click)="removeFromFavorites(lesson)">Quitar</button>
-    </div>
+<div class="favorite-lessons">
+  <!-- Header -->
+  <div class="header">
+    <h1>Mis Lecciones Favoritas</h1>
+    <p>
+      <i class="fas fa-book-open"></i>
+      {{ pagination.total }} lección{{ pagination.total !== 1 ? 'es' : '' }} guardada{{
+        pagination.total !== 1 ? 's' : ''
+      }}
+    </p>
   </div>
 
-  <ng-template #empty>
-    <p>No tienes lecciones guardadas.</p>
-  </ng-template>
+  <!-- Error State -->
+  @if (error) {
+    <div class="error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button (click)="loadFavorites()" class="retry-btn">
+        <i class="fas fa-redo-alt"></i>
+        Reintentar
+      </button>
+    </div>
+  }
+
+  <!-- Lecciones Favoritas -->
+  @if (!error) {
+    <!-- Empty State -->
+    @if (lessons.length === 0) {
+      <div class="empty-state">
+        <i class="fas fa-heart-broken"></i>
+        <h3>No tienes lecciones favoritas aún</h3>
+        <p>¡Explora nuestro contenido y guarda tus lecciones preferidas!</p>
+        <a routerLink="/levels" class="explore-btn">
+          <i class="fas fa-search"></i>
+          Explorar lecciones
+        </a>
+      </div>
+    }
+
+    <!-- Lessons Table -->
+    @if (lessons.length > 0) {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Nivel</th>
+              <th>Tipo</th>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (lesson of lessons; track lesson.id) {
+              <tr>
+                <td class="level-cell">
+                  <span class="level-badge" [class]="lesson.level?.code || ''">
+                    {{ lesson.level?.code || lesson.level_id }}
+                  </span>
+                </td>
+                <td class="type-cell">
+                  <span class="type-name">{{ getLessonTypeName(lesson.type) }}</span>
+                </td>
+                <td class="title-cell" (click)="viewLesson(lesson.slug)">
+                  <strong>{{ lesson.title }}</strong>
+                </td>
+                <td class="date-cell">
+                  {{ formatDate(lesson.created_at) }}
+                </td>
+                <td class="actions-cell">
+                  <button
+                    class="remove-btn"
+                    (click)="confirmRemove(lesson)"
+                    title="Eliminar de favoritos"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <!-- Pagination -->
+    @if (pagination.total > pagination.per_page) {
+      <div class="pagination">
+        <button
+          [disabled]="pagination.current_page === 1"
+          (click)="loadPage(pagination.current_page - 1)"
+          class="page-btn"
+        >
+          <i class="fas fa-chevron-left"></i>
+          Anterior
+        </button>
+
+        <div class="page-info">
+          <span class="page-current">{{ pagination.current_page }}</span>
+          <span class="page-separator">/</span>
+          <span class="page-total">{{ pagination.last_page }}</span>
+        </div>
+
+        <button
+          [disabled]="pagination.current_page === pagination.last_page"
+          (click)="loadPage(pagination.current_page + 1)"
+          class="page-btn"
+        >
+          Siguiente
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    }
+  }
+
+  <!-- Modal de confirmación -->
+  @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Eliminar de favoritos</h3>
+          <button class="close-btn" (click)="closeModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <i class="fas fa-question-circle"></i>
+          <p>¿Eliminar "{{ lessonToRemove?.title }}" de tus lecciones favoritas?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+          <button class="btn-confirm" (click)="removeFavorite()">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>

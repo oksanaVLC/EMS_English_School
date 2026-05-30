@@ -1,31 +1,135 @@
-<div class="tests-container">
-  <h2>Tests realizados</h2>
+<div class="tests-done">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>
+      <i class="fas fa-clipboard-list"></i>
+      Tests Realizados
+    </h1>
+    <p>
+      <i class="fas fa-chart-line"></i>
+      {{ pagination.total }} test{{ pagination.total !== 1 ? 's' : '' }} completado{{
+        pagination.total !== 1 ? 's' : ''
+      }}
+    </p>
+  </div>
 
-  <table class="tests-table" *ngIf="tests.length; else empty">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Resultado</th>
-        <th>Intentos</th>
-        <th>Fecha</th>
-        <th></th>
-      </tr>
-    </thead>
+  <!-- Loading -->
+  @if (loadingService.loading$ | async) {
+    <div class="loading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Cargando tus tests...</span>
+    </div>
+  }
 
-    <tbody>
-      <tr *ngFor="let test of tests">
-        <td>{{ test.name }}</td>
-        <td>{{ test.score }}%</td>
-        <td>{{ test.attempts }}</td>
-        <td>{{ test.date | date: 'short' }}</td>
-        <td>
-          <button (click)="repeatTest(test)">Repetir</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Error -->
+  @if (error && !(loadingService.loading$ | async)) {
+    <div class="error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button (click)="loadTests()" class="retry-btn">
+        <i class="fas fa-redo-alt"></i>
+        Reintentar
+      </button>
+    </div>
+  }
 
-  <ng-template #empty>
-    <p>No has realizado tests todavía.</p>
-  </ng-template>
+  <!-- Tests -->
+  @if (!error && !(loadingService.loading$ | async)) {
+    @if (tests.length === 0) {
+      <div class="empty-state">
+        <i class="fas fa-clipboard-list"></i>
+        <h3>No has realizado ningún test aún</h3>
+        <p>¡Completa las lecciones y pon a prueba tus conocimientos!</p>
+        <a routerLink="/levels" class="explore-btn">
+          <i class="fas fa-search"></i>
+          Explorar lecciones
+        </a>
+      </div>
+    }
+
+    @if (tests.length > 0) {
+      <div class="tests-grid">
+        @for (test of tests; track test.id) {
+          <div class="test-card" [class]="getScoreColor(test.percentage)">
+            <div class="card-header">
+              <div class="lesson-info">
+                <span class="lesson-icon">
+                  <i class="fas fa-book"></i>
+                </span>
+                <span class="lesson-title" (click)="viewLesson(test.lesson_slug)">
+                  {{ test.lesson_title }}
+                </span>
+              </div>
+              <div class="score-circle" [class]="getScoreColor(test.percentage)">
+                <span class="percentage">{{ test.percentage }}%</span>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <h3 class="test-title">{{ test.test_title }}</h3>
+
+              <div class="stats">
+                <div class="stat">
+                  <i class="fas fa-check-circle correct"></i>
+                  <span>{{ test.correct_answers }} correctas</span>
+                </div>
+                <div class="stat">
+                  <i class="fas fa-times-circle incorrect"></i>
+                  <span>{{ test.incorrect_answers }} incorrectas</span>
+                </div>
+                <div class="stat">
+                  <i class="fas fa-question-circle"></i>
+                  <span>{{ test.total_questions }} preguntas</span>
+                </div>
+              </div>
+
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="test.percentage"></div>
+              </div>
+
+              <div class="card-footer">
+                <span class="date">
+                  <i class="fas fa-calendar-alt"></i>
+                  {{ formatDate(test.completed_at) }}
+                </span>
+                <button class="repeat-btn" (click)="repeatTest(test)">
+                  <i class="fas fa-redo-alt"></i>
+                  Repetir test
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (pagination.total > pagination.per_page) {
+        <div class="pagination">
+          <button
+            [disabled]="pagination.current_page === 1"
+            (click)="loadPage(pagination.current_page - 1)"
+            class="page-btn"
+          >
+            <i class="fas fa-chevron-left"></i>
+            Anterior
+          </button>
+
+          <div class="page-info">
+            <span class="page-current">{{ pagination.current_page }}</span>
+            <span class="page-separator">/</span>
+            <span class="page-total">{{ pagination.last_page }}</span>
+          </div>
+
+          <button
+            [disabled]="pagination.current_page === pagination.last_page"
+            (click)="loadPage(pagination.current_page + 1)"
+            class="page-btn"
+          >
+            Siguiente
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      }
+    }
+  }
 </div>
