@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
@@ -29,7 +29,7 @@ interface PaginatedTests {
 @Component({
   selector: 'app-tests-done',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule],
   templateUrl: './tests-done.html',
   styleUrls: ['./tests-done.scss'],
 })
