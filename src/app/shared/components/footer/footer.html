@@ -1,6 +1,6 @@
 <footer class="footer">
   <div class="footer-grid">
-    <!-- BRAND (colspan 2) -->
+    <!-- BRAND -->
     <div class="footer-brand">
       <img src="/images/logo.webp" class="logo" alt="Logo" />
       <h2>English Maximizer School</h2>
@@ -22,21 +22,25 @@
     <div class="footer-column">
       <h3>Secciones</h3>
       <ul>
-        <li>Inicio</li>
-        <li>Nosotros</li>
-        <li>Estudiante</li>
-        <li>Profesor</li>
-        <li>Blog</li>
-        <li>Contacto</li>
+        <li><a routerLink="/">Inicio</a></li>
+        <li><a routerLink="/levels">Niveles</a></li>
+        <li><a routerLink="/skills">Destrezas</a></li>
+        <li><a routerLink="/blog">Blog</a></li>
+        <li><a routerLink="/contact">Contacto</a></li>
       </ul>
     </div>
 
-    <!-- ACCESO -->
+    <!-- ACCESO / USUARIO -->
     <div class="footer-column">
-      <h3>Acceso</h3>
+      <h3>{{ isLoggedIn() ? 'Mi cuenta' : 'Acceso' }}</h3>
       <ul>
-        <li>Register</li>
-        <li>Login</li>
+        @if (!isLoggedIn()) {
+          <li><a routerLink="/register">Registrarse</a></li>
+          <li><a routerLink="/login">Iniciar sesión</a></li>
+        } @else {
+          <li><a [routerLink]="getDashboardLink()">Mi perfil</a></li>
+          <li><button class="logout-link" (click)="logout()">Cerrar sesión</button></li>
+        }
       </ul>
     </div>
 
@@ -44,16 +48,17 @@
     <div class="footer-column politica hide-mobile">
       <h3>Política</h3>
       <ul>
-        <li>Cookies</li>
-        <li>Política de privacidad</li>
+        <li><a href="#">Cookies</a></li>
+        <li><a href="#">Política de privacidad</a></li>
       </ul>
     </div>
 
-    <!-- COPYRIGHT (full width) -->
+    <!-- COPYRIGHT -->
     <div class="footer-bottom">
       © {{ currentYear }} English Maximizer School. Todos los derechos reservados.
     </div>
   </div>
+
   <!-- DECORATIONS -->
   <img src="images/mountain.webp" alt="" class="header__mountain" />
 </footer>

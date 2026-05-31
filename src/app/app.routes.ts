@@ -87,6 +87,18 @@ export const routes: Routes = [
   },
 
   // =========================
+  // SKILLS
+  // =========================
+  {
+    path: 'skills',
+    loadComponent: () => import('./features/skills/skills/skills').then((m) => m.Skills),
+  },
+  {
+    path: 'skills/:skill',
+    loadComponent: () => import('./features/skills/skill-page/skill-page').then((m) => m.SkillPage),
+  },
+
+  // =========================
   // LEVEL TEST
   // =========================
   {

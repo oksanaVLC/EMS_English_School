@@ -2,120 +2,231 @@
   <!-- HEADER -->
   <div class="header">
     <h1>
+      <i class="fa-solid" [class.fa-pen-to-square]="isEdit" [class.fa-plus-circle]="!isEdit"></i>
       {{ isEdit ? 'Editar lección' : 'Crear nueva lección' }}
     </h1>
-
     <p>
-      {{ isEdit ? 'Modifica la lección existente' : 'Crea una nueva lección de inglés' }}
+      <i class="fa-solid fa-info-circle"></i>
+      {{
+        isEdit
+          ? 'Modifica la lección existente'
+          : 'Completa los campos para crear una nueva lección'
+      }}
     </p>
   </div>
 
   <!-- TABS -->
   <div class="tabs">
     <button type="button" (click)="activeTab = 'content'" [class.active]="activeTab === 'content'">
-      Lesson Content
+      <i class="fa-solid fa-file-lines"></i>
+      Contenido
     </button>
-
     <button
       type="button"
       (click)="activeTab = 'test'"
       [class.active]="activeTab === 'test'"
       [disabled]="!isEdit"
     >
+      <i class="fa-solid fa-clipboard-list"></i>
       Test
     </button>
   </div>
 
+  <!-- CONTENIDO -->
   @if (activeTab === 'content') {
-    <form [formGroup]="form" (ngSubmit)="save('published')" class="form">
-      <!-- TITLE -->
+    <form [formGroup]="form" class="form">
+      <!-- TÍTULO -->
       <div class="form-group">
-        <label>Título <span class="required">*</span> </label>
-        <input type="text" formControlName="title" />
+        <label>Título <span class="required">*</span></label>
+        <input type="text" formControlName="title" placeholder="Ej: Present Simple" />
       </div>
 
       <!-- SLUG -->
       <div class="form-group">
-        <label>Slug <span class="required">*</span> </label>
+        <label>Slug <span class="required">*</span></label>
         <input type="text" formControlName="slug" placeholder="present-simple" />
+        <small class="help-text">URL amigable: solo letras minúsculas y guiones</small>
       </div>
 
-      <!-- LEVEL -->
+      <!-- NIVEL -->
       <div class="form-group">
-        <label>Nivel <span class="required">*</span> </label>
-
+        <label>Nivel <span class="required">*</span></label>
         <select formControlName="level_id">
+          <option [value]="null" disabled>Selecciona un nivel</option>
           @for (level of levels; track level.id) {
-            <option [value]="level.id">
-              {{ level.code }}
-            </option>
+            <option [value]="level.id">{{ level.code }} - {{ level.name }}</option>
           }
         </select>
       </div>
 
-      <!-- TYPE -->
+      <!-- TIPO -->
       <div class="form-group">
-        <label>Tipo <span class="required">*</span> </label>
+        <label>Tipo <span class="required">*</span></label>
         <select formControlName="type">
-          <option value="grammar">Grammar</option>
-          <option value="vocabulary">Vocabulary</option>
-          <option value="reading">Reading</option>
-          <option value="listening">Listening</option>
-          <option value="speaking">Speaking</option>
-          <option value="writing">Writing</option>
-          <option value="pronunciation">Pronunciation</option>
+          <option value="grammar">📖 Grammar</option>
+          <option value="vocabulary">📚 Vocabulary</option>
+          <option value="reading">📰 Reading</option>
+          <option value="listening">🎧 Listening</option>
+          <option value="speaking">💬 Speaking</option>
+          <option value="writing">✍️ Writing</option>
+          <option value="pronunciation">🗣️ Pronunciation</option>
         </select>
       </div>
 
       <!-- TAGS -->
       <div class="form-group">
-        <label>Tags (separadas por coma)</label>
+        <label>Tags</label>
         <input type="text" formControlName="tags" placeholder="grammar, verbs, beginner" />
+        <small class="help-text">Separa cada tag con una coma</small>
       </div>
 
-      <!-- EXPLANATION -->
+      <!-- EXPLICACIÓN -->
       <div class="form-group">
-        <label> Explicación <span class="required">*</span> </label>
+        <label>Explicación <span class="required">*</span></label>
         <quill-editor
           formControlName="explanation"
           [modules]="quillConfig"
           theme="snow"
           (onEditorCreated)="onEditorCreated($event)"
-        >
-        </quill-editor>
+          placeholder="Escribe el contenido de la lección aquí..."
+        ></quill-editor>
       </div>
 
-      <!-- VIDEO -->
+      <!-- URLs -->
       <div class="form-group">
         <label>Video URL</label>
-        <input type="text" formControlName="video_url" />
+        <input
+          type="text"
+          formControlName="video_url"
+          placeholder="https://youtube.com/watch?v=..."
+        />
+        <small class="help-text">{{ getUrlHelpText('video') }}</small>
       </div>
 
-      <!-- PDF -->
       <div class="form-group">
         <label>PDF URL</label>
-        <input type="text" formControlName="pdf_url" />
+        <input
+          type="text"
+          formControlName="pdf_url"
+          placeholder="https://ejemplo.com/documento.pdf"
+        />
+        <small class="help-text">{{ getUrlHelpText('pdf') }}</small>
       </div>
 
-      <!-- COVER -->
+      <!-- COVER IMAGE UPLOAD (igual que en posts) -->
       <div class="form-group">
-        <label>Cover URL (opcional)</label>
-        <input type="text" formControlName="cover_url" />
+        <label>Imagen de portada</label>
+
+        <div
+          class="upload-box"
+          (drop)="onDrop($event)"
+          (dragover)="onDragOver($event)"
+          (click)="triggerFileInput()"
+        >
+          <input
+            type="file"
+            id="fileInput"
+            hidden
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          />
+
+          @if (!preview && !uploadingImage) {
+            <div class="upload-placeholder">
+              <i class="fa-solid fa-cloud-upload-alt"></i>
+              <p>Arrastra una imagen o haz click para subirla</p>
+              <small>JPG, PNG o WEBP · máximo 5MB</small>
+            </div>
+          }
+
+          @if (uploadingImage) {
+            <div class="upload-loading">
+              <i class="fa-solid fa-spinner fa-spin"></i>
+              <p>Subiendo imagen...</p>
+            </div>
+          }
+
+          @if (preview && !uploadingImage) {
+            <div class="preview-container">
+              <img [src]="preview" alt="Preview" class="image-preview" />
+              <button
+                type="button"
+                class="remove-image"
+                (click)="removeImage(); $event.stopPropagation()"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          }
+        </div>
+
+        @if (uploadError) {
+          <small class="error-text">{{ uploadError }}</small>
+        }
       </div>
 
-      <!-- ACTIONS -->
+      <!-- ACCIONES -->
       <div class="actions">
-        <button type="button" class="btn-secondary" routerLink="/admin/lessons">Cancelar</button>
-
-        <button type="button" class="btn-draft" (click)="save('draft')">Guardar borrador</button>
-
-        <button type="submit" class="btn-primary">
-          {{ isEdit ? 'Actualizar' : 'Publicar' }}
+        <button type="button" class="btn-secondary" (click)="onCancel()">
+          <i class="fa-solid fa-times"></i> Cancelar
+        </button>
+        <button type="button" class="btn-draft" (click)="save('draft')" [disabled]="saving">
+          @if (saving) {
+            <i class="fa-solid fa-spinner fa-spin"></i> Guardando...
+          } @else {
+            <i class="fa-solid fa-save"></i> Guardar borrador
+          }
+        </button>
+        <button type="button" class="btn-primary" (click)="save('published')" [disabled]="saving">
+          @if (saving) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            {{ isEdit ? 'Actualizando...' : 'Publicando...' }}
+          } @else {
+            <i
+              class="fa-solid"
+              [class.fa-pen-to-square]="isEdit"
+              [class.fa-cloud-arrow-up]="!isEdit"
+            ></i>
+            {{ isEdit ? 'Actualizar' : 'Publicar' }}
+          }
         </button>
       </div>
     </form>
   }
+
+  <!-- TEST -->
   @if (activeTab === 'test' && lessonId) {
     <app-test-builder [lessonId]="lessonId"></app-test-builder>
+  }
+
+  <!-- MODAL DE CONFIRMACIÓN -->
+  @if (showLeaveModal) {
+    <div class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-icon"><i class="fa-solid fa-circle-question"></i></div>
+        <h3>¿Salir sin guardar?</h3>
+        <p>Tienes cambios sin guardar. ¿Seguro que quieres salir?</p>
+        <div class="modal-actions">
+          <button class="btn-cancel" (click)="cancelLeave()">
+            <i class="fa-solid fa-arrow-left"></i> Cancelar
+          </button>
+          <button class="btn-confirm" (click)="confirmLeave()">
+            <i class="fa-solid fa-sign-out-alt"></i> Sí, salir
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL DE ÉXITO -->
+  @if (showSuccessModal) {
+    <div class="modal-overlay success-modal">
+      <div class="modal-container success">
+        <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <h3>¡Completado!</h3>
+        <p>{{ successMessage }}</p>
+        <div class="spinner"></div>
+      </div>
+    </div>
   }
 </div>

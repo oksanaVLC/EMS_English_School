@@ -1,10 +1,7 @@
-.students-home {
+.skills-home {
   max-width: 1400px;
   margin: 0 auto;
   margin-bottom: 3rem;
-  h2 {
-    color: var(--color-accent);
-  }
 }
 
 /* =========================
@@ -33,7 +30,6 @@
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 
-/* Ocultar líneas decorativas en móviles */
 @media (max-width: 768px) {
   .line {
     display: none;
@@ -41,8 +37,9 @@
 }
 
 /* =========================
-   TEXTO CENTRADO
+   HERO SECTION
 ========================= */
+
 .hero {
   display: flex;
   flex-direction: column;
@@ -51,23 +48,19 @@
 }
 
 .hero-text,
-.hero-info,
-.level-info {
+.hero-info {
   text-align: center;
   max-width: 800px;
   width: 100%;
   margin: 1rem auto;
 }
 
-.level-info {
-  margin-top: 1rem;
-}
 .hero-info {
   color: #666;
 }
 
 /* =========================
-   LEVEL BUTTONS - GRADIENT VERSION
+   LEVEL BUTTONS
 ========================= */
 
 .levels {
@@ -83,9 +76,7 @@
   font-weight: 700;
   padding: 1rem 1rem;
   border-radius: 40px;
-
   border: 3px dotted white;
-
   cursor: pointer;
   transition: all 0.25s ease;
   font-size: clamp(1.1rem, 2vw, 1.4rem);
@@ -93,7 +84,6 @@
   position: relative;
   overflow: hidden;
 
-  /* Efecto de brillo sutil */
   &::before {
     content: '';
     position: absolute;
@@ -119,72 +109,34 @@
   }
 }
 
-/* GRADIENTES POR NIVEL */
-.a1 {
+.pink {
   background: linear-gradient(135deg, #ff65a2, #ff3b7f);
   box-shadow: 0 4px 12px rgba(255, 101, 162, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(255, 101, 162, 0.4);
-  }
 }
-
-.a2 {
+.orange {
   background: linear-gradient(135deg, #ff8c42, #ff6f37);
   box-shadow: 0 4px 12px rgba(255, 111, 55, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(255, 111, 55, 0.4);
-  }
 }
-
-.b1 {
+.yellow {
   background: linear-gradient(135deg, #f5d742, #fdbd28);
   box-shadow: 0 4px 12px rgba(253, 189, 40, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(253, 189, 40, 0.4);
-  }
 }
-
-.b2 {
+.green {
   background: linear-gradient(135deg, #2ecc71, #00a83d);
   box-shadow: 0 4px 12px rgba(0, 168, 61, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(0, 168, 61, 0.4);
-  }
 }
-
-.c1 {
+.blue {
   background: linear-gradient(135deg, #4ecdc4, #02b2dd);
   box-shadow: 0 4px 12px rgba(2, 178, 221, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(2, 178, 221, 0.4);
-  }
 }
-
-.c2 {
+.purple {
   background: linear-gradient(135deg, #a855f7, #6d28d9);
   box-shadow: 0 4px 12px rgba(0, 82, 153, 0.3);
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(0, 82, 153, 0.4);
-  }
 }
 
 /* =========================
-   LEVEL TEST SECTION
+   POINTER WRAPPER
 ========================= */
-.hero-info {
-  color: #111;
-}
-.level-info {
-  color: #777;
-  font-style: italic;
-  text-align: center;
-}
 
 .pointer-wrapper {
   position: relative;
@@ -203,20 +155,16 @@
 }
 
 /* =========================
-   SECCIONES
+   SECTIONS
 ========================= */
 
 .sections {
   text-align: center;
-  margin: 2rem auto 4rem;
-}
-
-.sections h3 {
-  color: #666;
+  margin: 1rem auto 2rem;
 }
 
 /* =========================
-   GRID CARDS - RESPONSIVE
+   GRID CARDS
 ========================= */
 
 .grid {
@@ -226,7 +174,6 @@
   padding: 0 1rem;
 }
 
-/* Pantallas grandes: 3 columnas fijas */
 @media (min-width: 1024px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
@@ -236,14 +183,12 @@
   }
 }
 
-/* Tablets: 2 columnas */
 @media (min-width: 768px) and (max-width: 1023px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Móviles: 1 columna */
 @media (max-width: 767px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
@@ -270,14 +215,13 @@
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-}
-
-/* TOP AREA - CORREGIDO */
 .card-top {
   flex: 1;
   background: transparent;
@@ -285,7 +229,6 @@
   position: relative;
 }
 
-/* Lista de temas - CORREGIDO */
 .card-topics {
   list-style: none;
   padding: 0;
@@ -300,20 +243,19 @@
   color: white;
   font-size: clamp(0.8rem, 3vw, 1.3rem);
   line-height: 1.6;
-
   position: relative;
   padding-left: 18px;
+
+  &::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    font-size: 1em;
+  }
 }
 
-.card-topics li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: bold;
-  font-size: 1em;
-}
-/* BOTTOM WHITE AREA */
 .card-bottom {
   background: white;
   padding: 1rem;
@@ -330,28 +272,23 @@
   }
 }
 
-/* ICON CIRCLE - escala con la card */
 .icon-circle {
-  width: 22%; /* Porcentaje del ancho de la card */
+  width: 22%;
   max-width: 78px;
   min-width: 40px;
-  aspect-ratio: 1 / 1; /* Mantiene proporción cuadrada */
+  aspect-ratio: 1 / 1;
   background: white;
   border-radius: 50%;
   position: absolute;
   right: 10px;
-  top: -35%; /* Posición relativa a la altura */
+  top: -35%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease;
-
-  /* Sombra base */
   box-shadow:
     0 0 20px 8px rgba(255, 255, 255, 0.6),
     0 0 40px 15px rgba(255, 255, 255, 0.3);
-
-  /* Animación de brillo */
   animation: pulse-glow 2s ease-in-out infinite alternate;
 }
 
@@ -370,7 +307,7 @@
 }
 
 .category-icon {
-  width: 55%; /* Porcentaje del círculo */
+  width: 55%;
   height: auto;
   object-fit: contain;
 }
@@ -379,14 +316,12 @@
   transform: scale(1.05);
 }
 
-/* Opcional: límites para pantallas muy grandes */
-@media (min-width: 1200px) {
-  .icon-circle {
-    max-width: 80px;
-  }
+.first-levels-img {
+  width: clamp(230px, 60%, 300px);
+  display: block;
+  margin: 0.5rem auto;
 }
 
-/* Ajustes para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .levels {
     gap: 0.5rem;
@@ -398,9 +333,11 @@
     right: 5px;
     top: -18px;
   }
+
   .card {
     min-height: 80px;
   }
+
   .category-icon {
     width: 30px;
     height: 30px;
@@ -409,97 +346,4 @@
   .card-bottom span {
     font-size: 0.9rem;
   }
-}
-
-/* ================= FULL HEADER ================= */
-
-.full-header {
-  width: 100%;
-  height: clamp(70px, 10vw, 87px);
-  padding: 0 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: var(--main-gradient);
-  color: white;
-
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.header-content {
-  display: flex; /* CAMBIO CLAVE */
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
-  gap: 2rem; /* espacio entre texto e icono */
-}
-.levels-img {
-  width: clamp(230px, 60%, 300px);
-  display: block;
-}
-
-/* NUEVA clase SOLO para header */
-.header-icon-circle {
-  width: clamp(40px, 6vw, 60px);
-  height: clamp(40px, 6vw, 60px);
-  border-radius: 50%;
-  background: white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  /* sin absolute */
-  position: static;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.header-icon-circle img {
-  width: 60%;
-  height: auto;
-}
-
-.level-letter {
-  font-size: 5rem;
-  color: #fff;
-  font-weight: bold;
-}
-
-.first-levels-img {
-  width: clamp(230px, 60%, 300px);
-  display: block;
-  margin: 0.5rem auto;
-}
-
-@media (max-width: 768px) {
-  .levels-img {
-    display: none;
-  }
-  .card-top .level-letter {
-    font-size: 4rem;
-  }
-}
-
-.pink {
-  background: linear-gradient(135deg, #ff65a2, #ff3b7f);
-}
-.orange {
-  background: linear-gradient(135deg, #ff8c42, #ff6f37);
-}
-.yellow {
-  background: linear-gradient(135deg, #f5d742, #fdbd28);
-}
-
-.green {
-  background: linear-gradient(135deg, #2ecc71, #00a83d);
-}
-.blue {
-  background: linear-gradient(135deg, #4ecdc4, #02b2dd);
-}
-.purple {
-  background: linear-gradient(135deg, #c084fc, #7e22ce);
 }

@@ -23,7 +23,7 @@
       <img src="images/levels.webp" alt="Niveles CEFR" class="first-levels-img" />
     </div>
 
-    <!-- TEST BUTTON (igual que home) -->
+    <!-- TEST BUTTON -->
     <div class="pointer-wrapper">
       <a routerLink="/level-test">
         <app-button variant="accent" size="large">Prueba de nivel</app-button>
@@ -32,7 +32,7 @@
     </div>
   </header>
 
-  <!-- SECTIONS -->
+  <!-- SECTIONS - TODAS LAS DESTREZAS -->
   <section class="sections">
     <div class="title-wrapper">
       <span class="line left"></span>
@@ -43,8 +43,8 @@
     <p class="hero-text">Elige el apartado que te interesa</p>
 
     <div class="grid">
-      <!-- CARD -->
-      <div class="card" [routerLink]="['/levels']" fragment="grammar">
+      <!-- Grammar -->
+      <div class="card" routerLink="/skills/grammar">
         <div class="card-top">
           <ul class="card-topics">
             <li>Patrones de verbos</li>
@@ -61,13 +61,14 @@
         </div>
       </div>
 
-      <div class="card" [routerLink]="['/levels']" fragment="vocabulary">
+      <!-- Vocabulary -->
+      <div class="card" routerLink="/skills/vocabulary">
         <div class="card-top">
           <ul class="card-topics">
-            <li>Vacabulario activo</li>
+            <li>Vocabulario activo</li>
             <li>Vocabulario pasivo</li>
-            <li>Condicionales</li>
             <li>Palabras según tema</li>
+            <li>Expresiones comunes</li>
           </ul>
         </div>
         <div class="card-bottom">
@@ -78,11 +79,14 @@
         </div>
       </div>
 
-      <div class="card" [routerLink]="['/levels']" fragment="pronunciation">
+      <!-- Pronunciation -->
+      <div class="card" routerLink="/skills/pronunciation">
         <div class="card-top">
           <ul class="card-topics">
             <li>Sonidos que confunden</li>
-            <li>Regla de pronunciación</li>
+            <li>Reglas de pronunciación</li>
+            <li>Entonación</li>
+            <li>Acentuación</li>
           </ul>
         </div>
         <div class="card-bottom">
@@ -93,11 +97,14 @@
         </div>
       </div>
 
-      <div class="card" [routerLink]="['/levels']" fragment="listening">
+      <!-- Listening -->
+      <div class="card" routerLink="/skills/listening">
         <div class="card-top">
           <ul class="card-topics">
             <li>Multiple choice</li>
             <li>Dictations</li>
+            <li>Audio comprensión</li>
+            <li>Diálogos reales</li>
           </ul>
         </div>
         <div class="card-bottom">
@@ -108,12 +115,14 @@
         </div>
       </div>
 
-      <div class="card" [routerLink]="['/levels']" fragment="writing">
+      <!-- Writing -->
+      <div class="card" routerLink="/skills/writing">
         <div class="card-top">
           <ul class="card-topics">
             <li>Descripción</li>
             <li>Carta de presentación</li>
             <li>Mini-historias</li>
+            <li>Redacción de ensayos</li>
           </ul>
         </div>
         <div class="card-bottom">
@@ -124,11 +133,14 @@
         </div>
       </div>
 
-      <div class="card" [routerLink]="['/levels']" fragment="speaking">
+      <!-- Speaking -->
+      <div class="card" routerLink="/skills/speaking">
         <div class="card-top">
           <ul class="card-topics">
-            <li>· Describimos una foto</li>
-            <li>Preparamos para la entrevista</li>
+            <li>Describimos una foto</li>
+            <li>Preparamos entrevistas</li>
+            <li>Conversaciones diarias</li>
+            <li>Debates y opiniones</li>
           </ul>
         </div>
         <div class="card-bottom">
@@ -140,580 +152,4 @@
       </div>
     </div>
   </section>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="grammar" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Grammar</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/settings.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="grammartag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Gramática</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/settings.webp" alt="Grammar icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="vocabulary" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Vocabulario</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/vocabulary.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="vocabularytag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Vocabulario</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/vocabulary.webp" alt="Vocabulary icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="pronunciation" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Pronunciación</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/pronunciation.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="pronunciationtag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Pronunciación</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/pronunciation.webp" alt="Pronunciation icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="listening" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Listening</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/listening.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="listeningtag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Listening</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/listening.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="writing" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Writing</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/writing.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="writingtag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Writing</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/writing.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= HEADER ================= -->
-<div id="speaking" class="full-header">
-  <div class="header-content">
-    <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
-    <h2>Speaking</h2>
-
-    <div class="header-icon-circle">
-      <img src="images/speaking.webp" alt="Grammar icon" />
-    </div>
-  </div>
-</div>
-
-<!-- SECTIONS -->
-<section class="sections" id="speakingtag">
-  <div class="title-wrapper">
-    <span class="line left"></span>
-    <h1 class="title">Todos los niveles de la sección Speaking</h1>
-    <span class="line right"></span>
-  </div>
-
-  <p class="hero-text">Elije el nivel que te interesa</p>
-
-  <div class="grid">
-    <!-- CARD -->
-    <div class="card" routerLink="/levels/a1">
-      <div class="card-top pink"><span class="level-letter">A1</span></div>
-      <div class="card-bottom">
-        <span>Beginner</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/a2">
-      <div class="card-top orange">
-        <span class="level-letter">A2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Elementary</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b1">
-      <div class="card-top yellow">
-        <span class="level-letter">B1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/b2">
-      <div class="card-top green">
-        <span class="level-letter">B2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Upper-Intermediate</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c1">
-      <div class="card-top blue">
-        <span class="level-letter">C1</span>
-      </div>
-      <div class="card-bottom">
-        <span>Advanced</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-
-    <div class="card" routerLink="/levels/c2">
-      <div class="card-top purple">
-        <span class="level-letter">C2</span>
-      </div>
-      <div class="card-bottom">
-        <span>Proficiency</span>
-        <div class="icon-circle">
-          <img src="images/speaking.webp" alt="Listening icon" class="category-icon" />
-        </div>
-      </div>
-    </div>
-  </div>
 </section>

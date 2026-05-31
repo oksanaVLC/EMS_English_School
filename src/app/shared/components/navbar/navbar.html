@@ -43,12 +43,12 @@
           <!-- SOLO DESTREZAS -->
           <div class="menu-group">
             <div class="submenu">
-              <a routerLink="/levels">Vocabulary</a>
-              <a routerLink="/levels">Listening</a>
-              <a routerLink="/levels">Reading</a>
-              <a routerLink="/levels">Writing</a>
-              <a routerLink="/levels">Speaking</a>
-              <a routerLink="/levels">Grammar</a>
+              <a routerLink="/skills/vocabulary">Vocabulary</a>
+              <a routerLink="/skills/listening">Listening</a>
+              <a routerLink="/skills/reading">Reading</a>
+              <a routerLink="/skills/writing">Writing</a>
+              <a routerLink="/skills/speaking">Speaking</a>
+              <a routerLink="/skills/grammar">Grammar</a>
             </div>
           </div>
         </div>
@@ -139,12 +139,12 @@
 
         <div class="mobile-submenu" [class.open]="isDestrezasOpen()">
           <div class="mobile-group-items">
-            <a routerLink="/levels" (click)="closeMenu()">Grammar</a>
-            <a routerLink="/levels" (click)="closeMenu()">Vocabulary</a>
-            <a routerLink="/levels" (click)="closeMenu()">Pronunciation</a>
-            <a routerLink="/levels" (click)="closeMenu()">Listening</a>
-            <a routerLink="/levels" (click)="closeMenu()">Writing</a>
-            <a routerLink="/levels" (click)="closeMenu()">Speaking</a>
+            <a routerLink="/skills/grammar" (click)="closeMenu()">Grammar</a>
+            <a routerLink="/skills/vocabulary" (click)="closeMenu()">Vocabulary</a>
+            <a routerLink="/skills/pronunciation" (click)="closeMenu()">Pronunciation</a>
+            <a routerLink="/skills/listening" (click)="closeMenu()">Listening</a>
+            <a routerLink="/skills/writing" (click)="closeMenu()">Writing</a>
+            <a routerLink="/skills/speaking" (click)="closeMenu()">Speaking</a>
           </div>
         </div>
       </li>

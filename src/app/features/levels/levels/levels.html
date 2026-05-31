@@ -3,6 +3,19 @@
   {{ level | uppercase }}: {{ getLevelName(level) }}
 </div>
 
+<!-- SEARCH BAR -->
+<div class="search-section">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input
+      type="text"
+      placeholder="Buscar lección..."
+      (input)="onSearch($event)"
+      [value]="searchTerm"
+    />
+  </div>
+</div>
+
 <!-- Skill Filter -->
 <div class="skill-filter">
   @for (skill of skills; track skill.label) {
@@ -38,7 +51,17 @@
         <i class="fa-heart" [ngClass]="lesson.is_favorited ? 'fa-solid' : 'fa-regular'"></i>
       </button>
 
-      <i class="fa-solid fa-book topic-icon"></i>
+      <!-- IMAGEN (si existe cover_url) -->
+      @if (lesson.cover_url) {
+        <div class="card-image">
+          <img [src]="lesson.cover_url" [alt]="lesson.title" />
+        </div>
+      }
+
+      <!-- ICONO (solo se muestra si NO hay imagen) -->
+      @if (!lesson.cover_url) {
+        <i class="fa-solid fa-book topic-icon"></i>
+      }
 
       <h3>{{ lesson.title }}</h3>
       <p>{{ lesson.type }}</p>
@@ -60,3 +83,12 @@
     </div>
   }
 </div>
+
+<!-- PAGINATION -->
+@if (lastPage > 1) {
+  <app-pagination
+    [currentPage]="currentPage"
+    [lastPage]="lastPage"
+    (pageChange)="onPageChange($event)"
+  />
+}

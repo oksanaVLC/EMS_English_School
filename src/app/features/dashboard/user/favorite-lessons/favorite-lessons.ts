@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment'; // ✅ Importar environment
@@ -60,7 +60,7 @@ interface PaginatedResponse {
 @Component({
   selector: 'app-favorite-lessons',
   standalone: true,
-  imports: [DatePipe, CommonModule],
+  imports: [CommonModule],
   templateUrl: './favorite-lessons.html',
   styleUrls: ['./favorite-lessons.scss'],
 })

@@ -3,12 +3,11 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@ang
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { Button } from '../../shared/components/button/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Button, RouterModule, FormsModule, CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

@@ -1,0 +1,104 @@
+<div class="skill-page" [class]="skill">
+  <!-- HEADER -->
+  <div class="page-header" [class]="currentConfig.color">
+    <div class="header-content">
+      <i [class]="'fa-solid ' + currentConfig.icon"></i>
+      <h1>{{ currentConfig.title }}</h1>
+    </div>
+  </div>
+
+  <!-- LEVEL FILTER -->
+  <div class="level-filter">
+    @for (level of levels; track level.label) {
+      <button (click)="setLevel(level.value)" [class.active]="selectedLevel === level.value">
+        {{ level.label }}
+      </button>
+    }
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-section">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input
+        type="text"
+        placeholder="Buscar por tema o palabra clave..."
+        (input)="onSearch($event)"
+        [value]="searchTerm"
+      />
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  @if (error) {
+    <div class="error">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <p>{{ error }}</p>
+      <button (click)="loadLessons()">Reintentar</button>
+    </div>
+  }
+
+  <!-- GRID -->
+  @if (!error) {
+    <div class="lessons-grid">
+      @for (lesson of lessons; track lesson.id) {
+        <div class="lesson-card" (click)="goToLesson(lesson.slug)">
+          <span class="level-badge" [class]="getLevelColor(lesson.level?.code || '')">
+            {{ lesson.level?.code || '' }}
+          </span>
+
+          <button
+            class="heart-btn"
+            [class.active]="lesson.is_favorited"
+            (click)="toggleFavorite($event, lesson)"
+          >
+            <i class="fa-heart" [ngClass]="lesson.is_favorited ? 'fa-solid' : 'fa-regular'"></i>
+          </button>
+
+          @if (lesson.cover_url) {
+            <div class="card-image">
+              <img [src]="lesson.cover_url" [alt]="lesson.title" />
+            </div>
+          } @else {
+            <div class="card-image placeholder" [class]="currentConfig.color">
+              <i [class]="'fa-solid ' + currentConfig.icon"></i>
+            </div>
+          }
+
+          <div class="card-content">
+            <h3>{{ lesson.title }}</h3>
+            <p class="description">{{ stripHtml(lesson.explanation) | slice: 0 : 80 }}...</p>
+
+            <div class="word-count">
+              <i class="fa-solid fa-list"></i>
+              <span>{{ lesson.tags?.length || 0 }} temas</span>
+            </div>
+
+            @if (lesson.tags?.length) {
+              <div class="tags">
+                @for (tag of lesson.tags?.slice(0, 3); track tag) {
+                  <span class="tag">#{{ tag }}</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <i [class]="'fa-solid ' + currentConfig.icon"></i>
+          <h3>No hay lecciones disponibles</h3>
+          <p>Pronto añadiremos más contenido para {{ currentConfig.title }}.</p>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- PAGINATION -->
+  @if (lastPage > 1) {
+    <app-pagination
+      [currentPage]="currentPage"
+      [lastPage]="lastPage"
+      (pageChange)="onPageChange($event)"
+    />
+  }
+</div>

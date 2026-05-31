@@ -1,31 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { LessonModel } from '../../../core/models/lesson-model';
 import { Auth } from '../../../core/services/auth';
-import { LessonService } from '../../../core/services/lesson';
-
-interface Lesson {
-  id: number;
-  slug: string;
-  title: string;
-  type: string;
-  tags: string[];
-  is_favorited?: boolean;
-  level?: string;
-}
+import { Pagination } from '../../../shared/components/pagination/pagination';
 
 @Component({
   selector: 'app-levels',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, Pagination],
   templateUrl: './levels.html',
   styleUrl: './levels.scss',
 })
 export class Levels implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private lessonService = inject(LessonService);
   private http = inject(HttpClient);
   private auth = inject(Auth);
 
@@ -33,10 +24,13 @@ export class Levels implements OnInit {
 
   level: string = '';
 
-  lessons: Lesson[] = [];
-  filteredLessons: Lesson[] = [];
+  lessons: LessonModel[] = [];
+  currentPage = 1;
+  lastPage = 1;
+  total = 0;
 
   selectedType: string | null = null;
+  searchTerm: string = '';
 
   skills = [
     { label: 'All', value: null },
@@ -54,44 +48,84 @@ export class Levels implements OnInit {
       if (!level) return;
 
       this.level = level;
-
-      this.lessonService.getLessons(level).subscribe((res: any) => {
-        this.lessons = res.data ?? [];
-        this.applyFilters();
-      });
+      this.currentPage = 1;
+      this.searchTerm = '';
+      this.selectedType = null;
+      this.loadLessons();
     });
+  }
+
+  loadLessons(page: number = 1) {
+    const levelMap: Record<string, number> = {
+      a1: 1,
+      a2: 2,
+      b1: 3,
+      b2: 4,
+      c1: 5,
+      c2: 6,
+    };
+
+    const levelId = levelMap[this.level?.toLowerCase()];
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('level_id', levelId.toString())
+      .set('status', 'published');
+
+    // Añadir filtro de tipo si está seleccionado
+    if (this.selectedType) {
+      params = params.set('type', this.selectedType);
+    }
+
+    // Añadir búsqueda si hay término
+    if (this.searchTerm) {
+      params = params.set('search', this.searchTerm);
+    }
+
+    this.http.get<any>(`${this.apiUrl}/lessons`, { params }).subscribe({
+      next: (res) => {
+        this.lessons = res.data || [];
+        this.currentPage = res.current_page || 1;
+        this.lastPage = res.last_page || 1;
+        this.total = res.total || 0;
+      },
+      error: (err) => {
+        console.error('Error loading lessons:', err);
+      },
+    });
+  }
+
+  onPageChange(page: number) {
+    this.loadLessons(page);
   }
 
   setType(type: string | null) {
     this.selectedType = type;
-    this.applyFilters();
+    this.currentPage = 1;
+    this.loadLessons(1);
   }
 
-  applyFilters() {
-    this.filteredLessons = this.lessons.filter((lesson) => {
-      if (!this.selectedType) return true;
-      return lesson.type?.toLowerCase() === this.selectedType;
-    });
+  onSearch(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm = input.value.toLowerCase();
+    this.currentPage = 1;
+    this.loadLessons(1);
+  }
+
+  get filteredLessons(): LessonModel[] {
+    return this.lessons;
   }
 
   goToLesson(slug: string) {
     this.router.navigate(['/levels', this.level, slug]);
   }
 
-  trackById(_: number, item: Lesson) {
-    return item.id;
-  }
-
-  // =========================
-  // FAVORITE TOGGLE (igual que posts)
-  // =========================
-  toggleFavorite(event: Event, lesson: Lesson) {
+  toggleFavorite(event: Event, lesson: LessonModel) {
     event.stopPropagation();
 
     if (!this.auth.isLoggedIn()) return;
 
     const previous = lesson.is_favorited;
-
     lesson.is_favorited = !previous;
 
     this.http.post(`${this.apiUrl}/lessons/${lesson.id}/favorite`, {}).subscribe({
@@ -104,9 +138,6 @@ export class Levels implements OnInit {
     });
   }
 
-  // =========================
-  // UI helpers
-  // =========================
   getLevelColorClass(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':

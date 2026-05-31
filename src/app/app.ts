@@ -20,7 +20,6 @@ export class App {
   protected readonly title = signal('EMS_Frontend_Angular');
 
   private router = inject(Router);
-  private offset = 100;
 
   constructor() {
     this.router.events
@@ -28,30 +27,6 @@ export class App {
       .subscribe((event: NavigationEnd) => {
         // Ocultar header solo en la ruta raíz (home)
         this.showHeader = event.url !== '/' && event.url !== '';
-        this.handleScroll();
       });
-  }
-
-  private handleScroll() {
-    const url = this.router.url;
-
-    const hasFragment = url.includes('#');
-
-    // Home sin offset
-    if (url === '/' || url.startsWith('/home')) {
-      return;
-    }
-
-    //  SI hay fragmento, NO toques el scroll
-    if (hasFragment) {
-      return;
-    }
-
-    setTimeout(() => {
-      window.scrollTo({
-        top: this.offset,
-        behavior: 'auto',
-      });
-    });
   }
 }

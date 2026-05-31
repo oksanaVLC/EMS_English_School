@@ -32,4 +32,7 @@ export class LessonService {
   getLessonBySlug(slug: string) {
     return this.http.get(`${this.apiUrl}/slug/${slug}`);
   }
+  getLessonsByType(type: string) {
+    return this.http.get(`${this.apiUrl}?type=${type}&status=published`);
+  }
 }

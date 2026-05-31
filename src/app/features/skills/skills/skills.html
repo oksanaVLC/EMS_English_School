@@ -1,0 +1,62 @@
+<section class="skills-home">
+  <!-- SKILLS GRID -->
+  <section class="sections">
+    <div class="title-wrapper">
+      <span class="line left"></span>
+      <h1 class="title">Todas las destrezas</h1>
+      <span class="line right"></span>
+    </div>
+
+    <div class="grid">
+      @for (skill of skills; track skill.name) {
+        <div class="card" [routerLink]="skill.route">
+          <div class="card-top" [class]="skill.color">
+            <ul class="card-topics">
+              <li>Mejora tu {{ skill.name.toLowerCase() }}</li>
+              <li>Ejercicios prácticos</li>
+              <li>Contenido interactivo</li>
+              <li>Tests de nivel</li>
+            </ul>
+          </div>
+          <div class="card-bottom">
+            <span>{{ skill.name }}</span>
+            <div class="icon-circle">
+              <img [src]="skill.icon" [alt]="skill.name" class="category-icon" />
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- LEVEL BUTTONS (CIRCULITOS) -->
+  <header class="hero">
+    <div class="title-wrapper">
+      <h1 class="title">Elige el nivel que te interesa</h1>
+    </div>
+
+    <div class="levels">
+      @for (level of levels; track level.code) {
+        <button class="level" [class]="level.color" [routerLink]="level.route">
+          {{ level.code }}
+        </button>
+      }
+    </div>
+
+    <p class="hero-info">
+      ¿No conoces tu nivel de inglés? Haz la prueba según el
+      <b>Marco Europeo Común de Referencia</b> para las Lenguas (CEFR).
+    </p>
+
+    <div class="silver-shine">
+      <img src="images/levels.webp" alt="Niveles CEFR" class="first-levels-img" />
+    </div>
+
+    <div class="pointer-wrapper">
+      <a routerLink="/level-test">
+        <app-button variant="accent" size="large">Prueba de nivel</app-button>
+      </a>
+      <img src="images/pointer.webp" alt="" class="cursor-img" />
+    </div>
+  </header>
+</section>
