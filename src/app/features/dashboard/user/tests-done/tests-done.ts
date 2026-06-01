@@ -11,6 +11,7 @@ export interface TestResult {
   test_title: string;
   lesson_title: string;
   lesson_slug: string;
+  lesson_level?: string;
   score: number;
   total_questions: number;
   correct_answers: number;
@@ -23,6 +24,7 @@ export interface TestResult {
 export interface GroupedLesson {
   lesson_title: string;
   lesson_slug: string;
+  level: string;
   attempts: TestResult[];
   best_score: number;
   best_percentage: number;
@@ -64,6 +66,12 @@ export class TestsDone implements OnInit {
   weeklyProgress: number = 0;
   masteredLessons: number = 0;
 
+  // Nivel estimado
+  estimatedLevel: string = 'A1';
+  nextLevel: string = 'A2';
+  progressToNextLevel: number = 0;
+  levelConfidence: string = 'Bajo';
+
   // Flags y mensajes dinámicos
   hasWeeklyData: boolean = true;
   weeklyMessage: string = '';
@@ -102,6 +110,7 @@ export class TestsDone implements OnInit {
         };
         this.groupTestsByLesson();
         this.calculateKPIs();
+        this.calculateEstimatedLevel();
         this.loadingService.loadingOff();
       },
       error: (err) => {
@@ -113,18 +122,21 @@ export class TestsDone implements OnInit {
   }
 
   groupTestsByLesson(): void {
-    const grouped = new Map<string, TestResult[]>();
+    const grouped = new Map<string, { attempts: TestResult[]; level: string }>();
 
     this.tests.forEach((test) => {
       const key = test.lesson_title;
       if (!grouped.has(key)) {
-        grouped.set(key, []);
+        grouped.set(key, {
+          attempts: [],
+          level: test.lesson_level || this.extractLevelFromTitle(test.lesson_title),
+        });
       }
-      grouped.get(key)!.push(test);
+      grouped.get(key)!.attempts.push(test);
     });
 
-    this.groupedLessons = Array.from(grouped.entries()).map(([title, attempts]) => {
-      const sortedAttempts = attempts.sort(
+    this.groupedLessons = Array.from(grouped.entries()).map(([title, data]) => {
+      const sortedAttempts = data.attempts.sort(
         (a, b) => new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime(),
       );
 
@@ -133,24 +145,33 @@ export class TestsDone implements OnInit {
       );
 
       const averagePercentage = Math.round(
-        attempts.reduce((sum, a) => sum + a.percentage, 0) / attempts.length,
+        data.attempts.reduce((sum, a) => sum + a.percentage, 0) / data.attempts.length,
       );
 
       return {
         lesson_title: title,
         lesson_slug: bestAttempt.lesson_slug,
+        level: data.level,
         attempts: sortedAttempts.slice(0, 4),
         best_score: bestAttempt.score,
         best_percentage: bestAttempt.percentage,
         average_percentage: averagePercentage,
         last_attempt_date: sortedAttempts[0].completed_at,
-        attempt_count: attempts.length,
+        attempt_count: data.attempts.length,
       };
     });
 
     this.groupedLessons.sort(
       (a, b) => new Date(b.last_attempt_date).getTime() - new Date(a.last_attempt_date).getTime(),
     );
+  }
+
+  extractLevelFromTitle(title: string): string {
+    const levelMatch = title.match(/^(A1|A2|B1|B2|C1|C2)/i);
+    if (levelMatch) {
+      return levelMatch[1].toUpperCase();
+    }
+    return 'A1';
   }
 
   calculateKPIs(): void {
@@ -163,11 +184,56 @@ export class TestsDone implements OnInit {
     // Lecciones dominadas (mejor intento >= 80%)
     this.masteredLessons = this.groupedLessons.filter((l) => l.best_percentage >= 80).length;
 
-    // Mejor racha (días consecutivos con tests)
+    // Mejor racha
     this.calculateBestStreak();
 
     // Progreso semanal
     this.calculateWeeklyProgress();
+  }
+
+  calculateEstimatedLevel(): void {
+    const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const levelScores: Record<string, number[]> = {};
+
+    // Agrupar porcentajes por nivel
+    this.tests.forEach((test) => {
+      const level = test.lesson_level || this.extractLevelFromTitle(test.lesson_title);
+      if (!levelScores[level]) levelScores[level] = [];
+      levelScores[level].push(test.percentage);
+    });
+
+    // Calcular promedio por nivel
+    let currentLevel = 'A1';
+    let nextLevel = 'A2';
+    let bestAverage = 0;
+    let totalTestsWithData = 0;
+
+    for (let i = 0; i < levels.length; i++) {
+      const level = levels[i];
+      const scores = levelScores[level] || [];
+      const average = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+
+      totalTestsWithData += scores.length;
+
+      if (average >= 60 && scores.length >= 1) {
+        currentLevel = level;
+        nextLevel = levels[i + 1] || 'C2+';
+        bestAverage = average;
+      }
+    }
+
+    this.estimatedLevel = currentLevel;
+    this.nextLevel = nextLevel;
+    this.progressToNextLevel = Math.min(100, Math.max(0, Math.round(bestAverage)));
+
+    // Calcular confianza basada en cantidad de tests
+    if (totalTestsWithData < 3) {
+      this.levelConfidence = 'Bajo (necesitas más tests)';
+    } else if (totalTestsWithData < 10) {
+      this.levelConfidence = 'Medio';
+    } else {
+      this.levelConfidence = 'Alto';
+    }
   }
 
   calculateBestStreak(): void {
@@ -311,5 +377,9 @@ export class TestsDone implements OnInit {
     if (diffDays === 1) return 'ayer';
     if (diffDays < 7) return `hace ${diffDays} días`;
     return d.toLocaleDateString('es-ES');
+  }
+
+  getLessonLevel(lesson: GroupedLesson): string {
+    return lesson.level || 'A1';
   }
 }

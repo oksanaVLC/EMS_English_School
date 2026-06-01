@@ -29,32 +29,67 @@
   }
 
   &.blue {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.08), rgba(0, 242, 254, 0.03));
+    border-bottom: 2px solid #4facfe;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #4facfe;
+    }
   }
   &.purple {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.03));
+    border-bottom: 2px solid #667eea;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #667eea;
+    }
   }
   &.green {
-    background: linear-gradient(135deg, #43e97b, #38f9d7);
-    color: #333;
+    background: linear-gradient(135deg, rgba(67, 233, 123, 0.08), rgba(56, 249, 215, 0.03));
+    border-bottom: 2px solid #43e97b;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #43e97b;
+    }
   }
   &.teal {
-    background: linear-gradient(135deg, #4ecdc4, #44a08d);
-    color: white;
+    background: linear-gradient(135deg, rgba(78, 205, 196, 0.08), rgba(68, 160, 141, 0.03));
+    border-bottom: 2px solid #4ecdc4;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #4ecdc4;
+    }
   }
   &.orange {
-    background: linear-gradient(135deg, #fa709a, #fee140);
-    color: #333;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(253, 186, 116, 0.03));
+    border-bottom: 2px solid #f97316;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #f97316;
+    }
   }
   &.pink {
-    background: linear-gradient(135deg, #ff65a2, #faccdc);
-    color: #333;
+    background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(251, 207, 232, 0.03));
+    border-bottom: 2px solid #f472b6;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #f472b6;
+    }
   }
   &.red {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(254, 202, 202, 0.03));
+    border-bottom: 2px solid #ef4444;
+    color: #2c3e50;
+    i,
+    h1 {
+      color: #ef4444;
+    }
   }
 }
 

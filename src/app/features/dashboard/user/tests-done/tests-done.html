@@ -13,6 +13,30 @@
     </p>
   </div>
 
+  <!-- NIVEL ESTIMADO -->
+  <div class="level-estimation-card">
+    <div class="level-badge">
+      <i class="fas fa-chart-line"></i>
+      <div class="level-info">
+        <span class="level-label">Nivel estimado</span>
+        <span class="level-value">{{ estimatedLevel }}</span>
+      </div>
+    </div>
+    <div class="level-progress-section">
+      <div class="level-progress-header">
+        <span>Progreso hacia {{ nextLevel }}</span>
+        <span>{{ progressToNextLevel }}%</span>
+      </div>
+      <div class="level-progress-bar">
+        <div class="level-progress-fill" [style.width.%]="progressToNextLevel"></div>
+      </div>
+      <div class="level-confidence">
+        <i class="fas fa-circle-info"></i>
+        <span>Confianza: {{ levelConfidence }}</span>
+      </div>
+    </div>
+  </div>
+
   <!-- KPI CARDS -->
   <div class="kpi-grid">
     <!-- Promedio general -->
@@ -141,9 +165,14 @@
                 <span class="lesson-icon">
                   <i class="fas fa-book-open"></i>
                 </span>
-                <h3 class="lesson-title" (click)="viewLesson(lesson.lesson_slug)">
-                  {{ lesson.lesson_title }}
-                </h3>
+                <div class="lesson-details">
+                  <span class="level-tag" [class]="getScoreColor(lesson.best_percentage)">
+                    {{ lesson.level }}
+                  </span>
+                  <h3 class="lesson-title" (click)="viewLesson(lesson.lesson_slug)">
+                    {{ lesson.lesson_title }}
+                  </h3>
+                </div>
               </div>
               <div class="best-badge">
                 <i class="fas fa-trophy"></i>
@@ -152,7 +181,6 @@
             </div>
 
             <div class="card-body">
-              <!-- Progress bar -->
               <div class="progress-section">
                 <div class="progress-bar">
                   <div class="progress-fill" [style.width.%]="lesson.best_percentage"></div>
@@ -163,7 +191,6 @@
                 </div>
               </div>
 
-              <!-- Attempts timeline -->
               @if (lesson.attempts.length > 1) {
                 <div class="attempts-timeline">
                   <span class="timeline-label">Últimos intentos</span>
@@ -177,7 +204,6 @@
                 </div>
               }
 
-              <!-- Footer -->
               <div class="card-footer">
                 <span class="date">
                   <i class="fas fa-calendar-alt"></i>
@@ -198,7 +224,6 @@
         }
       </div>
 
-      <!-- Pagination -->
       <app-pagination
         [currentPage]="pagination.current_page"
         [lastPage]="pagination.last_page"
