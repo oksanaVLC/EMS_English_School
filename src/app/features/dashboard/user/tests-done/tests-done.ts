@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { LoadingService } from '../../../../core/services/loading';
+import { Pagination } from '../../../../shared/components/pagination/pagination';
+
 export interface TestResult {
   id: number;
   test_id: number;
@@ -18,6 +20,17 @@ export interface TestResult {
   completed_at: string;
 }
 
+export interface GroupedLesson {
+  lesson_title: string;
+  lesson_slug: string;
+  attempts: TestResult[];
+  best_score: number;
+  best_percentage: number;
+  average_percentage: number;
+  last_attempt_date: string;
+  attempt_count: number;
+}
+
 interface PaginatedTests {
   current_page: number;
   data: TestResult[];
@@ -29,20 +42,32 @@ interface PaginatedTests {
 @Component({
   selector: 'app-tests-done',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Pagination],
   templateUrl: './tests-done.html',
   styleUrls: ['./tests-done.scss'],
 })
 export class TestsDone implements OnInit {
   tests: TestResult[] = [];
+  groupedLessons: GroupedLesson[] = [];
   error: string | null = null;
-  loading: boolean = false;
   pagination: any = {
     current_page: 1,
     last_page: 1,
     per_page: 10,
     total: 0,
   };
+
+  // KPI metrics
+  totalTests: number = 0;
+  globalAverage: number = 0;
+  bestStreak: number = 0;
+  weeklyProgress: number = 0;
+  masteredLessons: number = 0;
+
+  // Flags y mensajes dinámicos
+  hasWeeklyData: boolean = true;
+  weeklyMessage: string = '';
+  weeklyIcon: string = '';
 
   constructor(
     private http: HttpClient,
@@ -63,17 +88,20 @@ export class TestsDone implements OnInit {
       .set('Accept', 'application/json')
       .set('X-Skip-Loading', 'true');
 
-    const apiUrl = `${environment.apiUrl}/user/tests/results?page=${page}`;
+    const apiUrl = `${environment.apiUrl}/user/tests/results?page=${page}&per_page=100`;
 
     this.http.get<PaginatedTests>(apiUrl, { headers }).subscribe({
       next: (response) => {
         this.tests = response.data;
+        this.totalTests = response.total;
         this.pagination = {
           current_page: response.current_page,
           last_page: response.last_page,
           per_page: response.per_page,
           total: response.total,
         };
+        this.groupTestsByLesson();
+        this.calculateKPIs();
         this.loadingService.loadingOff();
       },
       error: (err) => {
@@ -84,14 +112,168 @@ export class TestsDone implements OnInit {
     });
   }
 
+  groupTestsByLesson(): void {
+    const grouped = new Map<string, TestResult[]>();
+
+    this.tests.forEach((test) => {
+      const key = test.lesson_title;
+      if (!grouped.has(key)) {
+        grouped.set(key, []);
+      }
+      grouped.get(key)!.push(test);
+    });
+
+    this.groupedLessons = Array.from(grouped.entries()).map(([title, attempts]) => {
+      const sortedAttempts = attempts.sort(
+        (a, b) => new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime(),
+      );
+
+      const bestAttempt = sortedAttempts.reduce((best, current) =>
+        current.percentage > best.percentage ? current : best,
+      );
+
+      const averagePercentage = Math.round(
+        attempts.reduce((sum, a) => sum + a.percentage, 0) / attempts.length,
+      );
+
+      return {
+        lesson_title: title,
+        lesson_slug: bestAttempt.lesson_slug,
+        attempts: sortedAttempts.slice(0, 4),
+        best_score: bestAttempt.score,
+        best_percentage: bestAttempt.percentage,
+        average_percentage: averagePercentage,
+        last_attempt_date: sortedAttempts[0].completed_at,
+        attempt_count: attempts.length,
+      };
+    });
+
+    this.groupedLessons.sort(
+      (a, b) => new Date(b.last_attempt_date).getTime() - new Date(a.last_attempt_date).getTime(),
+    );
+  }
+
+  calculateKPIs(): void {
+    // Promedio general
+    if (this.tests.length > 0) {
+      const sum = this.tests.reduce((acc, t) => acc + t.percentage, 0);
+      this.globalAverage = Math.round(sum / this.tests.length);
+    }
+
+    // Lecciones dominadas (mejor intento >= 80%)
+    this.masteredLessons = this.groupedLessons.filter((l) => l.best_percentage >= 80).length;
+
+    // Mejor racha (días consecutivos con tests)
+    this.calculateBestStreak();
+
+    // Progreso semanal
+    this.calculateWeeklyProgress();
+  }
+
+  calculateBestStreak(): void {
+    if (this.tests.length === 0) {
+      this.bestStreak = 0;
+      return;
+    }
+
+    const dates = this.tests.map((t) => new Date(t.completed_at).toDateString());
+    const uniqueDates = [...new Set(dates)].sort();
+
+    let currentStreak = 1;
+    let maxStreak = 1;
+
+    for (let i = 1; i < uniqueDates.length; i++) {
+      const prevDate = new Date(uniqueDates[i - 1]);
+      const currDate = new Date(uniqueDates[i]);
+      const diffDays = Math.round(
+        (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24),
+      );
+
+      if (diffDays === 1) {
+        currentStreak++;
+        maxStreak = Math.max(maxStreak, currentStreak);
+      } else {
+        currentStreak = 1;
+      }
+    }
+
+    this.bestStreak = maxStreak;
+  }
+
+  calculateWeeklyProgress(): void {
+    const now = new Date();
+    const currentWeekStart = this.getWeekStart(now);
+    const lastWeekStart = new Date(currentWeekStart);
+    lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+
+    const testsThisWeek = this.tests.filter((t) => {
+      const date = new Date(t.completed_at);
+      return date >= currentWeekStart;
+    });
+
+    const testsLastWeek = this.tests.filter((t) => {
+      const date = new Date(t.completed_at);
+      return date >= lastWeekStart && date < currentWeekStart;
+    });
+
+    const avgThisWeek =
+      testsThisWeek.length > 0
+        ? testsThisWeek.reduce((s, t) => s + t.percentage, 0) / testsThisWeek.length
+        : 0;
+
+    const avgLastWeek =
+      testsLastWeek.length > 0
+        ? testsLastWeek.reduce((s, t) => s + t.percentage, 0) / testsLastWeek.length
+        : 0;
+
+    if (testsThisWeek.length === 0) {
+      this.hasWeeklyData = false;
+      this.weeklyProgress = 0;
+      this.weeklyMessage = 'Sin actividad esta semana';
+      this.weeklyIcon = 'fa-calendar-week';
+    } else if (testsLastWeek.length === 0) {
+      this.hasWeeklyData = false;
+      this.weeklyProgress = 0;
+      this.weeklyMessage = 'Primer test - continúa la próxima semana';
+      this.weeklyIcon = 'fa-calendar-star';
+    } else {
+      this.hasWeeklyData = true;
+      const change = ((avgThisWeek - avgLastWeek) / avgLastWeek) * 100;
+      this.weeklyProgress = Math.round(change);
+
+      if (this.weeklyProgress > 10) {
+        this.weeklyMessage = 'Mejorando rápidamente';
+        this.weeklyIcon = 'fa-rocket';
+      } else if (this.weeklyProgress > 0) {
+        this.weeklyMessage = 'Mejorando respecto a la semana pasada';
+        this.weeklyIcon = 'fa-arrow-up';
+      } else if (this.weeklyProgress === 0) {
+        this.weeklyMessage = 'Mismo nivel que la semana pasada';
+        this.weeklyIcon = 'fa-minus';
+      } else if (this.weeklyProgress < -10) {
+        this.weeklyMessage = 'Semana para repasar';
+        this.weeklyIcon = 'fa-arrow-down';
+      } else {
+        this.weeklyMessage = 'Ligero descenso, sigue practicando';
+        this.weeklyIcon = 'fa-heart';
+      }
+    }
+  }
+
+  getWeekStart(date: Date): Date {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(d.setDate(diff));
+  }
+
   loadPage(page: number): void {
     this.loadTests(page);
   }
 
-  repeatTest(test: TestResult): void {
-    // Navegar al test de la lección
-    if (test.lesson_slug) {
-      window.location.href = `/levels/all/${test.lesson_slug}?mode=test`;
+  repeatTest(lesson: GroupedLesson): void {
+    if (lesson.lesson_slug) {
+      window.location.href = `/levels/all/${lesson.lesson_slug}?mode=test`;
     }
   }
 
@@ -106,21 +288,28 @@ export class TestsDone implements OnInit {
     return 'low';
   }
 
-  getScoreIcon(percentage: number): string {
-    if (percentage >= 80) return 'fa-trophy';
-    if (percentage >= 60) return 'fa-thumbs-up';
-    if (percentage >= 40) return 'fa-hourglass-half';
-    return 'fa-book-open';
+  getWeeklyProgressColor(): string {
+    if (!this.hasWeeklyData) return 'neutral';
+    if (this.weeklyProgress > 5) return 'positive';
+    if (this.weeklyProgress < -5) return 'negative';
+    return 'neutral';
   }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  getWeeklyProgressIcon(): string {
+    if (!this.hasWeeklyData) return 'fa-chart-simple';
+    if (this.weeklyProgress > 5) return 'fa-arrow-up';
+    if (this.weeklyProgress < -5) return 'fa-arrow-down';
+    return 'fa-minus';
+  }
+
+  formatDate(date: string): string {
+    const d = new Date(date);
+    const now = new Date();
+    const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'hoy';
+    if (diffDays === 1) return 'ayer';
+    if (diffDays < 7) return `hace ${diffDays} días`;
+    return d.toLocaleDateString('es-ES');
   }
 }

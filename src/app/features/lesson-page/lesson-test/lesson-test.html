@@ -1,4 +1,20 @@
 <div class="test-wrapper">
+  <!-- TEXTO SUTIL: Test realizado anteriormente (persiste aunque se haga retry) -->
+  @if (lastCompletedDate && !result) {
+    <div class="completed-hint">
+      <i class="fas fa-check-circle"></i>
+      <span>Test realizado el {{ lastCompletedDate }}</span>
+    </div>
+  }
+
+  <!-- TEXTO SUTIL: Test realizado AHORA (después de submit) -->
+  @if (result) {
+    <div class="completed-hint">
+      <i class="fas fa-check-circle"></i>
+      <span>Test realizado el {{ getCurrentDate() }}</span>
+    </div>
+  }
+
   <!-- EMPTY TEST -->
   @if (!loading && questions.length === 0) {
     <div class="state-card">
@@ -46,7 +62,13 @@
     </div>
 
     <div class="submit-row">
-      <button class="submit-btn" (click)="submitTest()">Enviar respuestas</button>
+      <button class="submit-btn" (click)="submitTest()" [disabled]="saving">
+        @if (saving) {
+          <i class="fas fa-spinner fa-spin"></i> Guardando...
+        } @else {
+          Enviar respuestas
+        }
+      </button>
     </div>
   }
 

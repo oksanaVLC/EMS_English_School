@@ -3,26 +3,111 @@
   <div class="header">
     <h1>
       <i class="fas fa-clipboard-list"></i>
-      Tests Realizados
+      Mi Progreso
     </h1>
     <p>
       <i class="fas fa-chart-line"></i>
-      {{ pagination.total }} test{{ pagination.total !== 1 ? 's' : '' }} completado{{
-        pagination.total !== 1 ? 's' : ''
+      {{ totalTests }} test{{ totalTests !== 1 ? 's' : '' }} completado{{
+        totalTests !== 1 ? 's' : ''
       }}
     </p>
   </div>
 
-  <!-- Loading -->
-  @if (loadingService.loading$ | async) {
-    <div class="loading">
-      <i class="fas fa-spinner fa-spin"></i>
-      <span>Cargando tus tests...</span>
+  <!-- KPI CARDS -->
+  <div class="kpi-grid">
+    <!-- Promedio general -->
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-chart-simple"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ globalAverage }}%</div>
+        <div class="kpi-label">Promedio general</div>
+        <div class="kpi-message">
+          <i class="fas fa-circle-info"></i>
+          @if (globalAverage >= 70) {
+            Buen rendimiento general
+          } @else if (globalAverage >= 50) {
+            Puedes mejorar
+          } @else if (globalAverage > 0) {
+            Dedica más tiempo al estudio
+          } @else {
+            Completa tu primer test
+          }
+        </div>
+      </div>
     </div>
-  }
+
+    <!-- Mejor racha -->
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-fire"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ bestStreak }}</div>
+        <div class="kpi-label">Mejor racha</div>
+        <div class="kpi-message">
+          <i class="fas fa-calendar-day"></i>
+          @if (bestStreak === 0) {
+            Días seguidos estudiando
+          } @else if (bestStreak === 1) {
+            Un día, sigue así
+          } @else {
+            {{ bestStreak }} días consecutivos
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Progreso semanal -->
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <div class="kpi-content">
+        @if (hasWeeklyData) {
+          <div class="kpi-value weekly {{ getWeeklyProgressColor() }}">
+            <i class="fas {{ getWeeklyProgressIcon() }}"></i>
+            {{ weeklyProgress > 0 ? '+' : '' }}{{ weeklyProgress }}%
+          </div>
+        } @else {
+          <div class="kpi-value weekly neutral">
+            <i class="fas fa-chart-simple"></i>
+            --
+          </div>
+        }
+        <div class="kpi-label">Progreso semanal</div>
+        <div class="kpi-message">
+          <i class="fas {{ weeklyIcon }}"></i>
+          {{ weeklyMessage }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Lecciones dominadas -->
+    <div class="kpi-card">
+      <div class="kpi-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{{ masteredLessons }}</div>
+        <div class="kpi-label">Lecciones dominadas</div>
+        <div class="kpi-message">
+          <i class="fas fa-chart-line"></i>
+          @if (masteredLessons === 0) {
+            Ninguna lección con 80% aún
+          } @else if (masteredLessons === 1) {
+            Una lección dominada, sigue así
+          } @else {
+            {{ masteredLessons }} lecciones dominadas
+          }
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Error -->
-  @if (error && !(loadingService.loading$ | async)) {
+  @if (error) {
     <div class="error">
       <i class="fas fa-exclamation-triangle"></i>
       <p>{{ error }}</p>
@@ -33,13 +118,13 @@
     </div>
   }
 
-  <!-- Tests -->
-  @if (!error && !(loadingService.loading$ | async)) {
-    @if (tests.length === 0) {
+  <!-- Tests Agrupados por Lección -->
+  @if (!error) {
+    @if (groupedLessons.length === 0) {
       <div class="empty-state">
         <i class="fas fa-clipboard-list"></i>
         <h3>No has realizado ningún test aún</h3>
-        <p>¡Completa las lecciones y pon a prueba tus conocimientos!</p>
+        <p>Completa las lecciones y pon a prueba tus conocimientos</p>
         <a routerLink="/levels" class="explore-btn">
           <i class="fas fa-search"></i>
           Explorar lecciones
@@ -47,54 +132,65 @@
       </div>
     }
 
-    @if (tests.length > 0) {
-      <div class="tests-grid">
-        @for (test of tests; track test.id) {
-          <div class="test-card" [class]="getScoreColor(test.percentage)">
+    @if (groupedLessons.length > 0) {
+      <div class="lessons-grid">
+        @for (lesson of groupedLessons; track lesson.lesson_title) {
+          <div class="lesson-card" [class]="getScoreColor(lesson.best_percentage)">
             <div class="card-header">
               <div class="lesson-info">
                 <span class="lesson-icon">
-                  <i class="fas fa-book"></i>
+                  <i class="fas fa-book-open"></i>
                 </span>
-                <span class="lesson-title" (click)="viewLesson(test.lesson_slug)">
-                  {{ test.lesson_title }}
-                </span>
+                <h3 class="lesson-title" (click)="viewLesson(lesson.lesson_slug)">
+                  {{ lesson.lesson_title }}
+                </h3>
               </div>
-              <div class="score-circle" [class]="getScoreColor(test.percentage)">
-                <span class="percentage">{{ test.percentage }}%</span>
+              <div class="best-badge">
+                <i class="fas fa-trophy"></i>
+                <span>{{ lesson.best_percentage }}%</span>
               </div>
             </div>
 
             <div class="card-body">
-              <h3 class="test-title">{{ test.test_title }}</h3>
-
-              <div class="stats">
-                <div class="stat">
-                  <i class="fas fa-check-circle correct"></i>
-                  <span>{{ test.correct_answers }} correctas</span>
+              <!-- Progress bar -->
+              <div class="progress-section">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="lesson.best_percentage"></div>
                 </div>
-                <div class="stat">
-                  <i class="fas fa-times-circle incorrect"></i>
-                  <span>{{ test.incorrect_answers }} incorrectas</span>
-                </div>
-                <div class="stat">
-                  <i class="fas fa-question-circle"></i>
-                  <span>{{ test.total_questions }} preguntas</span>
+                <div class="progress-stats">
+                  <span>Mejor: {{ lesson.best_percentage }}%</span>
+                  <span>Promedio: {{ lesson.average_percentage }}%</span>
                 </div>
               </div>
 
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="test.percentage"></div>
-              </div>
+              <!-- Attempts timeline -->
+              @if (lesson.attempts.length > 1) {
+                <div class="attempts-timeline">
+                  <span class="timeline-label">Últimos intentos</span>
+                  <div class="attempt-bubbles">
+                    @for (attempt of lesson.attempts.slice(0, 4); track attempt.id) {
+                      <div class="attempt-bubble" [class]="getScoreColor(attempt.percentage)">
+                        <span>{{ attempt.percentage }}%</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
 
+              <!-- Footer -->
               <div class="card-footer">
                 <span class="date">
                   <i class="fas fa-calendar-alt"></i>
-                  {{ formatDate(test.completed_at) }}
+                  {{ formatDate(lesson.last_attempt_date) }}
                 </span>
-                <button class="repeat-btn" (click)="repeatTest(test)">
+                <span class="attempt-count">
+                  <i class="fas fa-repeat"></i>
+                  {{ lesson.attempt_count }}
+                  {{ lesson.attempt_count === 1 ? 'intento' : 'intentos' }}
+                </span>
+                <button class="repeat-btn" (click)="repeatTest(lesson)">
                   <i class="fas fa-redo-alt"></i>
-                  Repetir test
+                  Repetir
                 </button>
               </div>
             </div>
@@ -103,33 +199,11 @@
       </div>
 
       <!-- Pagination -->
-      @if (pagination.total > pagination.per_page) {
-        <div class="pagination">
-          <button
-            [disabled]="pagination.current_page === 1"
-            (click)="loadPage(pagination.current_page - 1)"
-            class="page-btn"
-          >
-            <i class="fas fa-chevron-left"></i>
-            Anterior
-          </button>
-
-          <div class="page-info">
-            <span class="page-current">{{ pagination.current_page }}</span>
-            <span class="page-separator">/</span>
-            <span class="page-total">{{ pagination.last_page }}</span>
-          </div>
-
-          <button
-            [disabled]="pagination.current_page === pagination.last_page"
-            (click)="loadPage(pagination.current_page + 1)"
-            class="page-btn"
-          >
-            Siguiente
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      }
+      <app-pagination
+        [currentPage]="pagination.current_page"
+        [lastPage]="pagination.last_page"
+        (pageChange)="loadPage($event)"
+      ></app-pagination>
     }
   }
 </div>

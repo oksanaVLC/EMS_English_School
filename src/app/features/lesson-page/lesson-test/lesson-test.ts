@@ -15,7 +15,7 @@ export class LessonTest implements OnInit {
   @Input() lessonId!: number;
 
   loading = false;
-  saving = false; // ✅ Añadir estado de guardado
+  saving = false;
 
   test: any;
   questions: any[] = [];
@@ -27,15 +27,46 @@ export class LessonTest implements OnInit {
 
   letters = ['A', 'B', 'C', 'D'];
 
-  // Para animación de fuegos artificiales
   showSuccessAnimation = false;
   showFailMessage = false;
   failMessageTimeout: any;
+
+  // Nueva propiedad para la fecha del último test
+  lastCompletedDate: string | null = null;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadTest();
+    this.loadLastCompletedDate();
+  }
+
+  // Cargar fecha del último test desde localStorage
+  loadLastCompletedDate() {
+    const saved = localStorage.getItem(`test_${this.lessonId}_last_completed`);
+    if (saved) {
+      this.lastCompletedDate = saved;
+    }
+  }
+
+  // Guardar fecha del último test en localStorage
+  saveLastCompletedDate() {
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    this.lastCompletedDate = formattedDate;
+    localStorage.setItem(`test_${this.lessonId}_last_completed`, formattedDate);
+  }
+
+  // Limpiar fecha (opcional, si quieres permitir reset)
+  clearLastCompletedDate() {
+    this.lastCompletedDate = null;
+    localStorage.removeItem(`test_${this.lessonId}_last_completed`);
   }
 
   loadTest() {
@@ -65,7 +96,6 @@ export class LessonTest implements OnInit {
   }
 
   submitTest() {
-    // Calcular resultados localmente primero
     let correct = 0;
     const answersPayload: { question_id: number; option_id: number }[] = [];
 
@@ -78,7 +108,6 @@ export class LessonTest implements OnInit {
         correct++;
       }
 
-      // Preparar payload para el backend
       if (selectedOption) {
         answersPayload.push({
           question_id: q.id,
@@ -99,7 +128,6 @@ export class LessonTest implements OnInit {
       comment = '¡Excelente! Dominas este tema';
     }
 
-    // Mostrar resultado localmente
     this.result = {
       correct,
       total,
@@ -107,7 +135,9 @@ export class LessonTest implements OnInit {
       percentage,
     };
 
-    // Mostrar animación según resultado
+    // Guardar la fecha del test completado
+    this.saveLastCompletedDate();
+
     if (percentage >= 0.5) {
       this.showConfetti();
       this.showSuccessAnimation = true;
@@ -118,11 +148,9 @@ export class LessonTest implements OnInit {
       this.showSadMessage();
     }
 
-    // ✅ GUARDAR RESULTADOS EN EL BACKEND
     this.saveTestResults(this.test.id, answersPayload, correct, total);
   }
 
-  // ✅ Nuevo método para guardar resultados
   saveTestResults(testId: number, answers: any[], correct: number, total: number) {
     this.saving = true;
 
@@ -130,14 +158,13 @@ export class LessonTest implements OnInit {
     const headers = new HttpHeaders()
       .set('Authorization', `Bearer ${token}`)
       .set('Accept', 'application/json')
-      .set('X-Skip-Loading', 'true'); // Evitar loading global
+      .set('X-Skip-Loading', 'true');
 
     const payload = { answers };
 
     this.http.post(`${environment.apiUrl}/tests/${testId}/submit`, payload, { headers }).subscribe({
       next: (response: any) => {
-        console.log('✅ Resultados guardados en el servidor:', response);
-        // Actualizar el resultado con los datos del servidor
+        console.log('Resultados guardados en el servidor:', response);
         this.result = {
           ...this.result,
           score_total: response.score_total,
@@ -146,10 +173,8 @@ export class LessonTest implements OnInit {
         this.saving = false;
       },
       error: (err) => {
-        console.error('❌ Error al guardar resultados:', err);
+        console.error('Error al guardar resultados:', err);
         this.saving = false;
-        // Mostrar mensaje pero no bloquear la experiencia del usuario
-        console.warn('Los resultados no se guardaron en el servidor, pero se muestran localmente');
       },
     });
   }
@@ -201,6 +226,8 @@ export class LessonTest implements OnInit {
     this.showSuccessAnimation = false;
     this.showFailMessage = false;
 
+    // NO borrar lastCompletedDate - queremos que persista
+
     if (this.failMessageTimeout) {
       clearTimeout(this.failMessageTimeout);
     }
@@ -224,7 +251,16 @@ export class LessonTest implements OnInit {
   answeredCount(): number {
     return this.questions.filter((q) => this.answers[q.id] !== undefined).length;
   }
-
+  getCurrentDate(): string {
+    const now = new Date();
+    return now.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  }
   ngOnDestroy(): void {
     if (this.failMessageTimeout) {
       clearTimeout(this.failMessageTimeout);

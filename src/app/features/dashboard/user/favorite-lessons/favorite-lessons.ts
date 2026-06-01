@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from '../../../../../environments/environment'; // ✅ Importar environment
+import { environment } from '../../../../../environments/environment';
 import { LoadingService } from '../../../../core/services/loading';
+import { Pagination } from '../../../../shared/components/pagination/pagination'; // 👈 Importar componente de paginación
 
 export type LessonType =
   | 'grammar'
@@ -60,7 +61,7 @@ interface PaginatedResponse {
 @Component({
   selector: 'app-favorite-lessons',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Pagination], // 👈 Añadir Pagination a los imports
   templateUrl: './favorite-lessons.html',
   styleUrls: ['./favorite-lessons.scss'],
 })
@@ -160,6 +161,11 @@ export class FavoriteLessons implements OnInit {
         if (!response.favorited) {
           this.lessons = this.lessons.filter((l) => l.id !== lesson.id);
           this.pagination.total--;
+
+          // Si después de eliminar no hay más lecciones en la página actual y no es la página 1, recargar página anterior
+          if (this.lessons.length === 0 && this.pagination.current_page > 1) {
+            this.loadPage(this.pagination.current_page - 1);
+          }
         }
       },
       error: (err) => {
