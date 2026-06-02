@@ -1,6 +1,33 @@
 <div class="level-test">
+  <!-- DIÁLOGO PARA CONTINUAR TEST -->
+  @if (showResumeDialog && !started && !finished && !loading && savedProgress) {
+    <div class="resume-dialog-overlay">
+      <div class="resume-dialog">
+        <div class="resume-dialog-icon">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h3>¿Continuar con el test?</h3>
+        <p>Tienes un test en progreso de hace unos días.</p>
+        <p class="resume-dialog-progress">
+          Llevabas {{ savedProgress.answers.length }} de {{ questions.length }} preguntas
+          respondidas.
+        </p>
+        <div class="resume-dialog-actions">
+          <button class="resume-dialog-btn cancel" (click)="startNewTest()">
+            <i class="fa-solid fa-trash-alt"></i>
+            Empezar de nuevo
+          </button>
+          <button class="resume-dialog-btn confirm" (click)="resumeTest()">
+            <i class="fa-solid fa-play"></i>
+            Continuar donde lo dejé
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- HEADER SOLO EN INTRO -->
-  @if (!started && !finished) {
+  @if (!started && !finished && !showResumeDialog) {
     <section class="level-test__header">
       <h1>Haz la prueba y descubre tu nivel de inglés</h1>
 
@@ -15,7 +42,7 @@
       </div>
     </section>
 
-    <!-- 👇 BANNER DE ADVERTENCIA PARA USUARIOS NO AUTENTICADOS -->
+    <!-- BANNER DE ADVERTENCIA PARA USUARIOS NO AUTENTICADOS -->
     @if (!isLoggedIn()) {
       <div class="warning-banner">
         <div class="warning-banner-content">
@@ -50,7 +77,7 @@
   }
 
   <!-- INTRO (BOTÓN EMPEZAR) -->
-  @if (!started && !finished && !loading && !error) {
+  @if (!started && !finished && !loading && !error && !showResumeDialog) {
     <div class="pointer-wrapper">
       <app-button variant="accent" size="large" (clicked)="startTest()"> Empezar test </app-button>
       <img src="images/pointer.webp" class="cursor-img" />

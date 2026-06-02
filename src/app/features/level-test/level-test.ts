@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import confetti from 'canvas-confetti';
 import { environment } from '../../../environments/environment';
@@ -33,6 +33,13 @@ interface LevelResult {
   icon: string;
 }
 
+interface SavedProgress {
+  testId: number;
+  answers: Answer[];
+  currentIndex: number;
+  timestamp: string;
+}
+
 @Component({
   selector: 'app-level-test',
   standalone: true,
@@ -56,10 +63,12 @@ export class LevelTest implements OnInit {
   animatedScore = 0;
   showLoginBanner = false;
   resultSaved = false;
+  showResumeDialog = false;
 
   // Backend
   private apiUrl = environment.apiUrl;
   private testId: number | null = null;
+  savedProgress: SavedProgress | null = null;
 
   constructor(private http: HttpClient) {}
 
@@ -77,6 +86,9 @@ export class LevelTest implements OnInit {
           this.questions = response.questions;
           this.testId = response.test_id;
           this.loading = false;
+
+          // Verificar si hay progreso guardado
+          this.checkForSavedProgress();
         } else {
           this.error = 'No se pudieron cargar las preguntas';
           this.loading = false;
@@ -90,8 +102,97 @@ export class LevelTest implements OnInit {
     });
   }
 
+  // Verificar progreso guardado
+  checkForSavedProgress() {
+    const saved = localStorage.getItem('level_test_progress');
+    if (!saved || !this.testId || this.questions.length === 0) {
+      this.savedProgress = null;
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(saved);
+      const isValid =
+        parsed &&
+        parsed.testId === this.testId &&
+        Array.isArray(parsed.answers) &&
+        parsed.answers.length > 0 &&
+        parsed.answers.length < this.questions.length &&
+        typeof parsed.currentIndex === 'number' &&
+        parsed.currentIndex < this.questions.length;
+
+      if (isValid) {
+        this.savedProgress = parsed;
+        this.showResumeDialog = true;
+      } else {
+        this.cleanInvalidProgress();
+      }
+    } catch {
+      this.cleanInvalidProgress();
+    }
+  }
+
+  private cleanInvalidProgress() {
+    localStorage.removeItem('level_test_progress');
+    this.savedProgress = null;
+    this.showResumeDialog = false;
+  }
+
+  // Continuar con progreso guardado
+  resumeTest() {
+    if (this.savedProgress) {
+      this.answers = this.savedProgress.answers;
+      this.currentIndex = this.savedProgress.currentIndex;
+      this.started = true;
+      this.finished = false;
+      this.showLoginBanner = false;
+      this.resultSaved = false;
+      this.showResumeDialog = false;
+
+      // Restaurar el estado de la pregunta actual
+      const currentQuestionId = this.questions[this.currentIndex]?.id;
+      const currentAnswer = this.answers.find((a) => a.questionId === currentQuestionId);
+
+      if (currentAnswer) {
+        this.selectedOptionId = currentAnswer.optionId;
+        this.locked = true;
+      } else {
+        this.selectedOptionId = null;
+        this.locked = false;
+      }
+
+      localStorage.removeItem('level_test_progress');
+      this.savedProgress = null;
+    }
+  }
+
+  // Empezar test nuevo (descartar progreso)
+  startNewTest() {
+    localStorage.removeItem('level_test_progress');
+    this.savedProgress = null;
+    this.showResumeDialog = false;
+    this.startTest();
+  }
+
+  // Guardar progreso automáticamente
+  saveProgressToLocalStorage() {
+    if (this.started && !this.finished && this.answers.length > 0 && this.testId) {
+      const progress: SavedProgress = {
+        testId: this.testId,
+        answers: this.answers,
+        currentIndex: this.currentIndex,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem('level_test_progress', JSON.stringify(progress));
+    }
+  }
+
   startTest() {
     if (!this.questions.length) return;
+
+    localStorage.removeItem('level_test_progress');
+    this.savedProgress = null;
+    this.showResumeDialog = false;
 
     this.started = true;
     this.finished = false;
@@ -105,7 +206,14 @@ export class LevelTest implements OnInit {
   }
 
   currentQuestion(): Question {
-    return this.questions[this.currentIndex];
+    const q = this.questions[this.currentIndex];
+    // Si ya hay una respuesta para esta pregunta, actualizar selectedOptionId
+    const existingAnswer = this.answers.find((a) => a.questionId === q.id);
+    if (existingAnswer && !this.locked) {
+      this.selectedOptionId = existingAnswer.optionId;
+      this.locked = true;
+    }
+    return q;
   }
 
   selectOption(optionId: number) {
@@ -116,13 +224,13 @@ export class LevelTest implements OnInit {
     const q = this.currentQuestion();
     const selected = q.options.find((o) => o.id === optionId);
 
-    //  Guardar con los nombres correctos
     this.answers.push({
-      questionId: q.id, // ← para uso interno
-      optionId: optionId, // ← para uso interno
+      questionId: q.id,
+      optionId: optionId,
       correct: selected?.correct ?? false,
     });
 
+    this.saveProgressToLocalStorage();
     this.locked = true;
   }
 
@@ -136,6 +244,7 @@ export class LevelTest implements OnInit {
     if (this.currentIndex >= this.questions.length) {
       this.started = false;
       this.finished = true;
+      localStorage.removeItem('level_test_progress');
 
       this.animateScore();
 
@@ -144,6 +253,8 @@ export class LevelTest implements OnInit {
       }, 300);
 
       this.finishTestFlow();
+    } else {
+      this.saveProgressToLocalStorage();
     }
   }
 
@@ -232,6 +343,9 @@ export class LevelTest implements OnInit {
     this.showLoginBanner = false;
     this.resultSaved = false;
 
+    localStorage.removeItem('level_test_progress');
+    this.savedProgress = null;
+
     this.loadTestFromBackend();
   }
 
@@ -266,10 +380,9 @@ export class LevelTest implements OnInit {
   saveResultToBackend() {
     const result = this.levelResult();
 
-    // 👇 TRANSFORMAR answers al formato que espera el backend
     const formattedAnswers = this.answers.map((answer) => ({
-      question_id: answer.questionId, // ← Cambiar questionId a question_id
-      option_id: answer.optionId, // ← Cambiar optionId a option_id
+      question_id: answer.questionId,
+      option_id: answer.optionId,
       correct: answer.correct,
     }));
 
@@ -277,11 +390,10 @@ export class LevelTest implements OnInit {
       score: this.score,
       total: this.questions.length,
       level: result.level,
-      answers: formattedAnswers, // ← Usar el array transformado
+      answers: formattedAnswers,
     };
 
     const token = localStorage.getItem('token');
-
     const options: any = {};
     if (token) {
       options.headers = { Authorization: `Bearer ${token}` };
@@ -304,11 +416,12 @@ export class LevelTest implements OnInit {
   }
 
   finishTestFlow() {
+    localStorage.removeItem('level_test_progress');
+
     const token = localStorage.getItem('token');
     if (token) {
       this.saveResultToBackend();
     } else {
-      // Usuario no autenticado, mostrar banner invitando a registrarse
       this.showLoginBanner = true;
       this.resultSaved = false;
     }
@@ -320,5 +433,25 @@ export class LevelTest implements OnInit {
 
   closeLoginBanner() {
     this.showLoginBanner = false;
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.started && !this.finished && this.answers.length > 0) {
+      $event.returnValue = true;
+    }
+  }
+
+  canDeactivate(): boolean {
+    if (this.started && !this.finished && this.answers.length > 0) {
+      const confirmExit = confirm(
+        '⚠️ Tienes el test a mitad.\n¿Estás seguro de que quieres salir? El progreso se guardará automáticamente y podrás continuar después.',
+      );
+      if (!confirmExit) {
+        return false;
+      }
+      return true;
+    }
+    return true;
   }
 }

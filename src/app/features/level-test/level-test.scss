@@ -31,7 +31,98 @@
 }
 
 /* ========================= */
-/* WARNING BANNER (antes de empezar el test) */
+/* RESUME DIALOG (NUEVO) */
+/* ========================= */
+.resume-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.resume-dialog {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease;
+
+  .resume-dialog-icon {
+    font-size: 3rem;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+
+  .resume-dialog-progress {
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0.5rem 0;
+  }
+
+  .resume-dialog-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    .resume-dialog-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      &.cancel {
+        background: #f3f4f6;
+        border: none;
+        color: #666;
+
+        &:hover {
+          background: #e5e7eb;
+        }
+      }
+
+      &.confirm {
+        background: var(--color-accent);
+        border: none;
+        color: white;
+
+        &:hover {
+          transform: translateY(-1px);
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
+
+/* ========================= */
+/* WARNING BANNER */
 /* ========================= */
 .warning-banner {
   margin-bottom: 1.5rem;
@@ -125,6 +216,36 @@
 /* ========================= */
 .loading {
   margin: 2rem 0;
+  color: #666;
+}
+
+/* ========================= */
+/* ERROR */
+/* ========================= */
+.error-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.primary-btn {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
 }
 
 /* ========================= */
@@ -134,7 +255,6 @@
   text-align: left;
 }
 
-/* NIVEL */
 .level-title {
   background: var(--main-gradient);
   -webkit-background-clip: text;
@@ -148,6 +268,7 @@
 .levels-img {
   width: clamp(230px, 60%, 300px);
   display: block;
+  margin: 0 auto;
 }
 
 .pointer-wrapper {
@@ -189,6 +310,7 @@
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
+  color: #333;
 }
 
 /* ========================= */
@@ -209,39 +331,41 @@
   transition: all 0.2s ease;
   text-align: left;
   font-size: 0.95rem;
+  color: #333;
 
   &:hover {
     background: #f7f7f7;
+    transform: translateX(4px);
   }
 }
 
-/* SELECTED */
 .option.selected {
   border-color: #00c6ff;
   background: #eefaff;
 }
 
-/* CORRECT */
 .option.correct {
   border-color: #00c853;
   background: #e8f5e9;
 }
 
-/* WRONG */
 .option.wrong {
   border-color: #ff1744;
   background: #ffebee;
 }
 
-/* DISABLED */
 .option.disabled {
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 /* ========================= */
 /* FEEDBACK */
 /* ========================= */
+.feedback {
+  margin-top: 1rem;
+}
+
 .explanation {
   padding: 1rem;
   background: #d1d1cf42;
@@ -249,11 +373,10 @@
   border-radius: 6px;
   margin-bottom: 1rem;
   font-size: 0.95rem;
+  color: #0066cc;
+  line-height: 1.5;
 }
 
-/* ========================= */
-/* BUTTONS */
-/* ========================= */
 .next-btn {
   width: 100%;
   margin-top: 1rem;
@@ -261,14 +384,21 @@
   color: #fff;
   border: none;
   padding: 0.9rem;
-  border-radius: 8px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s;
 
   &:hover {
     opacity: 0.9;
+    transform: translateY(-2px);
   }
 }
 
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
 .secondary-btn {
   background: #fff;
   border: 1px solid #ddd;
@@ -346,6 +476,20 @@
     box-shadow:
       0 10px 40px rgba(0, 0, 0, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    position: relative;
+  }
+
+  .score-box::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 20%;
+    right: 20%;
+    height: 4px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+    background-size: 200% auto;
+    animation: gold-slide 3s linear infinite;
   }
 
   .score {
@@ -354,6 +498,7 @@
     background: var(--main-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
 
   .level {
@@ -426,59 +571,9 @@
   margin-top: 3px;
 }
 
-.score-box {
-  position: relative;
-}
-
-.score-box::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: 20%;
-  right: 20%;
-  height: 4px;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
-  background-size: 200% auto;
-  animation: gold-slide 3s linear infinite;
-}
-
-.score {
-  font-size: 2.8rem;
-  font-weight: 800;
-  background: var(--main-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.score.pop {
-  animation: score-pop 0.25s ease;
-}
-
-@keyframes score-pop {
-  0% {
-    transform: scale(0.9);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes gold-slide {
-  0% {
-    background-position: 0% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-/* LOGIN BANNER (después del test) */
+/* ========================= */
+/* LOGIN BANNER */
+/* ========================= */
 .login-banner {
   position: fixed;
   bottom: 20px;
@@ -577,7 +672,9 @@
   }
 }
 
+/* ========================= */
 /* SUCCESS BANNER */
+/* ========================= */
 .success-banner {
   position: fixed;
   bottom: 20px;
@@ -630,6 +727,18 @@
   }
 }
 
+/* ========================= */
+/* ANIMATIONS */
+/* ========================= */
+@keyframes gold-slide {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -649,5 +758,79 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.score.pop {
+  animation: score-pop 0.25s ease;
+}
+
+@keyframes score-pop {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+@media (max-width: 640px) {
+  .level-test {
+    padding: 1rem 0.75rem;
+  }
+
+  .level-test__header h1 {
+    font-size: 1.4rem;
+  }
+
+  .level-test__header p {
+    font-size: 0.85rem;
+  }
+
+  .question {
+    font-size: 1rem;
+  }
+
+  .option {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .resume-dialog {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .resume-dialog h3 {
+    font-size: 1.1rem;
+  }
+
+  .final .score {
+    font-size: 2rem;
+  }
+
+  .final .level {
+    font-size: 1.2rem;
+  }
+
+  .final .level .letter {
+    font-size: 1.5rem;
   }
 }
