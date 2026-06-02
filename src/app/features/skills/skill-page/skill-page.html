@@ -1,4 +1,13 @@
 <div class="skill-page" [class]="skill">
+  <!-- NOTIFICACIONES -->
+  <div class="toast-container">
+    @if (showNotification) {
+      <div class="toast-message" [class]="notificationType">
+        <i [class]="notificationIcon"></i>
+        <span>{{ notificationMessage }}</span>
+      </div>
+    }
+  </div>
   <!-- HEADER -->
   <div class="page-header" [class]="currentConfig.color">
     <div class="header-content">
@@ -67,7 +76,7 @@
 
           <div class="card-content">
             <h3>{{ lesson.title }}</h3>
-            <p class="description">{{ stripHtml(lesson.explanation) | slice: 0 : 80 }}...</p>
+            <p class="description">{{ stripHtml(lesson.explanation) | slice: 0 : 30 }}...</p>
 
             <div class="word-count">
               <i class="fa-solid fa-list"></i>

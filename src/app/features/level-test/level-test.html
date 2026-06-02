@@ -6,13 +6,34 @@
 
       <p>
         Al completar este test vas a saber cuál es tu nivel de inglés, teniendo en cuenta la
-        gramática, el vocabulario y la comprensión escrita.
+        gramática, el vocabulario y la comprensión escrita. El test es gratuito y no requiere
+        registro, pero si te registras podrás guardar tu resultado y seguir tu evolución.
       </p>
 
       <div class="silver-shine">
         <img src="images/levels.webp" alt="Niveles CEFR" class="levels-img" />
       </div>
     </section>
+
+    <!-- 👇 BANNER DE ADVERTENCIA PARA USUARIOS NO AUTENTICADOS -->
+    @if (!isLoggedIn()) {
+      <div class="warning-banner">
+        <div class="warning-banner-content">
+          <i class="fa-solid fa-circle-info"></i>
+          <div class="warning-banner-text">
+            <strong>¿Quieres guardar tu resultado?</strong>
+            <p>
+              Inicia sesión o regístrate antes de empezar para guardar tu nivel y seguir tu
+              evolución.
+            </p>
+          </div>
+          <div class="warning-banner-actions">
+            <a routerLink="/login" class="warning-login-btn">Iniciar sesión</a>
+            <a routerLink="/register" class="warning-register-btn">Registrarme</a>
+          </div>
+        </div>
+      </div>
+    }
   }
 
   <!-- LOADING -->
@@ -24,15 +45,14 @@
   @if (error && !loading) {
     <div class="error-container">
       <p class="error">{{ error }}</p>
-      <button class="primary-btn" (click)="loadTest()">Reintentar</button>
+      <button class="primary-btn" (click)="loadTestFromBackend()">Reintentar</button>
     </div>
   }
 
-  <!-- INTRO -->
+  <!-- INTRO (BOTÓN EMPEZAR) -->
   @if (!started && !finished && !loading && !error) {
     <div class="pointer-wrapper">
       <app-button variant="accent" size="large" (clicked)="startTest()"> Empezar test </app-button>
-
       <img src="images/pointer.webp" class="cursor-img" />
     </div>
   }
@@ -110,9 +130,9 @@
       </div>
 
       <div class="pointer-wrapper">
-        <a [routerLink]="['/level-test']">
+        <a [routerLink]="['/levels']">
           <app-button variant="primary" size="large">
-            Ver curso nivel {{ levelResult().level }}
+            Ver lecciones nivel {{ levelResult().level }}
           </app-button>
         </a>
 

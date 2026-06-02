@@ -31,6 +31,86 @@
 }
 
 /* ========================= */
+/* WARNING BANNER (antes de empezar el test) */
+/* ========================= */
+.warning-banner {
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+
+  .warning-banner-content {
+    background: linear-gradient(135deg, #fff7ed, #fffbeb);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border: 1px solid #fcd34d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    i:first-child {
+      font-size: 1.5rem;
+      color: #f59e0b;
+    }
+
+    .warning-banner-text {
+      flex: 1;
+      text-align: left;
+
+      strong {
+        display: block;
+        font-size: 0.85rem;
+        color: #92400e;
+      }
+
+      p {
+        font-size: 0.75rem;
+        color: #b45309;
+        margin: 0;
+      }
+    }
+
+    .warning-banner-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      .warning-login-btn {
+        background: #f59e0b;
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s;
+
+        &:hover {
+          transform: translateY(-1px);
+          opacity: 0.9;
+        }
+      }
+
+      .warning-register-btn {
+        background: transparent;
+        color: #f59e0b;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        border: 1px solid #f59e0b;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #f59e0b;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+/* ========================= */
 /* DIVIDER */
 /* ========================= */
 .divider {
@@ -55,12 +135,10 @@
 }
 
 /* NIVEL */
-
 .level-title {
   background: var(--main-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   font-size: clamp(2rem, 2.5vw, 3rem);
   font-weight: 700;
   text-align: center;
@@ -85,6 +163,7 @@
   pointer-events: none;
   z-index: 1;
 }
+
 /* ========================= */
 /* PROGRESS */
 /* ========================= */
@@ -163,8 +242,6 @@
 /* ========================= */
 /* FEEDBACK */
 /* ========================= */
-
-/* EXPLANATION */
 .explanation {
   padding: 1rem;
   background: #d1d1cf42;
@@ -177,11 +254,10 @@
 /* ========================= */
 /* BUTTONS */
 /* ========================= */
-
 .next-btn {
   width: 100%;
   margin-top: 1rem;
-  background: #222;
+  background: var(--color-accent);
   color: #fff;
   border: none;
   padding: 0.9rem;
@@ -196,22 +272,19 @@
 .secondary-btn {
   background: #fff;
   border: 1px solid #ddd;
-
   padding: 0.9rem 1.6rem;
   font-size: 1rem;
   font-weight: 500;
   width: 100%;
   max-width: 520px;
   margin: 1rem auto 0;
-
   border-radius: 20px;
   cursor: pointer;
-
   transition: all 0.2s ease;
 
   &:hover {
     background: #f7f7f7;
-    transform: translateY(-1px); // micro interacción
+    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
@@ -227,54 +300,16 @@
   text-align: center;
   animation: fadeInUp 0.6s ease;
 
-  /* ========================= */
-  /* TITLE */
-  /* ========================= */
   .final-title {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.8rem;
-
     font-size: clamp(2rem, 3vw, 2.6rem);
     font-weight: 700;
     margin-bottom: 0.5rem;
   }
 
-  /* ICONO CON GLOW REAL
-  .title-icon-circle {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-
-    background: white;
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    box-shadow:
-      0 0 20px 8px rgba(255, 255, 255, 0.6),
-      0 0 40px 15px rgba(255, 255, 255, 0.3);
-
-    animation: pulse-glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes pulse-glow {
-    0% {
-      box-shadow:
-        0 0 15px 5px rgba(247, 247, 246, 0.5),
-        0 0 30px 10px rgba(255, 255, 255, 0.2);
-    }
-    100% {
-      box-shadow:
-        0 0 30px 12px rgba(255, 255, 255, 0.9),
-        0 0 50px 20px rgba(255, 255, 255, 0.5),
-        0 0 70px 25px rgba(255, 255, 255, 0.3);
-    }
-  }
-*/
   .title-icon-circle i {
     font-size: 2rem;
     font-weight: 900;
@@ -286,51 +321,28 @@
       #ffd700 60%,
       #b8860b
     );
-
     background-size: 200% auto;
-
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-
     color: transparent;
-
     animation: gold-slide 3s linear infinite;
   }
-  @keyframes gold-slide {
-    0% {
-      background-position: 0% 0;
-    }
 
-    100% {
-      background-position: -200% 0;
-    }
-  }
-  /* ========================= */
-  /* SUBTITLE */
-  /* ========================= */
   .subtitle {
     margin-bottom: 1.5rem;
     color: var(--color-accent);
   }
 
-  /* ========================= */
-  /* SCORE CARD */
-  /* ========================= */
   .score-box {
     margin: 2rem auto;
     padding: 2rem 1.5rem;
     max-width: 420px;
-
     border-radius: 20px;
-
-    /* glass effect */
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-
     border: 1px solid rgba(255, 255, 255, 0.4);
-
     box-shadow:
       0 10px 40px rgba(0, 0, 0, 0.08),
       inset 0 1px 0 rgba(255, 255, 255, 0.6);
@@ -339,7 +351,6 @@
   .score {
     font-size: 2.8rem;
     font-weight: 800;
-
     background: var(--main-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -349,23 +360,18 @@
     font-size: 1.6rem;
     font-weight: 800;
     margin-top: 0.5rem;
-
     color: #111;
   }
 
   .level .letter {
     font-size: 2rem;
     font-weight: 900;
-
     background-image: linear-gradient(90deg, #ffb300, #ffd54f, #ffb300);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
     animation: gold-slide 3s linear infinite;
   }
-  /* ========================= */
-  /* RESULT MESSAGE */
-  /* ========================= */
+
   .result-message {
     max-width: 520px;
     margin: 1rem auto;
@@ -373,13 +379,6 @@
     line-height: 1.6;
   }
 
-  /* ========================= */
-  /* CTA */
-  /* ========================= */
-
-  /* ========================= */
-  /* ACTIONS */
-  /* ========================= */
   .secondary-actions {
     display: flex;
     justify-content: center;
@@ -388,9 +387,6 @@
     flex-wrap: wrap;
   }
 
-  /* ========================= */
-  /* IMAGES */
-  /* ========================= */
   .final-images {
     display: flex;
     flex-direction: column;
@@ -419,6 +415,7 @@
   max-width: 520px;
   margin: 0.8rem auto;
 }
+
 .result-message i {
   color: #ffb300;
   margin-top: 3px;
@@ -441,26 +438,21 @@
   right: 20%;
   height: 4px;
   border-radius: 20px;
-
   background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
   background-size: 200% auto;
-
   animation: gold-slide 3s linear infinite;
 }
 
 .score {
   font-size: 2.8rem;
   font-weight: 800;
-
   background: var(--main-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-
   display: inline-block;
   transition: transform 0.2s ease;
 }
 
-/* pequeño efecto cada vez que cambia */
 .score.pop {
   animation: score-pop 0.25s ease;
 }
@@ -474,5 +466,188 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes gold-slide {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* LOGIN BANNER (después del test) */
+.login-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 1000;
+  animation: slideUp 0.3s ease;
+
+  @media (min-width: 768px) {
+    left: auto;
+    right: 20px;
+    max-width: 420px;
+  }
+
+  .login-banner-content {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    i:first-child {
+      font-size: 1.5rem;
+      color: #f59e0b;
+    }
+
+    .login-banner-text {
+      flex: 1;
+
+      strong {
+        display: block;
+        font-size: 0.9rem;
+        color: white;
+      }
+
+      p {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin: 0;
+      }
+    }
+
+    .login-banner-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      .login-btn {
+        background: var(--color-accent);
+        color: white;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s;
+
+        &:hover {
+          transform: translateY(-1px);
+          opacity: 0.9;
+        }
+      }
+
+      .register-btn {
+        background: transparent;
+        color: #cbd5e1;
+        padding: 0.4rem 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 0.75rem;
+        border: 1px solid #475569;
+        transition: all 0.2s;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+
+      .close-banner {
+        background: transparent;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        padding: 0.25rem;
+        font-size: 0.8rem;
+
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+/* SUCCESS BANNER */
+.success-banner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  animation: slideUp 0.3s ease;
+
+  .success-banner-content {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+    i:first-child {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .success-banner-text {
+      flex: 1;
+
+      strong {
+        display: block;
+        font-size: 0.9rem;
+        color: white;
+      }
+
+      p {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+      }
+    }
+
+    .close-banner {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 0.8rem;
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

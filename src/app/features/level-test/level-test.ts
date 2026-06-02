@@ -1,12 +1,37 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import confetti from 'canvas-confetti';
-import { LEVEL_TEST_QUESTIONS } from '../../core/data/questions.data';
-import { Question } from '../../core/models/question.model';
-
-import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { Button } from '../../shared/components/button/button';
+
+interface Question {
+  id: number;
+  level: string;
+  question: string;
+  explanation: string;
+  options: Option[];
+}
+
+interface Option {
+  id: number;
+  text: string;
+  correct: boolean;
+}
+
+interface Answer {
+  questionId: number;
+  optionId: number;
+  correct: boolean;
+}
+
+interface LevelResult {
+  level: string;
+  message: string;
+  description: string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-level-test',
@@ -21,7 +46,7 @@ export class LevelTest implements OnInit {
   selectedOptionId: number | null = null;
   locked = false;
 
-  answers: { questionId: number; optionId: number; correct: boolean }[] = [];
+  answers: Answer[] = [];
 
   started = false;
   finished = false;
@@ -30,35 +55,39 @@ export class LevelTest implements OnInit {
 
   animatedScore = 0;
   showLoginBanner = false;
+  resultSaved = false;
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
+  // Backend
+  private apiUrl = environment.apiUrl;
+  private testId: number | null = null;
+
   constructor(private http: HttpClient) {}
+
   ngOnInit() {
-    this.loadTest();
+    this.loadTestFromBackend();
   }
 
-  loadTest() {
+  loadTestFromBackend() {
     this.loading = true;
     this.error = null;
-    this.started = false;
-    this.finished = false;
 
-    setTimeout(() => {
-      try {
-        this.questions = [...LEVEL_TEST_QUESTIONS];
-
-        if (!this.questions.length) {
-          this.error = 'No hay preguntas disponibles';
+    this.http.get<any>(`${this.apiUrl}/level-test`).subscribe({
+      next: (response) => {
+        if (response.success && response.questions) {
+          this.questions = response.questions;
+          this.testId = response.test_id;
+          this.loading = false;
+        } else {
+          this.error = 'No se pudieron cargar las preguntas';
+          this.loading = false;
         }
-
+      },
+      error: (err) => {
+        console.error('Error loading level test:', err);
+        this.error = 'Error al cargar el test. Inténtalo de nuevo.';
         this.loading = false;
-      } catch {
-        this.error = 'Error al cargar el test';
-        this.loading = false;
-      }
-    }, 300);
+      },
+    });
   }
 
   startTest() {
@@ -66,6 +95,8 @@ export class LevelTest implements OnInit {
 
     this.started = true;
     this.finished = false;
+    this.showLoginBanner = false;
+    this.resultSaved = false;
 
     this.currentIndex = 0;
     this.answers = [];
@@ -85,9 +116,10 @@ export class LevelTest implements OnInit {
     const q = this.currentQuestion();
     const selected = q.options.find((o) => o.id === optionId);
 
+    //  Guardar con los nombres correctos
     this.answers.push({
-      questionId: q.id,
-      optionId,
+      questionId: q.id, // ← para uso interno
+      optionId: optionId, // ← para uso interno
       correct: selected?.correct ?? false,
     });
 
@@ -119,15 +151,15 @@ export class LevelTest implements OnInit {
     return (this.currentIndex / this.questions.length) * 100;
   }
 
-  isSelected(opt: any): boolean {
+  isSelected(opt: Option): boolean {
     return this.selectedOptionId === opt.id;
   }
 
-  isCorrect(opt: any): boolean {
+  isCorrect(opt: Option): boolean {
     return this.locked && opt.correct;
   }
 
-  isWrong(opt: any): boolean {
+  isWrong(opt: Option): boolean {
     return this.locked && this.selectedOptionId === opt.id && !opt.correct;
   }
 
@@ -135,12 +167,7 @@ export class LevelTest implements OnInit {
     return this.answers.filter((a) => a.correct).length;
   }
 
-  levelResult(): {
-    level: string;
-    message: string;
-    description: string;
-    icon: string;
-  } {
+  levelResult(): LevelResult {
     const score = this.score;
     const total = this.questions.length;
     const percentage = (score / total) * 100;
@@ -151,7 +178,7 @@ export class LevelTest implements OnInit {
         icon: 'fa-solid fa-seedling',
         message: '¡Estás empezando! Sigue aprendiendo, cada paso cuenta.',
         description:
-          'Estás en los fundamentos del inglés. Con práctica constante, pronto podrás entender frases básicas y presentarte. ¡No te rindas!',
+          'Estás en los fundamentos del inglés. Con práctica constante, pronto podrás entender frases básicas y presentarte.',
       };
     }
 
@@ -159,7 +186,7 @@ export class LevelTest implements OnInit {
       return {
         level: 'A2',
         icon: 'fa-solid fa-book-open',
-        message: 'Buen comienzo! Tienes una base sólida, sigue practicando.',
+        message: '¡Buen comienzo! Tienes una base sólida, sigue practicando.',
         description:
           'Ya puedes entender frases cotidianas y comunicarte en situaciones simples. Sigue así para alcanzar el nivel intermedio.',
       };
@@ -169,9 +196,9 @@ export class LevelTest implements OnInit {
       return {
         level: 'B1',
         icon: 'fa-solid fa-bullseye',
-        message: 'Ya alcanzas B1 (intermedio)! Sigue mejorando para llegar más alto.',
+        message: '¡Ya alcanzas nivel Intermedio! Sigue mejorando.',
         description:
-          'Tienes buen entendimiento y puedes mantener conversaciones sobre temas familiares. Necesitas seguir mejorando para alcanzar niveles superiores.',
+          'Tienes buen entendimiento y puedes mantener conversaciones sobre temas familiares. Sigue practicando para alcanzar niveles superiores.',
       };
     }
 
@@ -179,7 +206,7 @@ export class LevelTest implements OnInit {
       return {
         level: 'B2',
         icon: 'fa-solid fa-rocket',
-        message: 'Impresionante! Nivel B2 (avanzado). Ya eres casi bilingüe.',
+        message: '¡Impresionante! Nivel Intermedio-Alto. Ya eres casi bilingüe.',
         description:
           'Puedes comunicarte con fluidez y naturalidad. Entiendes ideas complejas y textos técnicos. ¡Excelente trabajo!',
       };
@@ -188,7 +215,7 @@ export class LevelTest implements OnInit {
     return {
       level: 'C1',
       icon: 'fa-solid fa-trophy',
-      message: 'Excelente! Nivel C1 (dominio avanzado). Eres un experto en inglés.',
+      message: '¡Excelente! Nivel Avanzado. Dominas el inglés.',
       description:
         'Tienes un dominio excepcional del idioma. Puedes expresarte con fluidez y precisión en cualquier situación. ¡Felicidades!',
     };
@@ -202,8 +229,10 @@ export class LevelTest implements OnInit {
 
     this.started = false;
     this.finished = false;
+    this.showLoginBanner = false;
+    this.resultSaved = false;
 
-    this.loadTest();
+    this.loadTestFromBackend();
   }
 
   animateScore() {
@@ -235,21 +264,61 @@ export class LevelTest implements OnInit {
   }
 
   saveResultToBackend() {
+    const result = this.levelResult();
+
+    // 👇 TRANSFORMAR answers al formato que espera el backend
+    const formattedAnswers = this.answers.map((answer) => ({
+      question_id: answer.questionId, // ← Cambiar questionId a question_id
+      option_id: answer.optionId, // ← Cambiar optionId a option_id
+      correct: answer.correct,
+    }));
+
     const payload = {
       score: this.score,
-      level: this.levelResult().level,
-      answers: this.answers,
       total: this.questions.length,
+      level: result.level,
+      answers: formattedAnswers, // ← Usar el array transformado
     };
 
-    console.log('Guardando resultado en backend...', payload);
+    const token = localStorage.getItem('token');
+
+    const options: any = {};
+    if (token) {
+      options.headers = { Authorization: `Bearer ${token}` };
+    }
+
+    this.http.post(`${this.apiUrl}/level-test/save-result`, payload, options).subscribe({
+      next: (response: any) => {
+        console.log('Resultado guardado:', response);
+        this.resultSaved = true;
+        this.showLoginBanner = false;
+      },
+      error: (err) => {
+        console.error('Error al guardar resultado:', err);
+        if (err.status === 401) {
+          this.showLoginBanner = true;
+          this.resultSaved = false;
+        }
+      },
+    });
   }
 
   finishTestFlow() {
-    if (this.isLoggedIn()) {
+    const token = localStorage.getItem('token');
+    if (token) {
       this.saveResultToBackend();
     } else {
+      // Usuario no autenticado, mostrar banner invitando a registrarse
       this.showLoginBanner = true;
+      this.resultSaved = false;
     }
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  closeLoginBanner() {
+    this.showLoginBanner = false;
   }
 }

@@ -12,34 +12,163 @@
       }}
     </p>
   </div>
+  <!-- LEVEL TEST CARD -->
+  <div class="level-test-card">
+    <div class="level-test-header">
+      <i class="fas fa-graduation-cap"></i>
+      <h3>Test de Nivel de Inglés</h3>
+    </div>
 
-  <!-- NIVEL ESTIMADO -->
-  <div class="level-estimation-card">
-    <div class="level-badge">
-      <i class="fas fa-chart-line"></i>
-      <div class="level-info">
-        <span class="level-label">Nivel estimado</span>
-        <span class="level-value">{{ estimatedLevel }}</span>
+    <!-- CASO 1: Usuario ha hecho el test -->
+    @if (levelTestResult) {
+      <div class="level-test-content">
+        <div class="level-test-level">
+          <span class="level-badge-large">{{ levelTestResult.level }}</span>
+        </div>
+        <div class="level-test-info">
+          <div class="level-test-score">
+            <i class="fas fa-chart-line"></i>
+            <span>{{ levelTestResult.percentage }}% de acierto</span>
+          </div>
+          <div class="level-test-date">
+            <i class="fas fa-calendar-alt"></i>
+            <span>{{ formatDate(levelTestResult.completed_at) }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="level-test-footer">
+        <p class="level-test-message">
+          <i class="fas fa-info-circle"></i>
+          Este es tu nivel según el test oficial. Puedes repetirlo para actualizar tu resultado.
+        </p>
+        <a routerLink="/level-test" class="repeat-test-btn">
+          <i class="fas fa-redo-alt"></i>
+          Repetir test
+        </a>
+      </div>
+    }
+
+    <!-- CASO 2: Usuario NO ha hecho el test -->
+    @if (!levelTestResult && isLoggedIn()) {
+      <div class="level-test-content level-test-pending">
+        <div class="level-test-pending-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="level-test-pending-text">
+          <p>Todavía no has realizado el test de nivel.</p>
+          <p class="small">
+            Descubre tu nivel real de inglés con nuestro test oficial de 50 preguntas.
+          </p>
+        </div>
+      </div>
+      <div class="level-test-footer">
+        <a routerLink="/level-test" class="start-test-btn">
+          <i class="fas fa-play"></i>
+          Comenzar test de nivel
+        </a>
+      </div>
+    }
+
+    <!-- CASO 3: Usuario no autenticado -->
+    @if (!levelTestResult && !isLoggedIn()) {
+      <div class="level-test-content level-test-pending">
+        <div class="level-test-pending-icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <div class="level-test-pending-text">
+          <p>Inicia sesión para realizar el test de nivel.</p>
+          <p class="small">Descubre tu nivel real de inglés y guarda tu progreso.</p>
+        </div>
+      </div>
+      <div class="level-test-footer">
+        <a routerLink="/login" class="login-test-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar sesión
+        </a>
+        <a routerLink="/register" class="register-test-btn">
+          <i class="fas fa-user-plus"></i>
+          Registrarme
+        </a>
+      </div>
+    }
+  </div>
+  <!-- ESTADÍSTICAS DE TESTS (APROBADOS/SUSPENDIDOS) -->
+  <div class="stats-cards">
+    <div class="stat-card passed">
+      <div class="stat-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ passedTests }}</span>
+        <span class="stat-label">Tests aprobados</span>
+        <span class="stat-percent">({{ passRate }}%)</span>
       </div>
     </div>
-    <div class="level-progress-section">
-      <div class="level-progress-header">
-        <span>Progreso hacia {{ nextLevel }}</span>
-        <span>{{ progressToNextLevel }}%</span>
+    <div class="stat-card failed">
+      <div class="stat-icon">
+        <i class="fas fa-times-circle"></i>
       </div>
-      <div class="level-progress-bar">
-        <div class="level-progress-fill" [style.width.%]="progressToNextLevel"></div>
+      <div class="stat-info">
+        <span class="stat-value">{{ failedTests }}</span>
+        <span class="stat-label">Tests suspendidos</span>
       </div>
-      <div class="level-confidence">
+    </div>
+  </div>
+
+  <!-- RESUMEN POR NIVEL -->
+  <div class="level-stats-card">
+    <div class="level-stats-header">
+      <i class="fas fa-chart-simple"></i>
+      <h3>Resumen por nivel</h3>
+    </div>
+    <div class="level-stats-list">
+      @for (stat of levelStats; track stat.level) {
+        <div class="level-stat-item">
+          <div class="level-name">{{ stat.level }}</div>
+          <div class="level-bar-container">
+            <div
+              class="level-bar-fill"
+              [style.width.%]="stat.average"
+              [class.high]="stat.average >= 80"
+              [class.medium]="stat.average >= 60 && stat.average < 80"
+              [class.low]="stat.average > 0 && stat.average < 60"
+            ></div>
+          </div>
+          <div class="level-stats">
+            <span class="level-tests">
+              <i class="fas fa-file-alt"></i>
+              {{ stat.tests }} test{{ stat.tests !== 1 ? 's' : '' }}
+            </span>
+            @if (stat.tests > 0) {
+              <span class="level-percentage"> {{ stat.average }}% </span>
+              <span class="level-status" [class]="stat.statusClass">
+                <i [class]="stat.statusIcon"></i>
+                {{ stat.status }}
+              </span>
+            } @else {
+              <span class="level-empty">
+                <i class="fas fa-hourglass-start"></i>
+                Sin tests
+              </span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <div class="level-current">
+      <i class="fas fa-graduation-cap"></i>
+      <span
+        >Nivel actual estimado: <strong>{{ estimatedLevel }}</strong></span
+      >
+      <span class="tooltip-wrapper">
         <i class="fas fa-circle-info"></i>
-        <span>Confianza: {{ levelConfidence }}</span>
-      </div>
+        <span class="tooltip-text">{{ getConfidenceTooltip() }}</span>
+      </span>
     </div>
   </div>
 
   <!-- KPI CARDS -->
   <div class="kpi-grid">
-    <!-- Promedio general -->
     <div class="kpi-card">
       <div class="kpi-icon">
         <i class="fas fa-chart-simple"></i>
@@ -48,21 +177,19 @@
         <div class="kpi-value">{{ globalAverage }}%</div>
         <div class="kpi-label">Promedio general</div>
         <div class="kpi-message">
-          <i class="fas fa-circle-info"></i>
           @if (globalAverage >= 70) {
-            Buen rendimiento general
+            <span><i class="fas fa-check-circle"></i> Buen rendimiento general</span>
           } @else if (globalAverage >= 50) {
-            Puedes mejorar
+            <span><i class="fas fa-exclamation-triangle"></i> Puedes mejorar</span>
           } @else if (globalAverage > 0) {
-            Dedica más tiempo al estudio
+            <span><i class="fas fa-hourglass-half"></i> Dedica más tiempo al estudio</span>
           } @else {
-            Completa tu primer test
+            <span><i class="fas fa-play-circle"></i> Completa tu primer test</span>
           }
         </div>
       </div>
     </div>
 
-    <!-- Mejor racha -->
     <div class="kpi-card">
       <div class="kpi-icon">
         <i class="fas fa-fire"></i>
@@ -71,19 +198,17 @@
         <div class="kpi-value">{{ bestStreak }}</div>
         <div class="kpi-label">Mejor racha</div>
         <div class="kpi-message">
-          <i class="fas fa-calendar-day"></i>
           @if (bestStreak === 0) {
-            Días seguidos estudiando
+            <span><i class="fas fa-seedling"></i> Empieza tu racha hoy</span>
           } @else if (bestStreak === 1) {
-            Un día, sigue así
+            <span><i class="fas fa-thumbs-up"></i> Un día, sigue así</span>
           } @else {
-            {{ bestStreak }} días consecutivos
+            <span><i class="fas fa-trophy"></i> {{ bestStreak }} días consecutivos</span>
           }
         </div>
       </div>
     </div>
 
-    <!-- Progreso semanal -->
     <div class="kpi-card">
       <div class="kpi-icon">
         <i class="fas fa-chart-line"></i>
@@ -108,7 +233,6 @@
       </div>
     </div>
 
-    <!-- Lecciones dominadas -->
     <div class="kpi-card">
       <div class="kpi-icon">
         <i class="fas fa-star"></i>
@@ -117,18 +241,98 @@
         <div class="kpi-value">{{ masteredLessons }}</div>
         <div class="kpi-label">Lecciones dominadas</div>
         <div class="kpi-message">
-          <i class="fas fa-chart-line"></i>
           @if (masteredLessons === 0) {
-            Ninguna lección con 80% aún
+            <span><i class="fas fa-road"></i> Sigue practicando</span>
           } @else if (masteredLessons === 1) {
-            Una lección dominada, sigue así
+            <span><i class="fas fa-check-circle"></i> Una lección dominada</span>
           } @else {
-            {{ masteredLessons }} lecciones dominadas
+            <span><i class="fas fa-crown"></i> {{ masteredLessons }} lecciones dominadas</span>
           }
         </div>
       </div>
     </div>
   </div>
+
+  <!-- FILTROS Y BÚSQUEDA -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <span class="filter-label"><i class="fas fa-filter"></i> Nivel:</span>
+      <div class="filter-buttons">
+        <button
+          class="filter-btn"
+          [class.active]="selectedLevel === 'all'"
+          (click)="onLevelChange('all')"
+        >
+          Todos
+        </button>
+        @for (level of levels; track level) {
+          <button
+            class="filter-btn level-btn"
+            [class.active]="selectedLevel === level"
+            (click)="onLevelChange(level)"
+          >
+            {{ level }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label"><i class="fas fa-tag"></i> Skill:</span>
+      <div class="filter-buttons">
+        <button
+          class="filter-btn"
+          [class.active]="selectedSkill === 'all'"
+          (click)="onSkillChange('all')"
+        >
+          Todos
+        </button>
+        @for (skill of skills; track skill.value) {
+          <button
+            class="filter-btn skill-btn"
+            [class.active]="selectedSkill === skill.value"
+            (click)="onSkillChange(skill.value)"
+          >
+            <i [class]="skill.icon"></i>
+            {{ skill.name }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- BÚSQUEDA POR PALABRA CLAVE -->
+    <div class="search-filter">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        placeholder="Buscar por título de lección..."
+        (input)="onSearch($event)"
+        [value]="searchKeyword"
+      />
+    </div>
+
+    @if (selectedLevel !== 'all' || selectedSkill !== 'all' || searchKeyword) {
+      <button class="reset-btn" (click)="resetFilters()">
+        <i class="fas fa-times"></i> Limpiar
+      </button>
+    }
+  </div>
+
+  <!-- INFO DE FILTROS ACTIVOS -->
+  @if (selectedLevel !== 'all' || selectedSkill !== 'all' || searchKeyword) {
+    <div class="active-filters-info">
+      <i class="fas fa-info-circle"></i>
+      <span>
+        Mostrando {{ filteredGroupedLessons.length }} de {{ groupedLessons.length }} lecciones
+        @if (selectedLevel !== 'all' || selectedSkill !== 'all') {
+          · Filtro: {{ getFilterInfo() }}
+        }
+        @if (searchKeyword) {
+          · Buscando: "{{ searchKeyword }}"
+        }
+      </span>
+    </div>
+  }
 
   <!-- Error -->
   @if (error) {
@@ -144,7 +348,16 @@
 
   <!-- Tests Agrupados por Lección -->
   @if (!error) {
-    @if (groupedLessons.length === 0) {
+    @if (filteredGroupedLessons.length === 0 && groupedLessons.length > 0) {
+      <div class="empty-state">
+        <i class="fas fa-filter"></i>
+        <h3>No hay tests con los filtros seleccionados</h3>
+        <p>Prueba con otros filtros o limpia la selección.</p>
+        <button class="explore-btn" (click)="resetFilters()">
+          <i class="fas fa-undo-alt"></i> Limpiar filtros
+        </button>
+      </div>
+    } @else if (groupedLessons.length === 0) {
       <div class="empty-state">
         <i class="fas fa-clipboard-list"></i>
         <h3>No has realizado ningún test aún</h3>
@@ -156,19 +369,22 @@
       </div>
     }
 
-    @if (groupedLessons.length > 0) {
+    @if (filteredGroupedLessons.length > 0) {
       <div class="lessons-grid">
-        @for (lesson of groupedLessons; track lesson.lesson_title) {
+        @for (lesson of filteredGroupedLessons; track lesson.lesson_title) {
           <div class="lesson-card" [class]="getScoreColor(lesson.best_percentage)">
             <div class="card-header">
               <div class="lesson-info">
-                <span class="lesson-icon">
-                  <i class="fas fa-book-open"></i>
-                </span>
                 <div class="lesson-details">
-                  <span class="level-tag" [class]="getScoreColor(lesson.best_percentage)">
-                    {{ lesson.level }}
-                  </span>
+                  <div class="lesson-meta">
+                    <span class="level-tag" [class]="getScoreColor(lesson.best_percentage)">
+                      {{ lesson.level }}
+                    </span>
+                    <span class="skill-tag">
+                      <i [class]="getSkillIcon(lesson.skill)"></i>
+                      {{ getSkillName(lesson.skill) }}
+                    </span>
+                  </div>
                   <h3 class="lesson-title" (click)="viewLesson(lesson.lesson_slug)">
                     {{ lesson.lesson_title }}
                   </h3>
@@ -186,14 +402,21 @@
                   <div class="progress-fill" [style.width.%]="lesson.best_percentage"></div>
                 </div>
                 <div class="progress-stats">
-                  <span>Mejor: {{ lesson.best_percentage }}%</span>
-                  <span>Promedio: {{ lesson.average_percentage }}%</span>
+                  <span
+                    ><i class="fas fa-chart-line"></i> Mejor: {{ lesson.best_percentage }}%</span
+                  >
+                  <span
+                    ><i class="fas fa-chart-simple"></i> Promedio:
+                    {{ lesson.average_percentage }}%</span
+                  >
                 </div>
               </div>
 
               @if (lesson.attempts.length > 1) {
                 <div class="attempts-timeline">
-                  <span class="timeline-label">Últimos intentos</span>
+                  <span class="timeline-label"
+                    ><i class="fas fa-history"></i> Últimos intentos</span
+                  >
                   <div class="attempt-bubbles">
                     @for (attempt of lesson.attempts.slice(0, 4); track attempt.id) {
                       <div class="attempt-bubble" [class]="getScoreColor(attempt.percentage)">

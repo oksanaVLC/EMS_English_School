@@ -168,24 +168,6 @@ export class SkillPage implements OnInit {
     this.loadLessons(1);
   }
 
-  toggleFavorite(event: Event, lesson: LessonModel) {
-    event.stopPropagation();
-
-    if (!this.auth.isLoggedIn()) return;
-
-    const previous = lesson.is_favorited;
-    lesson.is_favorited = !previous;
-
-    this.http.post(`${this.apiUrl}/lessons/${lesson.id}/favorite`, {}).subscribe({
-      next: (res: any) => {
-        lesson.is_favorited = res.favorited;
-      },
-      error: () => {
-        lesson.is_favorited = previous;
-      },
-    });
-  }
-
   goToLesson(slug: string) {
     this.router.navigate(['/levels/all', slug]);
   }
@@ -215,5 +197,60 @@ export class SkillPage implements OnInit {
       .replace(/<[^>]*>/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+  // Añade estas propiedades al componente
+  showNotification: boolean = false;
+  notificationMessage: string = '';
+  notificationType: string = 'success'; // success, error, warning
+  notificationIcon: string = 'fa-check-circle';
+  notificationTimeout: any;
+
+  // Modifica el método toggleFavorite
+  toggleFavorite(event: Event, lesson: LessonModel) {
+    event.stopPropagation();
+
+    if (!this.auth.isLoggedIn()) {
+      this.showToast('Inicia sesión para guardar favoritos', 'warning', 'fa-exclamation-triangle');
+      return;
+    }
+
+    const previous = lesson.is_favorited;
+    const action = !previous; // lo que vamos a hacer (añadir o quitar)
+    lesson.is_favorited = action;
+
+    this.http.post(`${this.apiUrl}/lessons/${lesson.id}/favorite`, {}).subscribe({
+      next: (res: any) => {
+        lesson.is_favorited = res.favorited;
+
+        // Mostrar notificación según la acción
+        if (res.favorited) {
+          this.showToast(`"${lesson.title}" añadido a favoritos`, 'success', 'fa-heart');
+        } else {
+          this.showToast(`"${lesson.title}" eliminado de favoritos`, 'info', 'fa-trash-alt');
+        }
+      },
+      error: () => {
+        lesson.is_favorited = previous;
+        this.showToast('Error al guardar favorito', 'error', 'fa-exclamation-circle');
+      },
+    });
+  }
+
+  // Método para mostrar notificaciones
+  showToast(message: string, type: string = 'success', icon: string = 'fa-check-circle') {
+    // Limpiar timeout anterior
+    if (this.notificationTimeout) {
+      clearTimeout(this.notificationTimeout);
+    }
+
+    this.notificationMessage = message;
+    this.notificationType = type;
+    this.notificationIcon = icon;
+    this.showNotification = true;
+
+    // Ocultar después de 3 segundos
+    this.notificationTimeout = setTimeout(() => {
+      this.showNotification = false;
+    }, 3000);
   }
 }

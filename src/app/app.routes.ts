@@ -7,7 +7,6 @@ import { Login } from './features/auth/pages/login/login';
 import { Register } from './features/auth/pages/register/register';
 import { Home } from './features/home/home';
 import { LessonPage } from './features/lesson-page/lesson-page';
-import { LevelTest } from './features/level-test/level-test';
 
 export const routes: Routes = [
   // =========================
@@ -103,7 +102,7 @@ export const routes: Routes = [
   // =========================
   {
     path: 'level-test',
-    component: LevelTest,
+    loadComponent: () => import('./features/level-test/level-test').then((m) => m.LevelTest),
   },
 
   // =========================
