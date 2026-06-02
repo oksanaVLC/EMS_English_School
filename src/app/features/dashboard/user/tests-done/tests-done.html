@@ -12,6 +12,7 @@
       }}
     </p>
   </div>
+
   <!-- LEVEL TEST CARD -->
   <div class="level-test-card">
     <div class="level-test-header">
@@ -36,15 +37,37 @@
           </div>
         </div>
       </div>
+
+      <!-- CIRCULITOS CON PORCENTAJES - ÚLTIMOS INTENTOS -->
+      @if (levelTestAttempts.length > 0) {
+        <div class="attempts-timeline">
+          <span class="timeline-label"><i class="fas fa-history"></i> Últimos intentos</span>
+          <div class="attempt-bubbles">
+            @for (attempt of levelTestAttempts.slice(0, 4); track attempt.completed_at) {
+              <div class="attempt-bubble" [class]="getScoreColor(attempt.percentage)">
+                <span>{{ attempt.percentage }}%</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
       <div class="level-test-footer">
         <p class="level-test-message">
           <i class="fas fa-info-circle"></i>
-          Este es tu nivel según el test oficial. Puedes repetirlo para actualizar tu resultado.
+          Este es tu nivel según el test de nivel. Puedes repetirlo para actualizar tu resultado.
         </p>
-        <a routerLink="/level-test" class="repeat-test-btn">
-          <i class="fas fa-redo-alt"></i>
-          Repetir test
-        </a>
+        <div class="level-test-footer-actions">
+          <span class="attempt-count">
+            <i class="fas fa-repeat"></i>
+            {{ levelTestAttempts.length }}
+            {{ levelTestAttempts.length === 1 ? 'intento' : 'intentos' }}
+          </span>
+          <a routerLink="/level-test" class="repeat-test-btn">
+            <i class="fas fa-redo-alt"></i>
+            Repetir test
+          </a>
+        </div>
       </div>
     }
 
@@ -57,7 +80,7 @@
         <div class="level-test-pending-text">
           <p>Todavía no has realizado el test de nivel.</p>
           <p class="small">
-            Descubre tu nivel real de inglés con nuestro test oficial de 50 preguntas.
+            Descubre tu nivel real de inglés con nuestro test de nivel de 50 preguntas.
           </p>
         </div>
       </div>
@@ -91,7 +114,46 @@
         </a>
       </div>
     }
+
+    <!-- LEVEL TIMELINE -->
+    <div class="level-timeline">
+      <div class="level-timeline-header">
+        <i class="fas fa-chart-line"></i>
+        <span>Progreso hacia C2</span>
+      </div>
+      <div class="timeline-track">
+        <div class="timeline-track-bg"></div>
+        <div class="timeline-progress-fill" [style.width.%]="timelineProgress"></div>
+        <div class="timeline-milestones">
+          <div class="milestone" [class.completed]="timelineProgress >= 16.6">
+            <div class="milestone-icon"><i class="fas fa-seedling"></i></div>
+            <span class="milestone-label">A1</span>
+          </div>
+          <div class="milestone" [class.completed]="timelineProgress >= 33.3">
+            <div class="milestone-icon"><i class="fas fa-book-open"></i></div>
+            <span class="milestone-label">A2</span>
+          </div>
+          <div class="milestone" [class.completed]="timelineProgress >= 50">
+            <div class="milestone-icon"><i class="fas fa-chart-line"></i></div>
+            <span class="milestone-label">B1</span>
+          </div>
+          <div class="milestone" [class.completed]="timelineProgress >= 66.6">
+            <div class="milestone-icon"><i class="fas fa-rocket"></i></div>
+            <span class="milestone-label">B2</span>
+          </div>
+          <div class="milestone" [class.completed]="timelineProgress >= 83.3">
+            <div class="milestone-icon"><i class="fas fa-trophy"></i></div>
+            <span class="milestone-label">C1</span>
+          </div>
+          <div class="milestone" [class.completed]="timelineProgress >= 100">
+            <div class="milestone-icon"><i class="fas fa-crown"></i></div>
+            <span class="milestone-label">C2</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <!-- ESTADÍSTICAS DE TESTS (APROBADOS/SUSPENDIDOS) -->
   <div class="stats-cards">
     <div class="stat-card passed">
@@ -211,24 +273,14 @@
 
     <div class="kpi-card">
       <div class="kpi-icon">
-        <i class="fas fa-chart-line"></i>
+        <i class="fas fa-calendar-week"></i>
       </div>
       <div class="kpi-content">
-        @if (hasWeeklyData) {
-          <div class="kpi-value weekly {{ getWeeklyProgressColor() }}">
-            <i class="fas {{ getWeeklyProgressIcon() }}"></i>
-            {{ weeklyProgress > 0 ? '+' : '' }}{{ weeklyProgress }}%
-          </div>
-        } @else {
-          <div class="kpi-value weekly neutral">
-            <i class="fas fa-chart-simple"></i>
-            --
-          </div>
-        }
-        <div class="kpi-label">Progreso semanal</div>
+        <div class="kpi-value">{{ testsThisWeek }}</div>
+        <div class="kpi-label">Tests esta semana</div>
         <div class="kpi-message">
-          <i class="fas {{ weeklyIcon }}"></i>
-          {{ weeklyMessage }}
+          <i class="fas {{ weekComparisonIcon }}"></i>
+          <span>{{ weekComparisonText }}</span>
         </div>
       </div>
     </div>

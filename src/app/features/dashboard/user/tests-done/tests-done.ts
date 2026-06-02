@@ -87,12 +87,27 @@ export class TestsDone implements OnInit {
     completed_at: string;
   } | null = null;
 
+  // Level Test Attempts (todos los intentos)
+  levelTestAttempts: {
+    level: string;
+    percentage: number;
+    score: number;
+    total: number;
+    completed_at: string;
+  }[] = [];
+
   // KPI metrics
   totalTests: number = 0;
   globalAverage: number = 0;
   bestStreak: number = 0;
-  weeklyProgress: number = 0;
+  //weeklyProgress: number = 0;
   masteredLessons: number = 0;
+
+  testsThisWeek: number = 0;
+  testsLastWeek: number = 0;
+  weekComparison: number = 0;
+  weekComparisonText: string = '';
+  weekComparisonIcon: string = '';
 
   // Estadísticas de tests
   passedTests: number = 0;
@@ -102,6 +117,8 @@ export class TestsDone implements OnInit {
   // Nivel estimado
   estimatedLevel: string = 'A1';
   levelStats: LevelStat[] = [];
+
+  timelineProgress: number = 0;
 
   // Filtros
   selectedLevel: string = 'all';
@@ -119,9 +136,9 @@ export class TestsDone implements OnInit {
   ];
 
   // Flags y mensajes dinámicos
-  hasWeeklyData: boolean = true;
-  weeklyMessage: string = '';
-  weeklyIcon: string = '';
+  //hasWeeklyData: boolean = true;
+  //weeklyMessage: string = '';
+  // weeklyIcon: string = '';
 
   constructor(
     private http: HttpClient,
@@ -147,6 +164,7 @@ export class TestsDone implements OnInit {
 
     this.http.get<PaginatedTests>(apiUrl, { headers }).subscribe({
       next: (response) => {
+        console.log('Todos los tests:', response.data);
         this.tests = response.data;
         this.totalTests = response.total;
         this.pagination = {
@@ -174,6 +192,14 @@ export class TestsDone implements OnInit {
     const grouped = new Map<string, { attempts: TestResult[]; level: string; skill: string }>();
 
     this.tests.forEach((test) => {
+      // Excluir Level Test de la agrupación
+      const isLevelTest =
+        test.test_title?.includes('Level Test') || test.lesson_title === '🎯 Test de Nivel';
+
+      if (isLevelTest) {
+        return;
+      }
+
       const key = test.lesson_title;
       if (!grouped.has(key)) {
         grouped.set(key, {
@@ -434,57 +460,43 @@ export class TestsDone implements OnInit {
     const lastWeekStart = new Date(currentWeekStart);
     lastWeekStart.setDate(lastWeekStart.getDate() - 7);
 
+    // Tests esta semana
     const testsThisWeek = this.tests.filter((t) => {
       const date = new Date(t.completed_at);
       return date >= currentWeekStart;
     });
 
+    // Tests semana pasada
     const testsLastWeek = this.tests.filter((t) => {
       const date = new Date(t.completed_at);
       return date >= lastWeekStart && date < currentWeekStart;
     });
 
-    const avgThisWeek =
-      testsThisWeek.length > 0
-        ? testsThisWeek.reduce((s, t) => s + t.percentage, 0) / testsThisWeek.length
-        : 0;
+    this.testsThisWeek = testsThisWeek.length;
+    this.testsLastWeek = testsLastWeek.length;
 
-    const avgLastWeek =
-      testsLastWeek.length > 0
-        ? testsLastWeek.reduce((s, t) => s + t.percentage, 0) / testsLastWeek.length
-        : 0;
+    const diff = this.testsThisWeek - this.testsLastWeek;
+    this.weekComparison = diff;
 
-    if (testsThisWeek.length === 0) {
-      this.hasWeeklyData = false;
-      this.weeklyProgress = 0;
-      this.weeklyMessage = 'Sin actividad esta semana';
-      this.weeklyIcon = 'fa-calendar-week';
-    } else if (testsLastWeek.length === 0) {
-      this.hasWeeklyData = false;
-      this.weeklyProgress = 0;
-      this.weeklyMessage = 'Primer test - continúa la próxima semana';
-      this.weeklyIcon = 'fa-calendar-star';
+    // Generar mensaje y icono
+    if (this.testsThisWeek === 0 && this.testsLastWeek === 0) {
+      this.weekComparisonText = 'Sin actividad aún';
+      this.weekComparisonIcon = 'fa-clock';
+    } else if (this.testsThisWeek === 0 && this.testsLastWeek > 0) {
+      this.weekComparisonText = `${this.testsLastWeek} menos que la semana pasada`;
+      this.weekComparisonIcon = 'fa-arrow-down';
+    } else if (this.testsThisWeek > 0 && this.testsLastWeek === 0) {
+      this.weekComparisonText = 'Primeros tests esta semana';
+      this.weekComparisonIcon = 'fa-seedling';
+    } else if (diff > 0) {
+      this.weekComparisonText = `${diff} más que la semana pasada`;
+      this.weekComparisonIcon = 'fa-arrow-up';
+    } else if (diff < 0) {
+      this.weekComparisonText = `${Math.abs(diff)} menos que la semana pasada`;
+      this.weekComparisonIcon = 'fa-arrow-down';
     } else {
-      this.hasWeeklyData = true;
-      const change = ((avgThisWeek - avgLastWeek) / avgLastWeek) * 100;
-      this.weeklyProgress = Math.round(change);
-
-      if (this.weeklyProgress > 10) {
-        this.weeklyMessage = 'Mejorando rápidamente';
-        this.weeklyIcon = 'fa-rocket';
-      } else if (this.weeklyProgress > 0) {
-        this.weeklyMessage = 'Mejorando respecto a la semana pasada';
-        this.weeklyIcon = 'fa-arrow-up';
-      } else if (this.weeklyProgress === 0) {
-        this.weeklyMessage = 'Mismo nivel que la semana pasada';
-        this.weeklyIcon = 'fa-minus';
-      } else if (this.weeklyProgress < -10) {
-        this.weeklyMessage = 'Semana para repasar';
-        this.weeklyIcon = 'fa-arrow-down';
-      } else {
-        this.weeklyMessage = 'Ligero descenso, sigue practicando';
-        this.weeklyIcon = 'fa-heart';
-      }
+      this.weekComparisonText = 'Mismo número que la semana pasada';
+      this.weekComparisonIcon = 'fa-minus';
     }
   }
 
@@ -499,9 +511,15 @@ export class TestsDone implements OnInit {
     this.loadTests(page);
   }
 
-  repeatTest(lesson: GroupedLesson): void {
+  goToLevelTest() {
+    window.location.href = '/level-test';
+  }
+
+  repeatTest(lesson: GroupedLesson) {
     if (lesson.lesson_slug) {
       window.location.href = `/levels/all/${lesson.lesson_slug}?mode=test`;
+    } else {
+      console.error('No se puede repetir el test: lesson_slug no existe');
     }
   }
 
@@ -514,20 +532,6 @@ export class TestsDone implements OnInit {
     if (percentage >= 60) return 'good';
     if (percentage >= 40) return 'regular';
     return 'low';
-  }
-
-  getWeeklyProgressColor(): string {
-    if (!this.hasWeeklyData) return 'neutral';
-    if (this.weeklyProgress > 5) return 'positive';
-    if (this.weeklyProgress < -5) return 'negative';
-    return 'neutral';
-  }
-
-  getWeeklyProgressIcon(): string {
-    if (!this.hasWeeklyData) return 'fa-chart-simple';
-    if (this.weeklyProgress > 5) return 'fa-arrow-up';
-    if (this.weeklyProgress < -5) return 'fa-arrow-down';
-    return 'fa-minus';
   }
 
   getConfidenceTooltip(): string {
@@ -574,8 +578,12 @@ export class TestsDone implements OnInit {
 
     this.http.get(`${environment.apiUrl}/user/tests/level-test-result`, { headers }).subscribe({
       next: (response: any) => {
+        console.log('Respuesta level test:', response);
         if (response.success && response.result) {
           this.levelTestResult = response.result;
+          this.levelTestAttempts = response.attempts || [];
+          this.timelineProgress = this.calculateTimelineProgress();
+          console.log('Intentos level test:', this.levelTestAttempts);
         }
       },
       error: (err) => {
@@ -583,7 +591,25 @@ export class TestsDone implements OnInit {
       },
     });
   }
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
+  }
+
+  calculateTimelineProgress(): number {
+    if (this.levelTestResult && this.levelTestResult.percentage) {
+      return Math.min(100, this.levelTestResult.percentage);
+    }
+
+    const levelProgressMap: Record<string, number> = {
+      A1: 10,
+      A2: 25,
+      B1: 45,
+      B2: 65,
+      C1: 85,
+      C2: 100,
+    };
+
+    return levelProgressMap[this.estimatedLevel] || 0;
   }
 }
