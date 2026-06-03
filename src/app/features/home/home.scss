@@ -659,6 +659,14 @@
     text-decoration: underline;
   }
 }
+/* ================= FAQ CHEVRON ROTATION ================= */
+.faq-question i {
+  transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+  transform: rotate(180deg);
+}
 
 /* ================= VIDEOS SECTION ================= */
 .iframe-grid {

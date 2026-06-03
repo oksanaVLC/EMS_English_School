@@ -14,13 +14,14 @@
           Inicio
         </a>
       </li>
+      <li><a routerLink="/level-test" routerLinkActive="active">Prueba de nivel</a></li>
 
       <!-- Dropdown de Niveles -->
       <li class="resources-dropdown">
-        <button class="resources-btn">
+        <a class="resources-btn" routerLink="/levels">
           Niveles
           <i class="fa-solid fa-caret-down"></i>
-        </button>
+        </a>
 
         <div class="resources-menu">
           <div class="submenu">
@@ -34,10 +35,10 @@
         </div>
       </li>
       <li class="resources-dropdown">
-        <button class="resources-btn">
+        <a class="resources-btn" routerLink="/skills">
           Destrezas
           <i class="fa-solid fa-caret-down"></i>
-        </button>
+        </a>
 
         <div class="resources-menu">
           <!-- SOLO DESTREZAS -->
@@ -53,7 +54,7 @@
           </div>
         </div>
       </li>
-      <li><a routerLink="/level-test" routerLinkActive="active">Prueba de nivel</a></li>
+
       <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
       <li><a routerLink="/contact" routerLinkActive="active">Contacto</a></li>
 
@@ -102,7 +103,8 @@
     <ul class="navbar__menu">
       <!-- Inicio -->
       <li><a routerLink="/" (click)="closeMenu()">Inicio</a></li>
-
+      <!-- Test de nivel -->
+      <li><a routerLink="/level-test" (click)="closeMenu()">Test de nivel</a></li>
       <!-- NIVELES (dropdown) -->
       <li class="mobile-resources">
         <div class="mobile-resources-trigger" (click)="toggleNiveles($event)">
@@ -148,9 +150,6 @@
           </div>
         </div>
       </li>
-
-      <!-- Test de nivel -->
-      <li><a routerLink="/level-test" (click)="closeMenu()">Test de nivel</a></li>
 
       <!-- Blog -->
       <li><a routerLink="/blog" (click)="closeMenu()">Blog</a></li>

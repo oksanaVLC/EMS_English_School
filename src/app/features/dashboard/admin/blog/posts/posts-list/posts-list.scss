@@ -18,11 +18,164 @@
   }
 }
 
+/* ================= FILTERS ================= */
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.filters-label {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+  margin-right: 6px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filters button {
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #444;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.filters button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.filters button.active {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+}
+
+/* ================= SEARCH BAR ================= */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-wrapper i.fa-search {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 40px 12px 40px;
+  border: 2px solid #e2e8f0;
+  border-radius: 50px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(1, 209, 164, 0.2);
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+}
+
+.search-clear {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.search-clear:hover {
+  color: #ef4444;
+}
+
+/* ================= LOADING & EMPTY STATES ================= */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #64748b;
+}
+
+.loading-state i,
+.empty-state i {
+  font-size: 3rem;
+  color: var(--color-accent);
+  opacity: 0.5;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.empty-state h3 {
+  margin: 0.5rem 0;
+  color: #334155;
+}
+
+.empty-state p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+}
+
+.btn-clear-search {
+  margin-top: 1rem;
+  background: var(--main-gradient);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-clear-search:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(1, 209, 164, 0.3);
+}
+
+/* ================= TABLE ================= */
 .btn-create {
   margin-top: 1rem;
   font-size: 1rem;
   font-weight: 600;
-
   background: var(--main-gradient);
   border: none;
   color: white;
@@ -59,6 +212,30 @@ td {
   border-bottom: 1px solid #eee;
 }
 
+.title-cell {
+  position: relative;
+}
+
+.search-highlight {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  color: var(--color-accent);
+  font-size: 0.7rem;
+  animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .cover {
   width: 50px;
   height: 50px;
@@ -75,72 +252,42 @@ td {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   margin: 0 4px;
   padding: 6px 10px;
   border-radius: 6px;
   border: none;
 }
 
-/* BOTÓN BASE */
 .icon-btn {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 1rem;
-
   border: 1px solid #e0e0e0;
   background: white;
   padding: 6px 12px;
   border-radius: 20px;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-/* ICONOS */
 .icon-btn img {
   width: 16px;
   height: 16px;
 }
 
-/* HOVER */
 .icon-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
   transform: translateY(-1px);
 }
 
-/* DELETE rojo */
 .icon-btn.danger:hover {
   border-color: #e53935;
   color: #e53935;
 }
 
-/* =========================
-    MOBILE RESPONSIVE
-   ========================= */
-@media (max-width: 768px) {
-  .actions {
-    justify-content: center;
-    width: 100%;
-  }
-  .icon-btn .text {
-    display: none; /*  solo iconos */
-  }
-
-  .icon-btn {
-    padding: 8px;
-    border-radius: 10px;
-  }
-
-  .icon-btn img {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/****************************************************/
+/* ================= STATUS BADGES ================= */
 .status {
   padding: 4px 8px;
   border-radius: 12px;
@@ -157,50 +304,7 @@ td {
   color: #1a7f37;
 }
 
-/* FILTROS CONTAINER */
-.filters {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-/* TEXTO "Filtrar por" */
-.filters-label {
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.6);
-  margin-right: 6px;
-}
-
-/* BOTONES FILTRO */
-.filters button {
-  border: 1px solid #e0e0e0;
-  background: white;
-  color: #444;
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 1rem;
-}
-
-/* HOVER */
-.filters button:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  transform: translateY(-1px);
-}
-
-/* ACTIVE STATE */
-.filters button.active {
-  background: var(--color-accent);
-  color: white;
-  border: none;
-}
-
-/*******Modal confirmación**********/
+/* ================= MODAL ================= */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -231,7 +335,7 @@ td {
   margin-bottom: 1.5rem;
 }
 
-.actions {
+.modal .actions {
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -257,4 +361,38 @@ td {
 
 .btn.danger:hover {
   background: #c62828;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .actions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .icon-btn .text {
+    display: none;
+  }
+
+  .icon-btn {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .icon-btn img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .filter-buttons {
+    justify-content: center;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .search-wrapper {
+    max-width: 100%;
+  }
 }

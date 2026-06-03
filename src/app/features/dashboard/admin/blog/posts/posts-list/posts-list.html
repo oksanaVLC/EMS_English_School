@@ -6,15 +6,30 @@
 
     <div class="filters">
       <span class="filters-label">Filtrar por:</span>
-      <div>
+      <div class="filter-buttons">
         <button (click)="filter('')" [class.active]="filterStatus === ''">Todos</button>
-
         <button (click)="filter('draft')" [class.active]="filterStatus === 'draft'">
           Borradores
         </button>
-
         <button (click)="filter('published')" [class.active]="filterStatus === 'published'">
           Publicados
+        </button>
+      </div>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-container">
+      <div class="search-wrapper">
+        <i class="fa-solid fa-search"></i>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearchInput()"
+          placeholder="Buscar por título..."
+          class="search-input"
+        />
+        <button *ngIf="searchTerm" class="search-clear" (click)="clearSearch()">
+          <i class="fa-solid fa-times-circle"></i>
         </button>
       </div>
     </div>
@@ -24,7 +39,25 @@
 
   <!-- TABLE -->
   <div class="card">
-    <div class="table-wrapper">
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <span>Cargando artículos...</span>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && filteredPosts.length === 0" class="empty-state">
+      <i class="fa-solid fa-newspaper"></i>
+      <h3>No hay artículos</h3>
+      <p *ngIf="searchTerm">No se encontraron resultados para "{{ searchTerm }}"</p>
+      <p *ngIf="!searchTerm">No hay artículos que coincidan con el filtro actual</p>
+      <button *ngIf="searchTerm" class="btn-clear-search" (click)="clearSearch()">
+        Limpiar búsqueda
+      </button>
+    </div>
+
+    <!-- Table (only show if there are posts) -->
+    <div *ngIf="!isLoading && filteredPosts.length > 0" class="table-wrapper">
       <table>
         <thead>
           <tr>
@@ -34,9 +67,8 @@
             <th>Acciones</th>
           </tr>
         </thead>
-
         <tbody>
-          @for (post of posts; track post.id) {
+          @for (post of filteredPosts; track post.id) {
             <tr>
               <td>
                 @if (post.slug) {
@@ -50,8 +82,11 @@
                 }
               </td>
 
-              <td>
+              <td class="title-cell">
                 {{ truncate(getPostTitle(post)) }}
+                <span *ngIf="isSearchMatch(post)" class="search-highlight">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
               </td>
 
               <td>
@@ -86,8 +121,9 @@
       </table>
     </div>
 
-    <!-- PAGINATION -->
+    <!-- PAGINATION (solo se muestra si hay posts después del filtro) -->
     <app-pagination
+      *ngIf="!isLoading && filteredPosts.length > 0"
       [currentPage]="currentPage"
       [lastPage]="lastPage"
       (pageChange)="loadPosts($event)"
@@ -95,16 +131,14 @@
   </div>
 </div>
 
+<!-- DELETE MODAL -->
 @if (showDeleteModal) {
   <div class="modal-backdrop">
     <div class="modal">
       <h2>Eliminar post</h2>
-
       <p>¿Seguro que quieres eliminar este artículo?</p>
-
       <div class="actions">
         <button class="btn cancel" (click)="closeDeleteModal()">Cancelar</button>
-
         <button class="btn danger" (click)="confirmDelete()">Sí, eliminar</button>
       </div>
     </div>

@@ -1,5 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../../../../../../environments/environment';
 import { PostModel } from '../../../../../../core/models/post.model';
@@ -10,7 +12,7 @@ type PostStatus = '' | 'draft' | 'published';
 @Component({
   selector: 'app-posts-list',
   standalone: true,
-  imports: [Pagination, RouterLink],
+  imports: [Pagination, RouterLink, FormsModule, CommonModule],
   templateUrl: './posts-list.html',
   styleUrl: './posts-list.scss',
 })
@@ -20,10 +22,15 @@ export class PostsList implements OnInit {
   private apiUrl = environment.apiUrl;
 
   posts: PostModel[] = [];
+  filteredPosts: PostModel[] = [];
 
   currentPage = 1;
   lastPage = 1;
   filterStatus: PostStatus = '';
+
+  // Search properties
+  searchTerm: string = '';
+  searchDebounceTimer: any;
 
   showDeleteModal = false;
   deleteId: number | null = null;
@@ -62,6 +69,8 @@ export class PostsList implements OnInit {
           this.currentPage = res.current_page || 1;
           this.lastPage = res.last_page || 1;
 
+          this.applySearchFilter(); // Apply search after loading
+
           this.isLoading = false;
 
           console.log('📸 Posts cargados:', this.posts);
@@ -71,6 +80,48 @@ export class PostsList implements OnInit {
           this.isLoading = false;
         },
       });
+  }
+
+  /*
+  |-----------------------------------------
+  | SEARCH FUNCTIONALITY
+  |-----------------------------------------
+  */
+  onSearchInput() {
+    // Clear previous timer
+    if (this.searchDebounceTimer) {
+      clearTimeout(this.searchDebounceTimer);
+    }
+
+    // Debounce search to avoid performance issues
+    this.searchDebounceTimer = setTimeout(() => {
+      this.applySearchFilter();
+    }, 300);
+  }
+
+  applySearchFilter() {
+    if (!this.searchTerm.trim()) {
+      // No search term, show all posts from current filter
+      this.filteredPosts = [...this.posts];
+    } else {
+      const term = this.searchTerm.toLowerCase().trim();
+      this.filteredPosts = this.posts.filter((post) => {
+        const title = this.getPostTitle(post).toLowerCase();
+        return title.includes(term);
+      });
+    }
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.applySearchFilter();
+  }
+
+  isSearchMatch(post: PostModel): boolean {
+    if (!this.searchTerm.trim()) return false;
+    const term = this.searchTerm.toLowerCase().trim();
+    const title = this.getPostTitle(post).toLowerCase();
+    return title.includes(term);
   }
 
   /*
@@ -88,6 +139,7 @@ export class PostsList implements OnInit {
 
   toggleLanguage() {
     this.currentLang = this.currentLang === 'es' ? 'en' : 'es';
+    this.applySearchFilter(); // Re-apply search when language changes
   }
 
   /*
@@ -125,6 +177,7 @@ export class PostsList implements OnInit {
   filter(status: PostStatus) {
     this.filterStatus = status;
     this.currentPage = 1;
+    this.searchTerm = ''; // Clear search when changing filter
     this.loadPosts(1, status);
   }
 

@@ -58,7 +58,7 @@
       </button>
     </div>
 
-    <!-- CONTENT - Resto igual... -->
+    <!-- CONTENT -->
     <div class="content">
       <!-- ===================== LEARN ===================== -->
       <div class="wrapper">
@@ -173,6 +173,21 @@
           }
         </div>
       }
+    </div>
+
+    <!-- ===================== BOTONES: VOLVER + SUBIR ARRIBA ===================== -->
+    <div class="action-buttons-wrapper">
+      <!-- VOLVER -->
+      <button class="action-btn" (click)="goBack()" title="Volver">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Volver</span>
+      </button>
+
+      <!-- SUBIR ARRIBA -->
+      <button class="action-btn" (click)="scrollToTop()" title="Subir arriba">
+        <i class="fa-solid fa-arrow-up"></i>
+        <span>Arriba</span>
+      </button>
     </div>
   </div>
 }

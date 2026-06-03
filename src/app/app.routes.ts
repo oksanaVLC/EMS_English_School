@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { canDeactivateGuard } from './core/guards/can-deactivate-guard';
 import { roleGuard } from './core/guards/role-guard';
 
-import { About } from './features/about/about';
 import { Login } from './features/auth/pages/login/login';
 import { Register } from './features/auth/pages/register/register';
 import { Home } from './features/home/home';
@@ -15,11 +14,6 @@ export const routes: Routes = [
   {
     path: '',
     component: Home,
-  },
-  {
-    path: 'about',
-    component: About,
-    data: { breadcrumb: 'Sobre nosotros' },
   },
 
   // =========================

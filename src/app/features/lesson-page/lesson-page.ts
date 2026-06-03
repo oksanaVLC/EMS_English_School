@@ -85,6 +85,16 @@ export class LessonPage implements OnInit {
     this.location.back();
   }
 
+  /**
+   * 📌 SUBIR ARRIBA - Smooth scroll to top
+   */
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+
   getLevelName(level: string): string {
     switch (level?.toLowerCase()) {
       case 'a1':
@@ -183,7 +193,6 @@ export class LessonPage implements OnInit {
     const token = localStorage.getItem('token');
 
     if (!token) {
-      // Redirigir a login o mostrar mensaje
       window.location.href = '/login';
       return;
     }
@@ -198,7 +207,6 @@ export class LessonPage implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.isFavorited = response.favorited;
-
           console.log(this.isFavorited ? '✅ Añadido a favoritos' : '❌ Eliminado de favoritos');
         },
         error: (err) => {

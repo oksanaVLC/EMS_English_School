@@ -1068,3 +1068,61 @@
     }
   }
 }
+
+/* ===================== ACTION BUTTONS (VOLVER + ARRIBA) ===================== */
+.action-buttons-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 40px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 0.9rem;
+    color: var(--color-accent);
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: #f8fafc;
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+
+    i {
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .action-buttons-wrapper {
+    justify-content: center;
+  }
+
+  .action-btn span {
+    display: inline;
+  }
+}
