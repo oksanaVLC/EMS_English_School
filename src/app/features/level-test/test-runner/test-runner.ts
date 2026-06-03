@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class TestRunner implements OnInit {
   questions: any[] = [];
 
-  // 👇 guardamos respuestas del usuario
+  //  guardamos respuestas del usuario
   answers: { [questionId: number]: number } = {};
 
   submitted = false;
@@ -108,7 +108,7 @@ export class TestRunner implements OnInit {
 
     this.score = correct;
 
-    // 👉 puedes guardar en localStorage o enviar a backend aquí
+    //  puedes guardar en localStorage o enviar a backend aquí
     localStorage.setItem(
       'test_result',
       JSON.stringify({
@@ -117,7 +117,7 @@ export class TestRunner implements OnInit {
       }),
     );
 
-    // 👉 navegar a resultados
+    //  navegar a resultados
     this.router.navigate(['/level-test/result']);
   }
 

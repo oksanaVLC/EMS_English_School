@@ -86,7 +86,7 @@ export class LessonPage implements OnInit {
   }
 
   /**
-   * 📌 SUBIR ARRIBA - Smooth scroll to top
+   *  SUBIR ARRIBA - Smooth scroll to top
    */
   scrollToTop(): void {
     window.scrollTo({
