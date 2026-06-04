@@ -200,10 +200,28 @@
         <h2 class="silver-gradient about-school-title">English Maximizer School</h2>
       </div>
       <div class="image-frame white-frame">
-        <img src="images/video.webp" alt="Academia online" />
-        <div class="play-overlay">
-          <i class="fa-solid fa-circle-play"></i>
-        </div>
+        <figure class="iframe-item" (click)="loadVideo(schoolVideo)">
+          <ng-container *ngIf="!schoolVideo.loaded; else player">
+            <picture>
+              <source [srcset]="schoolVideo.thumb + '?avif'" type="image/avif" />
+              <source [srcset]="schoolVideo.thumb + '?webp'" type="image/webp" />
+              <img
+                class="youtube-facade"
+                [src]="schoolVideo.thumb"
+                [alt]="schoolVideo.title"
+                loading="lazy"
+              />
+            </picture>
+            <div class="play-button"></div>
+          </ng-container>
+          <ng-template #player>
+            <iframe
+              [src]="schoolVideo.embedUrl"
+              title="YouTube video player"
+              allowfullscreen
+            ></iframe>
+          </ng-template>
+        </figure>
       </div>
     </div>
     <div class="about-content">

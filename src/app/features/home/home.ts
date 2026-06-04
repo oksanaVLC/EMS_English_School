@@ -15,6 +15,14 @@ export class Home implements AfterViewInit, OnDestroy {
   private animated = false;
   private observer: IntersectionObserver | null = null;
 
+  schoolVideo = {
+    id: 'tW7l9v5XEP4',
+    thumb: `https://img.youtube.com/vi/tW7l9v5XEP4/maxresdefault.jpg`, // ← Cambia a maxresdefault.jpg
+    title: 'Presentación English Maximizer School',
+    embedUrl: null,
+    loaded: false,
+  };
+
   ngAfterViewInit() {
     this.initDrag();
     this.setupStatsObserver();
