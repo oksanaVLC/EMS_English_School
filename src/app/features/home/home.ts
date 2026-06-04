@@ -41,6 +41,25 @@ export class Home implements AfterViewInit, OnDestroy {
   private setupScrollAnimations(): void {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
 
+    // Función para verificar y activar elementos visibles
+    const checkVisibility = () => {
+      animatedElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const isVisible = rect.top < windowHeight - 100 && rect.bottom > 0;
+
+        if (isVisible) {
+          el.classList.add('visible');
+        }
+      });
+    };
+
+    // Para Chrome/Edge: verificar inmediatamente
+    setTimeout(() => {
+      checkVisibility();
+    }, 100);
+
+    // También usar IntersectionObserver como fallback
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -50,10 +69,18 @@ export class Home implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { threshold: 0.15 }, // 15% visible para activar
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px 50px 0px', // Margen más agresivo
+      },
     );
 
     animatedElements.forEach((el) => this.observer?.observe(el));
+
+    // Fuerza un reflow en Chrome
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
   }
 
   // =========================
