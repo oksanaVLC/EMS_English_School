@@ -676,6 +676,7 @@
 }
 
 /* ================= VIDEOS SECTION ================= */
+/* ================= VIDEOS SECTION ================= */
 .iframe-grid {
   display: grid;
   justify-content: center;
@@ -689,16 +690,21 @@
 @media (min-width: 600px) {
   .iframe-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 }
+
 @media (min-width: 900px) {
   .iframe-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
   }
 }
+
 @media (min-width: 1100px) {
   .iframe-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 }
 
@@ -710,8 +716,8 @@
   cursor: pointer;
   background: #000;
   width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
+  /* ELIMINA max-width: 380px */
+  /* ELIMINA margin: 0 auto */
 
   iframe {
     width: 100%;
@@ -729,7 +735,6 @@
     transform: translateX(4px) scale(1.1);
   }
 }
-
 .youtube-facade {
   width: 100%;
   height: 100%;
