@@ -590,7 +590,7 @@
 
 .lesson-content {
   font-size: 18px;
-  line-height: 1.8;
+  line-height: 1.6;
   color: #222;
 
   max-width: 100%;
@@ -626,7 +626,7 @@
 
 :host ::ng-deep .lesson-content p {
   margin-bottom: 1rem;
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 /* =========================================
@@ -713,7 +713,7 @@
 @media (max-width: 768px) {
   .lesson-content {
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 1.5;
   }
 
   :host ::ng-deep .lesson-content h1 {
